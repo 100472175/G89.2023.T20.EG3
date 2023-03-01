@@ -1,5 +1,4 @@
-# created by virtualenv automatically
+venv
 .idea
-bin
-lib
-pyenv.cfg
+.pybuilder
+target
