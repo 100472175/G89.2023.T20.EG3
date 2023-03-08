@@ -1,10 +1,5 @@
 {
   "errors": [],
-  "failures": [
-    {
-      "test": "test_register_order_tests.MyTestCase.test_something",
-      "traceback": "Traceback (most recent call last):\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 57, in testPartExecutor\n    yield\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 623, in run\n    self._callTestMethod(testMethod)\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 579, in _callTestMethod\n    if method() is not None:\n    ^^^^^^^^^^^^^^^^^\n  File \"/Users/edu/PycharmProjects/G89.2023.T20.EG3/src/unittest/python/test_register_order_tests.py\", line 9, in test_something\n    self.assertEqual(True, False)\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 873, in assertEqual\n    assertion_func(first, second, msg=msg)\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 866, in _baseAssertEqual\n    raise self.failureException(msg)\n    ^^^^^^^^^^^^^^^^^\nAssertionError: True != False\n"
-    }
-  ],
+  "failures": [],
   "tests-run": 1
 }
