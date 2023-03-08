@@ -63,6 +63,61 @@ class MyTestCase(unittest.TestCase):
                                                     zip_code="28005")
             self.assertEqual(cm.exception.message, "Product Id not valid, id too long")
 
+    @freeze_time("2023-03-08")
+    def test_CE_NV_5(self):
+        """
+        Order_ID on lower case
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="regular",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(my_order_id, "e92f57e70545297e687ecfce3e80ba07")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_6(self):
+        """
+        Order_ID 'premium' writen with some uppercase letters
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="PreMIuM",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(my_order_id, "2cd71d73718bfb77cfcaa51e35975b0a")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_7(self):
+        """
+        Order_ID on lower case with correct sintax but one letter more
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="premiums",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Order Id not valid, too many characters")
+    @freeze_time("2023-03-08")
+    def test_CE_NV_8(self):
+        """
+        Order_ID on lower case with correct sintax but one letter more
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="premiums",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Order Id not valid, too many characters")
+
 
 
 if __name__ == '__main__':
