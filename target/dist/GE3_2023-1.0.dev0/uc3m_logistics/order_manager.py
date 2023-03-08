@@ -29,7 +29,6 @@ class OrderManager:
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
         my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
-        #print(my_order.time_stamp2)
         #if everything is ok, it will save into the file
         return my_order.order_id
 
