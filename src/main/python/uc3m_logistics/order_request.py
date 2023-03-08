@@ -12,6 +12,7 @@ class OrderRequest:
         self.__phone_number = phone_number
         self.__zip_code = zip_code
         justnow = datetime.utcnow()
+        #self.time_stamp2 = datetime.timestamp(justnow)
         self.__time_stamp = datetime.timestamp(justnow)
 
     def __str__(self):
@@ -49,6 +50,7 @@ class OrderRequest:
         return self.__product_id
     @product_id.setter
     def product_id( self, value ):
+
         self.__product_id = value
 
     @property
@@ -59,9 +61,12 @@ class OrderRequest:
     @property
     def order_id( self ):
         """Returns the md5 signature"""
+        print(self.__str__())
         return hashlib.md5(self.__str__().encode()).hexdigest()
 
     @property
     def zip_code( self ):
         """Returns the patient's zip_code"""
         return self.__zip_code
+
+

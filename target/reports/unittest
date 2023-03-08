@@ -1,34 +1,10 @@
 
 Running tests...
 ----------------------------------------------------------------------
-F
-======================================================================
-FAIL [0.002s]: test_something (test_register_order_tests.MyTestCase.test_something)
-dummy test
+.
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
-    yield
-  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
-    self._callTestMethod(testMethod)
-    ^^^^^^^^^^^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 579, in _callTestMethod
-    if method() is not None:
-    ^^^^^^^^^^^^^^^^^
-  File "/Users/edu/PycharmProjects/G89.2023.T20.EG3/src/unittest/python/test_register_order_tests.py", line 9, in test_something
-    self.assertEqual(True, False)
-    ^^^^^^^^^^^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 873, in assertEqual
-    assertion_func(first, second, msg=msg)
-    ^^^^^^^^^^^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 866, in _baseAssertEqual
-    raise self.failureException(msg)
-    ^^^^^^^^^^^^^^^^^
-AssertionError: True != False
+Ran 1 test in 0.033s
 
-----------------------------------------------------------------------
-Ran 1 test in 0.009s
-
-FAILED (failures=1)
+OK
 
 Generating XML reports...
