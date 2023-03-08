@@ -17,7 +17,6 @@ class OrderManager:
                 :param eAn13:
                 :return:
         """
-
         if len(ean13) < 13:
             raise OrderManagementException("Product Id not valid, id too short")
         elif len(ean13) > 13:
