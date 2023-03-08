@@ -28,7 +28,7 @@ class OrderManager:
     def register_order(self, product_id, order_type, address, phone_number, zip_code):
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
-        myorder = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+        my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
         #if everything is ok, it will save into the file
         return my_order.order_id
 
