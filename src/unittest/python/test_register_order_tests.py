@@ -132,59 +132,116 @@ class MyTestCase(unittest.TestCase):
             self.assertEqual(cm.exception.message, "Type of the order_type is not valid, must be a STRING")
 
     @freeze_time("2023-03-08") #1678237200
-    def test_CE_NV_10(self):
+    def test_CE_V_10(self):
         """
-        Order_ID on lower case with correct sintax but one letter more
+        Addres Correct
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
-            my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                    order_type= True,
-                                                    address="C/LISBOA,4, MADRID, SPAIN",
-                                                    phone_number="654314159",
-                                                    zip_code="28005")
-            self.assertEqual(cm.exception.message, "Order Type value is not a string")
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type= "REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="28005")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
     @freeze_time("2023-03-08") #1678237200
-    def test_CE_NV_11(self):
+    def test_CE_V_11(self):
         """
-        Order_ID on lower case with correct sintax but one letter more
+        Address has two spaces
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
-            my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                    order_type="regula",
-                                                    address="C/LISBOA,4, MADRID, SPAIN",
-                                                    phone_number="654314159",
-                                                    zip_code="28005")
-            self.assertEqual(cm.exception.message, "Order Type Value too short")
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="28005")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
     @freeze_time("2023-03-08") #1678230000
     def test_CE_NV_12(self):
         """
-        Order_ID on lower case with correct sintax but one letter more
+        Address valid, contains only one space
         """
         my_manager = OrderManager()
         my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                order_type="regula",
-                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID,SPAIN",
                                                 phone_number="654314159",
                                                 zip_code="28005")
-        self.assertEqual(my_order_id, "a1d2ccb74d61773d1abeb6d42a481be1")
+        self.assertEqual(my_order_id, "f35f1b805782b06cfa6d7808dcc63fde")
 
     @freeze_time("2023-03-08") #1678230000 C/LISBOA4MADRIDSPAIN
     def test_CE_NV_13(self):
         """
-        Order_ID on lower case with correct sintax but one letter more
+        Address has no spaces
         """
         my_manager = OrderManager()
         with self.assertRaises(OrderManagementException) as cm:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="regula",
-                                                    address="C/LISBOA4MADRIDSPAIN",
+                                                    address="C/LISBOA,4,MADRID,SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Addres must contain a space")
+            self.assertEqual(cm.exception.message, "Address not valid, must have a space")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_14(self):
+        """
+        Address type is not valid (not a string)
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address=123456,
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Address not valid, must be a string")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_15(self):
+        """
+        Address length is too small
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="MICASA, MADRID",
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Address not valid, must be a string")
+
+    @freeze_time("2023-03-08")
+    def test_LV_NV_16(self):
+        """
+        Address length is too small
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="Calle de la Gran Via de Madrid, Madrid, Madrid, Madrid,"
+                                                            " Madrid, Madrid, Madrid, Madrid, Madrid Madrid",
+                                                    phone_number="654314159",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Address not valid, must have less than 100 characters")
+
+    @freeze_time("2023-03-08")
+    def test_CE_V_17(self):
+        """
+        Valid Phone number
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="28005")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
+
+
+
 
 
 if __name__ == '__main__':

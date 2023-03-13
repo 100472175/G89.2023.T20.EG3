@@ -42,16 +42,39 @@ class OrderManager:
     def register_order(self, product_id, order_type, address, phone_number, zip_code):
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
+        order_type_check = False
         if type(order_type) == str:
             if (order_type == "REGULAR" or order_type == "PREMIUM"):
-                if self.validate_ean13(product_id):
-                    my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+                order_type_check = True
             else:
                 if order_type.upper() != order_type:
                     raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
                 raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
         else:
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+
+        address_check = False
+        if type(address) == str:
+            if len(address) <= 100:
+                if len(address) > 20:
+                    if " " in address:
+                        addres_list = address.split(" ")
+                        if len(addres_list) > 1:
+                            address_check = True
+                        else:
+                            raise OrderManagementException("Address not valid")
+                    else:
+                        raise OrderManagementException("Address not valid, must have a space")
+                else:
+                    raise OrderManagementException("Address not valid, must have more than 20 characters")
+            else:
+                raise OrderManagementException("Address not valid, must have less than 100 characters")
+        else:
+            raise OrderManagementException("Address not valid, must be a string")
+
+        if order_type_check and address_check:
+            if self.validate_ean13(product_id):
+                my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
 
         # if everything is ok, it will save into the file
         # my_order.save_order()
