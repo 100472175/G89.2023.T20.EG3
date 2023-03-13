@@ -42,10 +42,19 @@ class OrderManager:
     def register_order(self, product_id, order_type, address, phone_number, zip_code):
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
-        if self.validate_ean13(product_id):
-            my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+        if type(order_type) == str:
+            if (order_type == "REGULAR" or order_type == "PREMIUM"):
+                if self.validate_ean13(product_id):
+                    my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+            else:
+                if order_type.upper() != order_type:
+                    raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+        else:
+            raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
 
         # if everything is ok, it will save into the file
+        # my_order.save_order()
         return my_order.order_id
 
     def send_product(self, input_file):
