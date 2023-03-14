@@ -177,7 +177,7 @@ class MyTestCase(unittest.TestCase):
         my_manager = OrderManager()
         with self.assertRaises(OrderManagementException) as cm:
             my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                    order_type="regula",
+                                                    order_type="REGULAR",
                                                     address="C/LISBOA,4,MADRID,SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
@@ -346,7 +346,7 @@ class MyTestCase(unittest.TestCase):
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
-                                                    zip_code="00999")
+                                                    zip_code="53000")
             self.assertEqual(cm.exception.message, "Zip code not valid, must be less than 53000")
 
     @freeze_time("2023-03-08")
@@ -364,7 +364,35 @@ class MyTestCase(unittest.TestCase):
             self.assertEqual(cm.exception.message, "ZIP_CODE not valid, must have less than 6 characters")
 
     @freeze_time("2023-03-08")
-    def test_CE_NV_EXTRA1(self):
+    def test_LV_NV_27(self):
+        """
+        ZIP_CODE too short
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="0011")
+            self.assertEqual(cm.exception.message, "Zip code not valid, must have more than 4 digits")
+
+    @freeze_time("2023-03-08")
+    def test_LV_NV_28(self):
+        """
+        ZIP_CODE NON INTEGER VALUE
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="La casa de paco")
+            self.assertEqual(cm.exception.message, "Zip code not valid, must be numeric in the range {01000-52999}")
+
+    @freeze_time("2023-03-08")
+    def test_CE_V_29(self):
         """
         ZIP_CODE exactly 01000
         """
@@ -377,24 +405,8 @@ class MyTestCase(unittest.TestCase):
         print(my_order_id)
         self.assertEqual(my_order_id, "63b84176d87cb5bf8bd868b5ae9db1e6")
 
-
-
-
     @freeze_time("2023-03-08")
-    def test_CE_NV_EXTRA1(self):
-        """
-        ZIP_CODE exactly 01000
-        """
-        my_manager = OrderManager()
-        my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                order_type="REGULAR",
-                                                address="C/LISBOA,4, MADRID, SPAIN",
-                                                phone_number="654314159",
-                                                zip_code="01000")
-        self.assertEqual(my_order_id, "63b84176d87cb5bf8bd868b5ae9db1e6")
-
-    @freeze_time("2023-03-08")
-    def test_CE_NV_EXTRA2(self):
+    def test_CE_V_30(self):
         """
         ZIP_CODE exactly 52999
         """
@@ -407,7 +419,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
     @freeze_time("2023-03-08")
-    def test_CE_NV_EXTRA3(self):
+    def test_CE_V_31(self):
         """
         ZIP_CODE exactly 01001
         """
@@ -420,7 +432,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
     @freeze_time("2023-03-08")
-    def test_CE_NV_EXTRA4(self):
+    def test_CE_V_32(self):
         """
         ZIP_CODE exactly 52998
         """
