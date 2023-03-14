@@ -240,9 +240,129 @@ class MyTestCase(unittest.TestCase):
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
+    @freeze_time("2023-03-08")
+    def test_CE_NV_18(self):
+        """
+        Type of phone number is not valid
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="DEATH_STAR",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Phone number not valid, must be numeric")
+
+    @freeze_time("2023-03-08")
+    def test_CE_V_19(self):
+        """
+        Type of phone number is valid (+34 + format)
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="+34654314159",
+                                                zip_code="28005")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_20(self):
+        """
+        Length of phone number is too small
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="65431415",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Phone number not valid, must be numeric")
 
 
+    @freeze_time("2023-03-08")
+    def test_CE_NV_21(self):
+        """
+        Phone number too long
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="6942069420",
+                                                    zip_code="28005")
+            self.assertEqual(cm.exception.message, "Phone number not valid, must have less than 10 characters")
 
+    @freeze_time("2023-03-08")
+    def test_VL_V_22(self):
+        """
+        PHONE_NUMBER EXACT SIZE
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="694206942",
+                                                zip_code="28005")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
+
+
+    @freeze_time("2023-03-08")
+    def test_CE_V_23(self):
+        """
+        Valid ZIP_CODE
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="28005")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_24(self):
+        """
+        ZIP_CODE too low (less than 01000)
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="00999")
+            self.assertEqual(cm.exception.message, "ZIP_CODE not valid, must be greater or equal than 01000")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_25(self):
+        """
+        ZIP_CODE too high (greater than 52999)
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="00999")
+            self.assertEqual(cm.exception.message, "Zip code not valid, must be less than 53000")
+
+    @freeze_time("2023-03-08")
+    def test_LV_NV_26(self):
+        """
+        ZIP_CODE too long
+        """
+        my_manager = OrderManager()
+        with self.assertRaises(OrderManagementException) as cm:
+            my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                    order_type="REGULAR",
+                                                    address="C/LISBOA,4, MADRID, SPAIN",
+                                                    phone_number="654314159",
+                                                    zip_code="280055")
+            self.assertEqual(cm.exception.message, "ZIP_CODE not valid, must have less than 6 characters")
 
 if __name__ == '__main__':
     unittest.main()

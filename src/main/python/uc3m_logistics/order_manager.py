@@ -42,10 +42,10 @@ class OrderManager:
     def register_order(self, product_id, order_type, address, phone_number, zip_code):
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
-        order_type_check = False
+        check_type = False
         if type(order_type) == str:
             if (order_type == "REGULAR" or order_type == "PREMIUM"):
-                order_type_check = True
+                check_type = True
             else:
                 if order_type.upper() != order_type:
                     raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
@@ -53,14 +53,14 @@ class OrderManager:
         else:
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
 
-        address_check = False
+        check_address = False
         if type(address) == str:
             if len(address) <= 100:
                 if len(address) > 20:
                     if " " in address:
                         addres_list = address.split(" ")
                         if len(addres_list) > 1:
-                            address_check = True
+                            check_address = True
                         else:
                             raise OrderManagementException("Address not valid")
                     else:
@@ -72,7 +72,37 @@ class OrderManager:
         else:
             raise OrderManagementException("Address not valid, must be a string")
 
-        if order_type_check and address_check:
+        check_phone_number = False
+        if type(phone_number) == str:
+            if phone_number.isdigit():
+                if len(phone_number) == 9 or (len(phone_number) == 12 and phone_number[0:3] == "+34"):
+                    check_phone_number = True
+                elif len(phone_number) > 9:
+                    raise OrderManagementException("Phone number not valid, must have less than 10 characters")
+                elif len(phone_number) < 9:
+                    raise OrderManagementException("Phone number not valid, must have more than 8 characters")
+                else:
+                    raise OrderManagementException("Phone number not valid, must have 9 characters")
+            else:
+                raise OrderManagementException("Phone number not valid, must be numeric")
+
+        if zip_code.isdigit():
+            if len(zip_code) == 5:
+                if int(zip_code) < 1000:
+                    raise OrderManagementException("Zip code not valid, must be greater or equal than 01000")
+                elif int(zip_code) > 53000:
+                    raise OrderManagementException("Zip code not valid, must be less than 53000")
+                check = True
+            elif len(zip_code) > 5:
+                raise OrderManagementException("Zip code not valid, must have less than 6 digits")
+            elif len(zip_code) < 5:
+                raise OrderManagementException("Zip code not valid, must have more than 4 digits")
+        else:
+            raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
+
+
+
+        if check:
             if self.validate_ean13(product_id):
                 my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
 
