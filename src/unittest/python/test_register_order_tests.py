@@ -76,7 +76,7 @@ class MyTestCase(unittest.TestCase):
                                                     zip_code="28005")
             self.assertEqual(cm.exception.message, "Product Id not valid, id too long")
 
-    @freeze_time("2023-03-08") #1678237200
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_V_6(self):
         """
         ORDER_TYPE VALID
@@ -89,7 +89,7 @@ class MyTestCase(unittest.TestCase):
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
-    @freeze_time("2023-03-08") #1678237200
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_V_7(self):
         """
         ORDER_TYPE VALID
@@ -101,9 +101,8 @@ class MyTestCase(unittest.TestCase):
                                                 phone_number="654314159",
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "85472b176bfa29087aeb991f80385f6c")
-        #self.assertEqual(cm.exception.message, "e9991eb059752058bb9dfe8ee1e321c8")
 
-    @freeze_time("2023-03-08") #1678237200
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_NV_8(self):
         """
         ORDER_TYPE NOT UPPER_CASE
@@ -111,13 +110,13 @@ class MyTestCase(unittest.TestCase):
         my_manager = OrderManager()
         with self.assertRaises(OrderManagementException) as cm:
             my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                    order_type="premiums",
+                                                    order_type="premium",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
             self.assertEqual(cm.exception.message, "Order type not valid, must be REGULAR or PREMIUM")
 
-    @freeze_time("2023-03-08") #1678237200
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_NV_9(self):
         """
         Order_ID not a string
@@ -131,10 +130,10 @@ class MyTestCase(unittest.TestCase):
                                                     zip_code="28005")
             self.assertEqual(cm.exception.message, "Type of the order_type is not valid, must be a STRING")
 
-    @freeze_time("2023-03-08") #1678237200
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_V_10(self):
         """
-        Addres Correct
+        Address Correct
         """
         my_manager = OrderManager()
         my_order_id = my_manager.register_order(product_id="8421691423220",
@@ -144,7 +143,7 @@ class MyTestCase(unittest.TestCase):
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
-    @freeze_time("2023-03-08") #1678237200
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_V_11(self):
         """
         Address has two spaces
@@ -157,7 +156,7 @@ class MyTestCase(unittest.TestCase):
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
-    @freeze_time("2023-03-08") #1678230000
+    @freeze_time("2023-03-08") #1678233600
     def test_CE_NV_12(self):
         """
         Address valid, contains only one space
@@ -170,7 +169,7 @@ class MyTestCase(unittest.TestCase):
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "f35f1b805782b06cfa6d7808dcc63fde")
 
-    @freeze_time("2023-03-08") #1678230000 C/LISBOA4MADRIDSPAIN
+    @freeze_time("2023-03-08") #1678233600 C/LISBOA4MADRIDSPAIN
     def test_CE_NV_13(self):
         """
         Address has no spaces
@@ -378,6 +377,60 @@ class MyTestCase(unittest.TestCase):
         print(my_order_id)
         self.assertEqual(my_order_id, "63b84176d87cb5bf8bd868b5ae9db1e6")
 
+
+
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_EXTRA1(self):
+        """
+        ZIP_CODE exactly 01000
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="01000")
+        self.assertEqual(my_order_id, "63b84176d87cb5bf8bd868b5ae9db1e6")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_EXTRA2(self):
+        """
+        ZIP_CODE exactly 52999
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="52999")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_EXTRA3(self):
+        """
+        ZIP_CODE exactly 01001
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="01001")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_EXTRA4(self):
+        """
+        ZIP_CODE exactly 52998
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="52998")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
 if __name__ == '__main__':
     unittest.main()
