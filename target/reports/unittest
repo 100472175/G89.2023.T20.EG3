@@ -1,10 +1,43 @@
 
 Running tests...
 ----------------------------------------------------------------------
-.
+...............F...........
+======================================================================
+FAIL [0.003s]: test_CE_NV_EXTRA1 (test_register_order_tests.MyTestCase.test_CE_NV_EXTRA1)
+ZIP_CODE exactly 01000
 ----------------------------------------------------------------------
-Ran 1 test in 0.033s
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
+    self._callTestMethod(testMethod)
+    ^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 579, in _callTestMethod
+    if method() is not None:
+    ^^^^^^^^^^^^^^^^^
+  File "/Users/edu/PycharmProjects/G89.2023.T20.EG3/lib/python3.11/site-packages/freezegun/api.py", line 809, in wrapper
+    result = func(*args, **kwargs)
+    ^^^^^^^^^^^^^^^^^
+  File "/Users/edu/PycharmProjects/G89.2023.T20.EG3/src/unittest/python/test_register_order_tests.py", line 379, in test_CE_NV_EXTRA1
+    self.assertEqual(my_order_id, "63b84176d87cb5bf8bd868b5ae9db1e6")
+    ^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 873, in assertEqual
+    assertion_func(first, second, msg=msg)
+    ^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 1253, in assertMultiLineEqual
+    self.fail(self._formatMessage(msg, standardMsg))
+    ^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 703, in fail
+    raise self.failureException(msg)
+    ^^^^^^^^^^^^^^^^^
+AssertionError: 'e01521684a7f9535e9fa098a2b86565f' != '63b84176d87cb5bf8bd868b5ae9db1e6'
+- e01521684a7f9535e9fa098a2b86565f
++ 63b84176d87cb5bf8bd868b5ae9db1e6
 
-OK
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.138s
+
+FAILED (failures=1)
 
 Generating XML reports...

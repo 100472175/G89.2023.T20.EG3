@@ -38,15 +38,11 @@ class OrderManager:
         else:
             raise OrderManagementException("Product Id not valid, invalid EAN13 code")
 
-
-    def register_order(self, product_id, order_type, address, phone_number, zip_code):
-        # Returns a string representing AM-FR-01-O1
-        # On errors, returns a VaccineManagementException according to AM-FR-01-O2
-        check_type = False
-
+    @staticmethod
+    def validate_order_type(order_type):
         if type(order_type) == str:
             if (order_type == "REGULAR" or order_type == "PREMIUM"):
-                check_type = True
+                return True
             else:
                 if order_type.upper() != order_type:
                     raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
@@ -54,14 +50,15 @@ class OrderManager:
         else:
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
 
-        check_address = False
+    @staticmethod
+    def validate_address(address):
         if type(address) == str:
             if len(address) <= 100:
                 if len(address) > 20:
                     if " " in address:
                         addres_list = address.split(" ")
                         if len(addres_list) > 1:
-                            check_address = True
+                            return True
                         else:
                             raise OrderManagementException("Address not valid")
                     else:
@@ -73,11 +70,12 @@ class OrderManager:
         else:
             raise OrderManagementException("Address not valid, must be a string")
 
-        check_phone_number = False
+    @staticmethod
+    def validate_phone_number(phone_number):
         if type(phone_number) == str:
             if phone_number.isdigit():
-                if len(phone_number) == 9 or (len(phone_number) == 12 and phone_number[0:3] == "+34"):
-                    check_phone_number = True
+                if len(phone_number) == 9:
+                    return True
                 elif len(phone_number) > 9:
                     raise OrderManagementException("Phone number not valid, must have less than 10 characters")
                 elif len(phone_number) < 9:
@@ -86,19 +84,21 @@ class OrderManager:
                     raise OrderManagementException("Phone number not valid, must have 9 characters")
             elif len(phone_number) == 12 and phone_number[0:3] == "+34":
                 if phone_number[3:].isdigit():
-                    check_phone_number = True
+                    return True
                 else:
                     raise OrderManagementException("Phone number not valid, must be numeric")
             else:
                 raise OrderManagementException("Phone number not valid, must be numeric")
 
+    @staticmethod
+    def validate_zip_code(zip_code):
         if zip_code.isdigit():
             if len(zip_code) == 5:
                 if int(zip_code) < 1000:
                     raise OrderManagementException("Zip code not valid, must be greater or equal than 01000")
-                elif int(zip_code) > 53000:
+                elif int(zip_code) >= 53000:
                     raise OrderManagementException("Zip code not valid, must be less than 53000")
-                check = True
+                return True
             elif len(zip_code) > 5:
                 raise OrderManagementException("Zip code not valid, must have less than 6 digits")
             elif len(zip_code) < 5:
@@ -106,11 +106,13 @@ class OrderManager:
         else:
             raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
 
-
-
-        if check:
-            if self.validate_ean13(product_id):
-                my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+    def register_order(self, product_id, order_type, address, phone_number, zip_code):
+        # Returns a string representing AM-FR-01-O1
+        # On errors, returns a VaccineManagementException according to AM-FR-01-O2
+        if self.validate_order_type(order_type) and self.validate_address(address):
+            if self.validate_phone_number(phone_number) and self.validate_zip_code(zip_code):
+                if self.validate_ean13(product_id):
+                    my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
 
         # if everything is ok, it will save into the file
         # my_order.save_order()

@@ -1,5 +1,10 @@
 {
   "errors": [],
-  "failures": [],
-  "tests-run": 1
+  "failures": [
+    {
+      "test": "test_register_order_tests.MyTestCase.test_CE_NV_EXTRA1",
+      "traceback": "Traceback (most recent call last):\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 57, in testPartExecutor\n    yield\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 623, in run\n    self._callTestMethod(testMethod)\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 579, in _callTestMethod\n    if method() is not None:\n    ^^^^^^^^^^^^^^^^^\n  File \"/Users/edu/PycharmProjects/G89.2023.T20.EG3/lib/python3.11/site-packages/freezegun/api.py\", line 809, in wrapper\n    result = func(*args, **kwargs)\n    ^^^^^^^^^^^^^^^^^\n  File \"/Users/edu/PycharmProjects/G89.2023.T20.EG3/src/unittest/python/test_register_order_tests.py\", line 379, in test_CE_NV_EXTRA1\n    self.assertEqual(my_order_id, \"63b84176d87cb5bf8bd868b5ae9db1e6\")\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 873, in assertEqual\n    assertion_func(first, second, msg=msg)\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1253, in assertMultiLineEqual\n    self.fail(self._formatMessage(msg, standardMsg))\n    ^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 703, in fail\n    raise self.failureException(msg)\n    ^^^^^^^^^^^^^^^^^\nAssertionError: 'e01521684a7f9535e9fa098a2b86565f' != '63b84176d87cb5bf8bd868b5ae9db1e6'\n- e01521684a7f9535e9fa098a2b86565f\n+ 63b84176d87cb5bf8bd868b5ae9db1e6\n\n"
+    }
+  ],
+  "tests-run": 27
 }

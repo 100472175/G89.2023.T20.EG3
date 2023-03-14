@@ -78,6 +78,9 @@ class OrderRequest:
     def order_id(self):
         """Returns the md5 signature"""
         print(self.__str__())
+        print(self.__str__().encode())
+        print (hashlib.md5(self.__str__().encode()))
+        print(hashlib.md5(self.__str__().encode()).hexdigest())
         return hashlib.md5(self.__str__().encode()).hexdigest()
 
     @property
