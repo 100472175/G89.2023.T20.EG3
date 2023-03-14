@@ -266,6 +266,7 @@ class MyTestCase(unittest.TestCase):
                                                 phone_number="+34654314159",
                                                 zip_code="28005")
 
+
     @freeze_time("2023-03-08")
     def test_CE_NV_20(self):
         """
@@ -304,10 +305,9 @@ class MyTestCase(unittest.TestCase):
         my_order_id = my_manager.register_order(product_id="8421691423220",
                                                 order_type="REGULAR",
                                                 address="C/LISBOA,4, MADRID, SPAIN",
-                                                phone_number="694206942",
+                                                phone_number="654314159",
                                                 zip_code="28005")
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
-
 
     @freeze_time("2023-03-08")
     def test_CE_V_23(self):
@@ -363,6 +363,21 @@ class MyTestCase(unittest.TestCase):
                                                     phone_number="654314159",
                                                     zip_code="280055")
             self.assertEqual(cm.exception.message, "ZIP_CODE not valid, must have less than 6 characters")
+
+    @freeze_time("2023-03-08")
+    def test_CE_NV_EXTRA1(self):
+        """
+        ZIP_CODE exactly 01000
+        """
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="01000")
+        print(my_order_id)
+        self.assertEqual(my_order_id, "63b84176d87cb5bf8bd868b5ae9db1e6")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -43,6 +43,7 @@ class OrderManager:
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
         check_type = False
+
         if type(order_type) == str:
             if (order_type == "REGULAR" or order_type == "PREMIUM"):
                 check_type = True
@@ -83,6 +84,11 @@ class OrderManager:
                     raise OrderManagementException("Phone number not valid, must have more than 8 characters")
                 else:
                     raise OrderManagementException("Phone number not valid, must have 9 characters")
+            elif len(phone_number) == 12 and phone_number[0:3] == "+34":
+                if phone_number[3:].isdigit():
+                    check_phone_number = True
+                else:
+                    raise OrderManagementException("Phone number not valid, must be numeric")
             else:
                 raise OrderManagementException("Phone number not valid, must be numeric")
 
