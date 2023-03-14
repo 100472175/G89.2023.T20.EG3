@@ -1,8 +1,10 @@
 """class for testing the regsiter_order method"""
+import os.path
 import unittest
 from uc3m_logistics import OrderManager
 from uc3m_logistics import OrderManagementException
 from freezegun import freeze_time
+from pathlib import Path
 
 
 class MyTestCase(unittest.TestCase):
@@ -499,15 +501,32 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(my_order_id, "149965baa3bd537a24a8357d9713304c")
 
 
+    @freeze_time("2023-03-08")
+    def test_VE_V_37(self):
+        # Este Path es un problema porq pilla las back slash y sino no pilla el archivo (archivo de prueba porque no se cual hay q abrir)
+        JSON_FILES_PATH = str(Path.home()) + "G89.2023.T20.EG3\target\reports"
+        file_store = JSON_FILES_PATH + "GE3_2023_coverage.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+        my_manager = OrderManager()
+        my_order_id = my_manager.register_order(product_id="8421691423220",
+                                                order_type="REGULAR",
+                                                address="C/LISBOA,4, MADRID, SPAIN",
+                                                phone_number="654314159",
+                                                zip_code="28005")
+        self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
+#   try:
+        with (open(file_store, "r", encoding= "UTF-W", newline="")) as file:
+            data_list = json.load(file)
+            found = False
+            for item in data_list:
+                if item["_OrderRequest__order_id"] == "9bdbf4d0c007547a39ee10b4287b7dc1":
+                    found = True
+            self.assertTrue(found)
+#   except FileNotFoundError as ex:
+#       raise OrderManagementException("Wromg file or path") from ex
+
+
 
 if __name__ == '__main__':
     unittest.main()
-
-
-#       with (open(file_store, "r", encoding= "UTF-W", newline="")) as file:
-#           data_list = json.load(file)
-#       found = False
-#       for item in data_list:
-#           if item["_OrderRequest__order_id"] == "9bdbf4d0c007547a39ee10b4287b7dc1":
-#               found = True
-#       self.assertTrue(found)
