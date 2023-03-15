@@ -35,7 +35,7 @@ class OrderManager:
         pass
 
     @staticmethod
-    def validate_ean13(ean13):
+    def validate_ean13(ean13: str):
         """
                 This function validates the EAN13 code.
                 :param eAn13:
@@ -49,10 +49,6 @@ class OrderManager:
         elif ean13.isdigit() is False:
             raise OrderManagementException("Product Id not valid, id must be numeric")
 
-        """
-        elif str(EAN13(ean13).calculate_checksum()) == ean13[-1]:
-            raise OrderManagementException("Product Id not valid, invalid EAN13 code")
-        """
         CheckSum: int = 0
         for i in range(len(ean13) - 1):
             CurrentNumber = int(ean13[i])
@@ -66,22 +62,14 @@ class OrderManager:
         else:
             raise OrderManagementException("Product Id not valid, invalid EAN13 code")
 
-    @staticmethod
-    def validate_ean13_2(ean13_code):
-        if not isinstance(ean13_code, str):
-            raise OrderManagementException("Product Id not valid, id must be a string")
-        if len(ean13_code) != 13:
-            raise OrderManagementException("Product Id not valid, id must have 13 characters")
-        elif ean13_code.isdigit() is False:
-            raise OrderManagementException("Product Id not valid, id must be a string")
-        elif str(EAN13(ean13_code).calculate_checksum()) == ean13_code[-1]:
-            raise OrderManagementException("Product Id not valid, invalid EAN13 code")
 
 
 
     @staticmethod
-    def validate_order_type(order_type):
-        if type(order_type) == str:
+    def validate_order_type(order_type: str):
+        if not isinstance(order_type, str):
+            raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+        elif type(order_type) == str:
             if (order_type == "REGULAR" or order_type == "PREMIUM"):
                 return True
             else:
@@ -92,7 +80,9 @@ class OrderManager:
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
 
     @staticmethod
-    def validate_address(address):
+    def validate_address(address: str):
+        if not isinstance(address, str):
+            raise OrderManagementException("Address not valid, must be a string")
         if type(address) == str:
             if len(address) <= 100:
                 if len(address) > 20:
@@ -112,7 +102,9 @@ class OrderManager:
             raise OrderManagementException("Address not valid, must be a string")
 
     @staticmethod
-    def validate_phone_number(phone_number):
+    def validate_phone_number(phone_number: str):
+        if not isinstance(phone_number, str):
+            raise OrderManagementException("Phone number not valid, must be numeric ")
         if type(phone_number) == str:
             if phone_number.isdigit():
                 if len(phone_number) == 9:
@@ -132,7 +124,7 @@ class OrderManager:
                 raise OrderManagementException("Phone number not valid, must be numeric")
 
     @staticmethod
-    def validate_zip_code(zip_code):
+    def validate_zip_code(zip_code: str):
         if zip_code.isdigit():
             if len(zip_code) == 5:
                 if int(zip_code) < 1000:

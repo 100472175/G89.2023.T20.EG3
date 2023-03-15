@@ -25,17 +25,19 @@ class MyTestCase(unittest.TestCase):
         with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
 
-        self.__order_manager = OrderManager()
+        self.__my_manager = OrderManager()
+        self._product_id = "8421691423220"
+        self._order_type = "REGULAR"
+        self._address = "C/LISBOA,4, MADRID, SPAIN"
+        self._phone_number = "654314159"
+        self._zip_code = "28005"
 
     @freeze_time("2023-03-08") #1678237200
     def test_CE_V_1(self):
         """ID: CE_V_1"""
-        my_manager = OrderManager()
-        my_order_id = my_manager.register_order(product_id="8421691423220",
-                                                order_type="REGULAR",
-                                                address="C/LISBOA,4, MADRID, SPAIN",
-                                                phone_number="654314159",
-                                                zip_code="28005")
+
+        my_order_id = self.__my_manager.register_order(self._product_id, self._order_type, self._address,
+                                                       self._phone_number, self._zip_code)
 
         self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
 
