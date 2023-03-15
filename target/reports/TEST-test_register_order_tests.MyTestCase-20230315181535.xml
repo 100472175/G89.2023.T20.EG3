@@ -1,12 +1,7 @@
-
-Running tests...
-----------------------------------------------------------------------
-EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-======================================================================
-ERROR [0.021s]: test_CE_NV_12 (test_register_order_tests.MyTestCase.test_CE_NV_12)
-Address valid, contains only one space
-----------------------------------------------------------------------
-Traceback (most recent call last):
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_register_order_tests.MyTestCase-20230315181535" tests="36" file="test_register_order_tests.py" time="0.121" timestamp="2023-03-15T18:15:35" failures="0" errors="36" skipped="0">
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_12" time="0.021" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -25,12 +20,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.004s]: test_CE_NV_13 (test_register_order_tests.MyTestCase.test_CE_NV_13)
-Address has no spaces
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_13" time="0.004" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -49,12 +42,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_14 (test_register_order_tests.MyTestCase.test_CE_NV_14)
-Address type is not valid (not a string)
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_14" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -73,12 +64,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_15 (test_register_order_tests.MyTestCase.test_CE_NV_15)
-Address length is too small
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_15" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -97,12 +86,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_18 (test_register_order_tests.MyTestCase.test_CE_NV_18)
-Type of phone number is not valid
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_18" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -121,12 +108,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_2 (test_register_order_tests.MyTestCase.test_CE_NV_2)
-product_id is not an EAN number is not valid, as it is not numeric
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_2" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -145,12 +130,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_20 (test_register_order_tests.MyTestCase.test_CE_NV_20)
-Length of phone number is too small
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_20" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -169,12 +152,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_21 (test_register_order_tests.MyTestCase.test_CE_NV_21)
-Phone number too long
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_21" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -193,12 +174,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_24 (test_register_order_tests.MyTestCase.test_CE_NV_24)
-ZIP_CODE too low (less than 01000)
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_24" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -217,12 +196,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_25 (test_register_order_tests.MyTestCase.test_CE_NV_25)
-ZIP_CODE too high (greater than 52999)
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_25" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -241,12 +218,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.001s]: test_CE_NV_3 (test_register_order_tests.MyTestCase.test_CE_NV_3)
-product_id is not an EAN number is not valid, as it is not numeric
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_3" time="0.001" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -262,12 +237,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_4 (test_register_order_tests.MyTestCase.test_CE_NV_4)
-product_id is not an EAN number is not valid, as it is too short
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_4" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -286,12 +259,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_5 (test_register_order_tests.MyTestCase.test_CE_NV_5)
-product_id is not an EAN number is not valid, as it is too long
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_5" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -310,12 +281,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_8 (test_register_order_tests.MyTestCase.test_CE_NV_8)
-ORDER_TYPE NOT UPPER_CASE
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_8" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -334,12 +303,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_NV_9 (test_register_order_tests.MyTestCase.test_CE_NV_9)
-Order_ID not a string
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_NV_9" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -358,12 +325,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_1 (test_register_order_tests.MyTestCase.test_CE_V_1)
-Everything is correct
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_1" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -382,12 +347,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_10 (test_register_order_tests.MyTestCase.test_CE_V_10)
-Address Correct
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_10" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -406,12 +369,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_11 (test_register_order_tests.MyTestCase.test_CE_V_11)
-Address has two spaces
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_11" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -430,12 +391,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_17 (test_register_order_tests.MyTestCase.test_CE_V_17)
-Valid Phone number
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_17" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -454,12 +413,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_19 (test_register_order_tests.MyTestCase.test_CE_V_19)
-Type of phone number is valid (+34 + format)
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_19" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -478,12 +435,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_23 (test_register_order_tests.MyTestCase.test_CE_V_23)
-Valid ZIP_CODE
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_23" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -502,12 +457,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_29 (test_register_order_tests.MyTestCase.test_CE_V_29)
-ZIP_CODE exactly 01000
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_29" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -526,12 +479,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_30 (test_register_order_tests.MyTestCase.test_CE_V_30)
-ZIP_CODE exactly 52999
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_30" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -550,12 +501,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_31 (test_register_order_tests.MyTestCase.test_CE_V_31)
-ZIP_CODE exactly 01001
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_31" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -574,12 +523,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_32 (test_register_order_tests.MyTestCase.test_CE_V_32)
-ZIP_CODE exactly 52998
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_32" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -598,12 +545,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_33 (test_register_order_tests.MyTestCase.test_CE_V_33)
-ADDRESS LENGTH MAX - 1
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_33" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -622,12 +567,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_34 (test_register_order_tests.MyTestCase.test_CE_V_34)
-ADDRES LENGTH MIN + 1 (21)
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_34" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -646,12 +589,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_6 (test_register_order_tests.MyTestCase.test_CE_V_6)
-ORDER_TYPE VALID
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_6" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -670,12 +611,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_CE_V_7 (test_register_order_tests.MyTestCase.test_CE_V_7)
-ORDER_TYPE VALID
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_CE_V_7" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -694,12 +633,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_LV_NV_16 (test_register_order_tests.MyTestCase.test_LV_NV_16)
-Address length is too small
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_LV_NV_16" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -718,12 +655,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_LV_NV_26 (test_register_order_tests.MyTestCase.test_LV_NV_26)
-ZIP_CODE too long
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_LV_NV_26" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -742,12 +677,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_LV_NV_27 (test_register_order_tests.MyTestCase.test_LV_NV_27)
-ZIP_CODE too short
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_LV_NV_27" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -766,12 +699,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_LV_NV_28 (test_register_order_tests.MyTestCase.test_LV_NV_28)
-ZIP_CODE NON INTEGER VALUE
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_LV_NV_28" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -790,12 +721,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_VE_V_36 (test_register_order_tests.MyTestCase.test_VE_V_36)
-ADDRESS LENGTH MIN
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_VE_V_36" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -814,12 +743,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.003s]: test_VL_V_22 (test_register_order_tests.MyTestCase.test_VL_V_22)
-PHONE_NUMBER EXACT SIZE
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_VL_V_22" time="0.003" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -838,12 +765,10 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-======================================================================
-ERROR [0.002s]: test_VL_V_35 (test_register_order_tests.MyTestCase.test_VL_V_35)
-ADDRESS LENGTH MAX
-----------------------------------------------------------------------
-Traceback (most recent call last):
+]]></error>
+	</testcase>
+	<testcase classname="test_register_order_tests.MyTestCase" name="test_VL_V_35" time="0.002" timestamp="2023-03-15T18:15:35">
+		<error type="AttributeError" message="module 'posixpath' has no attribute 'direname'"><![CDATA[Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
     yield
   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
@@ -862,10 +787,6 @@ Traceback (most recent call last):
     current_path = os.path.direname(__file__)
     ^^^^^^^^^^^^^^^^^
 AttributeError: module 'posixpath' has no attribute 'direname'
-
-----------------------------------------------------------------------
-Ran 36 tests in 0.227s
-
-FAILED (errors=36)
-
-Generating XML reports...
+]]></error>
+	</testcase>
+</testsuite>

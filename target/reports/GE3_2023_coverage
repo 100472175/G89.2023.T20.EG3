@@ -2,9 +2,9 @@ Name                                           Stmts   Miss Branch BrPart  Cover
 --------------------------------------------------------------------------------
 __init__.py                                        0      0      0      0   100%
 uc3m_logistics/__init__.py                         4      0      0      0   100%
-uc3m_logistics/order_management_exception.py      10      4      4      0    71%
-uc3m_logistics/order_manager.py                   20      9      6      0    50%
-uc3m_logistics/order_request.py                   47     10     22      0    86%
+uc3m_logistics/order_management_exception.py      12      1      4      0    94%
+uc3m_logistics/order_manager.py                   85      5     70      9    91%
+uc3m_logistics/order_request.py                   51     10     22      0    86%
 uc3m_logistics/order_shipping.py                  47     22     22      0    65%
 --------------------------------------------------------------------------------
-TOTAL                                            128     45     54      0    72%
+TOTAL                                            199     38    118      9    85%

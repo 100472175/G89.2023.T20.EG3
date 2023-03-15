@@ -1,20 +1,30 @@
 """Module """
 import math
 from .order_request import OrderRequest
+from .order_management_exception import OrderManagementException
+
 
 class OrderManager:
     """Class for providing the methods for managing the orders"""
 
     def __init__(self):
         pass
+
     @staticmethod
-    def validate_ean13(self, ean13):
+    def validate_ean13(ean13):
         """
-        This function validates the EAN13 code.
-        :param eAn13:
-        :return:
+                This function validates the EAN13 code.
+                :param eAn13:
+                :return:
         """
-        CheckSum = 0
+        if len(ean13) < 13:
+            raise OrderManagementException("Product Id not valid, id too short")
+        elif len(ean13) > 13:
+            raise OrderManagementException("Product Id not valid, id too long")
+        elif ean13.isdigit() is False:
+            raise OrderManagementException("Product Id not valid, id must be numeric")
+
+        CheckSum: int = 0
         for i in range(len(ean13) - 1):
             CurrentNumber = int(ean13[i])
             if i % 2 != 0:
@@ -22,17 +32,92 @@ class OrderManager:
             else:
                 CheckSum += CurrentNumber
         Difference = 10 * math.ceil(CheckSum / 10) - CheckSum
-        return int(ean13[-1]) == Difference
+        if int(ean13[-1]) == Difference :
+            return True
+        else:
+            raise OrderManagementException("Product Id not valid, invalid EAN13 code")
 
+    @staticmethod
+    def validate_order_type(order_type):
+        if type(order_type) == str:
+            if (order_type == "REGULAR" or order_type == "PREMIUM"):
+                return True
+            else:
+                if order_type.upper() != order_type:
+                    raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+        else:
+            raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
 
-    def register_order(self, product_id, order_type, address, phone_number, zip_code):
+    @staticmethod
+    def validate_address(address):
+        if type(address) == str:
+            if len(address) <= 100:
+                if len(address) > 20:
+                    if " " in address:
+                        addres_list = address.split(" ")
+                        if len(addres_list) > 1:
+                            return True
+                        else:
+                            raise OrderManagementException("Address not valid")
+                    else:
+                        raise OrderManagementException("Address not valid, must have a space")
+                else:
+                    raise OrderManagementException("Address not valid, must have more than 20 characters")
+            else:
+                raise OrderManagementException("Address not valid, must have less than 100 characters")
+        else:
+            raise OrderManagementException("Address not valid, must be a string")
+
+    @staticmethod
+    def validate_phone_number(phone_number):
+        if type(phone_number) == str:
+            if phone_number.isdigit():
+                if len(phone_number) == 9:
+                    return True
+                elif len(phone_number) > 9:
+                    raise OrderManagementException("Phone number not valid, must have less than 10 characters")
+                elif len(phone_number) < 9:
+                    raise OrderManagementException("Phone number not valid, must have more than 8 characters")
+                else:
+                    raise OrderManagementException("Phone number not valid, must have 9 characters")
+            elif len(phone_number) == 12 and phone_number[0:3] == "+34":
+                if phone_number[3:].isdigit():
+                    return True
+                else:
+                    raise OrderManagementException("Phone number not valid, must be numeric")
+            else:
+                raise OrderManagementException("Phone number not valid, must be numeric")
+
+    @staticmethod
+    def validate_zip_code(zip_code):
+        if zip_code.isdigit():
+            if len(zip_code) == 5:
+                if int(zip_code) < 1000:
+                    raise OrderManagementException("Zip code not valid, must be greater or equal than 01000")
+                elif int(zip_code) >= 53000:
+                    raise OrderManagementException("Zip code not valid, must be less than 53000")
+                return True
+            elif len(zip_code) > 5:
+                raise OrderManagementException("Zip code not valid, must have less than 6 digits")
+            elif len(zip_code) < 5:
+                raise OrderManagementException("Zip code not valid, must have more than 4 digits")
+        else:
+            raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
+
+    def register_order(self, product_id: str, order_type: str, address: str, phone_number: str, zip_code: str) -> str:
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
-        my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
-        #if everything is ok, it will save into the file
+        if self.validate_order_type(order_type) and self.validate_address(address):
+            if self.validate_phone_number(phone_number) and self.validate_zip_code(zip_code):
+                if self.validate_ean13(product_id):
+                    my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+                    # if everything is ok, it will save into the file
+
+
         return my_order.order_id
 
-    def send_product (self, input_file):
+    def send_product(self, input_file):
         pass
         # The input file is a string with the file path described in AM-FR-02-I1
         # Returns a String in hexadecimal which represents the tracking number (key that will be needed for AM-FR-02-O1 an AM-FR-02-02)

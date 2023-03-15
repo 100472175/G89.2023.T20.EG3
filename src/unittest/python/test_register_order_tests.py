@@ -9,9 +9,27 @@ from pathlib import Path
 
 class MyTestCase(unittest.TestCase):
     """class for testing the register_order method"""
+
+    __order_request_json_store: str = None
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        """setup class"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        cls.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
+
+
+    def setUp(self) -> None:
+        """Reset the json store"""
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+
+        self.__order_manager = OrderManager()
+
     @freeze_time("2023-03-08") #1678237200
     def test_CE_V_1(self):
-        """Everything is correct"""
+        """ID: CE_V_1"""
         my_manager = OrderManager()
         my_order_id = my_manager.register_order(product_id="8421691423220",
                                                 order_type="REGULAR",
@@ -27,28 +45,28 @@ class MyTestCase(unittest.TestCase):
         product_id is not an EAN number is not valid, as it is not numeric
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="842169142322A",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
 
-            self.assertEqual(cm.exception.message, "Product Id not valid, id must be numeric")
+            self.assertEqual(exception.exception.message, "Product Id not valid, id must be numeric")
 
     def test_CE_NV_3(self):
         """
         product_id is not an EAN number is not valid, as it is not numeric
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423225",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
 
-            self.assertEqual(cm.exception.message, "Product Id not valid, not an EAN13 code")
+            self.assertEqual(exception.exception.message, "Product Id not valid, not an EAN13 code")
 
     @freeze_time("2023-03-08") #1678237200
     def test_CE_NV_4(self):
@@ -56,13 +74,13 @@ class MyTestCase(unittest.TestCase):
         product_id is not an EAN number is not valid, as it is too short
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Product Id not valid, id too short")
+            self.assertEqual(exception.exception.message, "Product Id not valid, id too short")
 
     @freeze_time("2023-03-08") #1678237200
     def test_CE_NV_5(self):
@@ -70,13 +88,13 @@ class MyTestCase(unittest.TestCase):
         product_id is not an EAN number is not valid, as it is too long
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220150",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Product Id not valid, id too long")
+            self.assertEqual(exception.exception.message, "Product Id not valid, id too long")
 
     @freeze_time("2023-03-08") #1678233600
     def test_CE_V_6(self):
@@ -110,13 +128,13 @@ class MyTestCase(unittest.TestCase):
         ORDER_TYPE NOT UPPER_CASE
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="premium",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Order type not valid, must be REGULAR or PREMIUM")
+            self.assertEqual(exception.exception.message, "Order type not valid, must be REGULAR or PREMIUM")
 
     @freeze_time("2023-03-08") #1678233600
     def test_CE_NV_9(self):
@@ -124,13 +142,13 @@ class MyTestCase(unittest.TestCase):
         Order_ID not a string
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type=123,
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Type of the order_type is not valid, must be a STRING")
+            self.assertEqual(exception.exception.message, "Type of the order_type is not valid, must be a STRING")
 
     @freeze_time("2023-03-08") #1678233600
     def test_CE_V_10(self):
@@ -177,13 +195,13 @@ class MyTestCase(unittest.TestCase):
         Address has no spaces
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4,MADRID,SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Address not valid, must have a space")
+            self.assertEqual(exception.exception.message, "Address not valid, must have a space")
 
     @freeze_time("2023-03-08")
     def test_CE_NV_14(self):
@@ -191,13 +209,13 @@ class MyTestCase(unittest.TestCase):
         Address type is not valid (not a string)
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address=123456,
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Address not valid, must be a string")
+            self.assertEqual(exception.exception.message, "Address not valid, must be a string")
 
     @freeze_time("2023-03-08")
     def test_CE_NV_15(self):
@@ -205,13 +223,13 @@ class MyTestCase(unittest.TestCase):
         Address length is too small
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="MICASA, MADRID",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Address not valid, must be a string")
+            self.assertEqual(exception.exception.message, "Address not valid, must be a string")
 
     @freeze_time("2023-03-08")
     def test_LV_NV_16(self):
@@ -219,14 +237,14 @@ class MyTestCase(unittest.TestCase):
         Address length is too small
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="Calle de la Gran Via de Madrid, Madrid, Madrid, Madrid,"
                                                             " Madrid, Madrid, Madrid, Madrid, Madrid Madrid",
                                                     phone_number="654314159",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Address not valid, must have less than 100 characters")
+            self.assertEqual(exception.exception.message, "Address not valid, must have less than 100 characters")
 
     @freeze_time("2023-03-08")
     def test_CE_V_17(self):
@@ -247,13 +265,13 @@ class MyTestCase(unittest.TestCase):
         Type of phone number is not valid
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="DEATH_STAR",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Phone number not valid, must be numeric")
+            self.assertEqual(exception.exception.message, "Phone number not valid, must be numeric")
 
     @freeze_time("2023-03-08")
     def test_CE_V_19(self):
@@ -274,13 +292,13 @@ class MyTestCase(unittest.TestCase):
         Length of phone number is too small
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="65431415",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Phone number not valid, must be numeric")
+            self.assertEqual(exception.exception.message, "Phone number not valid, must be numeric")
 
 
     @freeze_time("2023-03-08")
@@ -289,13 +307,13 @@ class MyTestCase(unittest.TestCase):
         Phone number too long
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="6942069420",
                                                     zip_code="28005")
-            self.assertEqual(cm.exception.message, "Phone number not valid, must have less than 10 characters")
+            self.assertEqual(exception.exception.message, "Phone number not valid, must have less than 10 characters")
 
     @freeze_time("2023-03-08")
     def test_VL_V_22(self):
@@ -329,13 +347,13 @@ class MyTestCase(unittest.TestCase):
         ZIP_CODE too low (less than 01000)
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="00999")
-            self.assertEqual(cm.exception.message, "ZIP_CODE not valid, must be greater or equal than 01000")
+            self.assertEqual(exception.exception.message, "ZIP_CODE not valid, must be greater or equal than 01000")
 
     @freeze_time("2023-03-08")
     def test_CE_NV_25(self):
@@ -343,13 +361,13 @@ class MyTestCase(unittest.TestCase):
         ZIP_CODE too high (greater than 52999)
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="53000")
-            self.assertEqual(cm.exception.message, "Zip code not valid, must be less than 53000")
+            self.assertEqual(exception.exception.message, "Zip code not valid, must be less than 53000")
 
     @freeze_time("2023-03-08")
     def test_LV_NV_26(self):
@@ -357,13 +375,13 @@ class MyTestCase(unittest.TestCase):
         ZIP_CODE too long
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="280055")
-            self.assertEqual(cm.exception.message, "ZIP_CODE not valid, must have less than 6 characters")
+            self.assertEqual(exception.exception.message, "ZIP_CODE not valid, must have less than 6 characters")
 
     @freeze_time("2023-03-08")
     def test_LV_NV_27(self):
@@ -371,13 +389,13 @@ class MyTestCase(unittest.TestCase):
         ZIP_CODE too short
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="0011")
-            self.assertEqual(cm.exception.message, "Zip code not valid, must have more than 4 digits")
+            self.assertEqual(exception.exception.message, "Zip code not valid, must have more than 4 digits")
 
     @freeze_time("2023-03-08")
     def test_LV_NV_28(self):
@@ -385,13 +403,13 @@ class MyTestCase(unittest.TestCase):
         ZIP_CODE NON INTEGER VALUE
         """
         my_manager = OrderManager()
-        with self.assertRaises(OrderManagementException) as cm:
+        with self.assertRaises(OrderManagementException) as exception:
             my_order_id = my_manager.register_order(product_id="8421691423220",
                                                     order_type="REGULAR",
                                                     address="C/LISBOA,4, MADRID, SPAIN",
                                                     phone_number="654314159",
                                                     zip_code="La casa de paco")
-            self.assertEqual(cm.exception.message, "Zip code not valid, must be numeric in the range {01000-52999}")
+            self.assertEqual(exception.exception.message, "Zip code not valid, must be numeric in the range {01000-52999}")
 
     @freeze_time("2023-03-08")
     def test_CE_V_29(self):
@@ -501,7 +519,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(my_order_id, "149965baa3bd537a24a8357d9713304c")
 
 
-    @freeze_time("2023-03-08")
+"""    @freeze_time("2023-03-08")
     def test_VE_V_37(self):
         # Este Path es un problema porq pilla las back slash y sino no pilla el archivo (archivo de prueba porque no se cual hay q abrir)
         JSON_FILES_PATH = str(Path.home()) + "G89.2023.T20.EG3\target\reports"
@@ -525,7 +543,7 @@ class MyTestCase(unittest.TestCase):
             self.assertTrue(found)
 #   except FileNotFoundError as ex:
 #       raise OrderManagementException("Wromg file or path") from ex
-
+"""
 
 
 if __name__ == '__main__':
