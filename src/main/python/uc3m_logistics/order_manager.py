@@ -125,6 +125,8 @@ class OrderManager:
 
     @staticmethod
     def validate_zip_code(zip_code: str):
+        if not isinstance(zip_code, str):
+            raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
         if zip_code.isdigit():
             if len(zip_code) == 5:
                 if int(zip_code) < 1000:
@@ -149,6 +151,7 @@ class OrderManager:
         self.validate_zip_code(zip_code)
         self.validate_ean13(product_id)
 
+        # This only returns the hash, does not do anything else
         my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
         # if everything is ok, it will save into the file
         try:
