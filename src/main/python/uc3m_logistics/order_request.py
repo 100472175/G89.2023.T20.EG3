@@ -37,17 +37,6 @@ class OrderRequest:
 
     @order_type.setter
     def order_type(self, value):
-        """
-        if type(value) == str:
-            if value == "REGULAR" or value == "PREMIUM":
-                self.__order_type = value
-            else:
-                if value.upper() != value:
-                    raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-        else:
-            raise OrderManagementException("Type of the value is not valid, must be a STRING")
-        """
         self.__order_type = value
 
 

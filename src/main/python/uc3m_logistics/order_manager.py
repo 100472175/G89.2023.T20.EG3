@@ -17,7 +17,7 @@ class OrderManager:
         self.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
         self.__order_shipping_json_store = os.path.join(current_path, store_path, "order_shipping.json")
         self.__order_delivery_json_store = os.path.join(current_path, store_path, "order_delivery.json")
-
+        # Create file if it doesnt exists and initialize it with an empty list
         try:
             if not os.path.exists(self.__order_request_json_store):
                 with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
@@ -32,7 +32,6 @@ class OrderManager:
         except FileNotFoundError as exception:
             raise OrderManagementException("Error creating the stores") from exception
 
-        pass
 
     @staticmethod
     def validate_ean13(ean13: str):
@@ -69,15 +68,12 @@ class OrderManager:
     def validate_order_type(order_type: str):
         if not isinstance(order_type, str):
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
-        elif type(order_type) == str:
-            if (order_type == "REGULAR" or order_type == "PREMIUM"):
-                return True
-            else:
-                if order_type.upper() != order_type:
-                    raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+        if (order_type == "REGULAR" or order_type == "PREMIUM"):
+            return True
         else:
-            raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+            if order_type.upper() != order_type:
+                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+            raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
 
     @staticmethod
     def validate_address(address: str):
