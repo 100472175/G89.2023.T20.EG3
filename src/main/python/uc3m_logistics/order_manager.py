@@ -17,7 +17,7 @@ class OrderManager:
         self.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
         self.__order_shipping_json_store = os.path.join(current_path, store_path, "order_shipping.json")
         self.__order_delivery_json_store = os.path.join(current_path, store_path, "order_delivery.json")
-        # Create file if it doesnt exists and initialize it with an empty list
+        # Create file if it doesn't exists and initialize it with an empty list
         try:
             if not os.path.exists(self.__order_request_json_store):
                 with open(self.__order_request_json_store, "w", encoding="utf-8") as file:

@@ -3,7 +3,7 @@ import hashlib
 import os.path
 import unittest
 import json
-from uc3m_logistics import OrderManager, OrderRequest,OrderManagementException
+from uc3m_logistics import OrderManager, OrderRequest, OrderManagementException
 from freezegun import freeze_time
 from pathlib import Path
 from datetime import datetime
@@ -40,6 +40,8 @@ class MyTestCase(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_EC_V_1(self) -> str:
         """ID: EC_V_1"""
+
+        self._product_id = "8421691423220"
         prev_json_items = 0
         with open(self.__order_request_json_store, "r", encoding="utf-8") as file:
             order_requests = json.load(file)
@@ -56,12 +58,12 @@ class MyTestCase(unittest.TestCase):
                 "order_type": self._order_type,
                 "delivery_address": self._address,
                 "phone_number": self._phone_number,
-                "zipcode": self._zip_code,
+                "zip_code": self._zip_code,
                 "time_stamp": datetime.strptime("2023-03-08", "%Y-%m-%d").timestamp()
             })
         order_id_check = OrderRequest(self._product_id, self._order_type, self._address,
                                       self._phone_number, self._zip_code)
-        self.assertEqual(my_order_id, order_id_check)
+        self.assertEqual(my_order_id, order_id_check.order_id)
 
     @freeze_time("2023-03-08") #1678233600.0
     def test_EC_NV_2(self):
@@ -78,7 +80,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(OrderManagementException) as exception:
             my_order_id = self.__my_manager.register_order(self._product_id, self._order_type, self._address,
                                                            self._phone_number, self._zip_code)
-        self.assertEqual(exception.exception.message, "Product Id not valid, id must be numeric")
+            self.assertEqual(exception.exception.message, "Product Id not valid, id must be numeric")
 
     def test_EC_NV_3(self):
         """

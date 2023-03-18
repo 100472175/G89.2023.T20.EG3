@@ -1,4 +1,5 @@
 """class for testing the regsiter_order method"""
+import hashlib
 import os.path
 import unittest
 import json
@@ -35,20 +36,6 @@ class MyTestCase(unittest.TestCase):
     def test_CE_V_1(self) -> str:
         """ID: CE_V_1"""
 
-        # Primera Parte
-        justnow = datetime.utcnow()
-        dictionary = {
-            "_OrderRequest__product_id": self._product_id,
-            "_OrderRequest__delivery_address": self._address,
-            "_OrderRequest__order_type": self._order_type,
-            "_OrderRequest__phone_number": self._phone_number,
-            "_OrderRequest__zip_code": self._zip_code,
-            "_OrderRequest__time_stamp": datetime.timestamp(justnow)
-        }
-        baseline = "OrderRequest:" + json.dumps(dictionary)
-        hashed_baseline = hashlib.md5(baseline.encode(encoding="utf-8")).hexdigest()
-
-        # Parte de Fichero
         prev_json_items = 0
         with open(self.__order_request_json_store, "r", encoding="utf-8") as file:
             order_requests = json.load(file)

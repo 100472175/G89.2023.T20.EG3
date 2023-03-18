@@ -37,17 +37,6 @@ class OrderRequest:
 
     @order_type.setter
     def order_type(self, value):
-        """
-        if type(value) == str:
-            if value == "REGULAR" or value == "PREMIUM":
-                self.__order_type = value
-            else:
-                if value.upper() != value:
-                    raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-        else:
-            raise OrderManagementException("Type of the value is not valid, must be a STRING")
-        """
         self.__order_type = value
 
 
@@ -77,13 +66,22 @@ class OrderRequest:
     @property
     def order_id(self):
         """Returns the md5 signature"""
-        print(self.__str__())
-        print(self.__str__().encode())
-        print (hashlib.md5(self.__str__().encode()))
-        print(hashlib.md5(self.__str__().encode()).hexdigest())
-        return hashlib.md5(self.__str__().encode()).hexdigest()
+
+        return hashlib.md5(self.__str__().encode(encoding="utf-8")).hexdigest()
 
     @property
     def zip_code(self):
         """Returns the patient's zip_code"""
         return self.__zip_code
+
+    def to_json(self):
+        """Returns the object as a JSON string"""
+        return {
+            "order_id": self.order_id,
+            "product_id": self.product_id,
+            "order_type": self.order_type,
+            "delivery_address": self.delivery_address,
+            "phone_number": self.phone_number,
+            "zip_code": self.zip_code,
+            "time_stamp": self.time_stamp,
+        }

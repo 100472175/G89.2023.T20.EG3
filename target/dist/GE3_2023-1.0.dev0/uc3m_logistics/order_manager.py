@@ -1,5 +1,7 @@
 """Module """
 import math
+import os
+import json
 from .order_request import OrderRequest
 from .order_management_exception import OrderManagementException
 
@@ -8,15 +10,37 @@ class OrderManager:
     """Class for providing the methods for managing the orders"""
 
     def __init__(self):
-        pass
+        #store_path = "C:\\Users\\josep\\Desktop\\UC3M\\2º\\2º Cuatrimestre\\Seguridad en Sistemas Informáticos\\Prácticas\\Práctica 2\\src\\main\\python\\uc3m_logistics\\orders.txt"
+        store_path = "../stores"
+        current_path = os.path.dirname(__file__)
+
+        self.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path, "order_shipping.json")
+        self.__order_delivery_json_store = os.path.join(current_path, store_path, "order_delivery.json")
+        # Create file if it doesn't exists and initialize it with an empty list
+        try:
+            if not os.path.exists(self.__order_request_json_store):
+                with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+                    file.write("[]")
+            if not os.path.exists(self.__order_shipping_json_store):
+                with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+                    file.write("[]")
+            if not os.path.exists(self.__order_delivery_json_store):
+                with open(self.__order_delivery_json_store, "w", encoding="utf-8") as file:
+                    file.write("[]")
+
+        except FileNotFoundError as exception:
+            raise OrderManagementException("Error creating the stores") from exception
+
 
     @staticmethod
-    def validate_ean13(ean13):
+    def validate_ean13(ean13: str):
         """
                 This function validates the EAN13 code.
                 :param eAn13:
-                :return:
         """
+        if not isinstance(ean13, str):
+            raise OrderManagementException("Product Id not valid, id must be a string")
         if len(ean13) < 13:
             raise OrderManagementException("Product Id not valid, id too short")
         elif len(ean13) > 13:
@@ -37,20 +61,24 @@ class OrderManager:
         else:
             raise OrderManagementException("Product Id not valid, invalid EAN13 code")
 
-    @staticmethod
-    def validate_order_type(order_type):
-        if type(order_type) == str:
-            if (order_type == "REGULAR" or order_type == "PREMIUM"):
-                return True
-            else:
-                if order_type.upper() != order_type:
-                    raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
-        else:
-            raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+
+
 
     @staticmethod
-    def validate_address(address):
+    def validate_order_type(order_type: str):
+        if not isinstance(order_type, str):
+            raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+        if (order_type == "REGULAR" or order_type == "PREMIUM"):
+            return True
+        else:
+            if order_type.upper() != order_type:
+                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+            raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+
+    @staticmethod
+    def validate_address(address: str):
+        if not isinstance(address, str):
+            raise OrderManagementException("Address not valid, must be a string")
         if type(address) == str:
             if len(address) <= 100:
                 if len(address) > 20:
@@ -70,7 +98,9 @@ class OrderManager:
             raise OrderManagementException("Address not valid, must be a string")
 
     @staticmethod
-    def validate_phone_number(phone_number):
+    def validate_phone_number(phone_number: str):
+        if not isinstance(phone_number, str):
+            raise OrderManagementException("Phone number not valid, must be numeric ")
         if type(phone_number) == str:
             if phone_number.isdigit():
                 if len(phone_number) == 9:
@@ -90,7 +120,9 @@ class OrderManager:
                 raise OrderManagementException("Phone number not valid, must be numeric")
 
     @staticmethod
-    def validate_zip_code(zip_code):
+    def validate_zip_code(zip_code: str):
+        if not isinstance(zip_code, str):
+            raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
         if zip_code.isdigit():
             if len(zip_code) == 5:
                 if int(zip_code) < 1000:
@@ -108,11 +140,24 @@ class OrderManager:
     def register_order(self, product_id: str, order_type: str, address: str, phone_number: str, zip_code: str) -> str:
         # Returns a string representing AM-FR-01-O1
         # On errors, returns a VaccineManagementException according to AM-FR-01-O2
-        if self.validate_order_type(order_type) and self.validate_address(address):
-            if self.validate_phone_number(phone_number) and self.validate_zip_code(zip_code):
-                if self.validate_ean13(product_id):
-                    my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
-                    # if everything is ok, it will save into the file
+
+        self.validate_order_type(order_type)
+        self.validate_address(address)
+        self.validate_phone_number(phone_number)
+        self.validate_zip_code(zip_code)
+        self.validate_ean13(product_id)
+
+        # This only returns the hash, does not do anything else
+        my_order = OrderRequest(product_id, order_type, address, phone_number, zip_code)
+        # if everything is ok, it will save into the file
+        try:
+            with open(self.__order_request_json_store, "r+", encoding="utf-8") as file:
+                data = json.load(file)
+                data.append(my_order.to_json())
+                file.seek(0)
+                json.dump(data, file, indent=4)
+        except FileNotFoundError as exception:
+            raise OrderManagementException("File not found") from exception
 
 
         return my_order.order_id
