@@ -213,6 +213,19 @@ class MyTestCase(unittest.TestCase):
                                                        self._phone_number, self._zip_code)
             self.assertEqual(exception.exception.message, "Order type not valid, must be REGULAR or PREMIUM")
 
+    @freeze_time("2023-03-08")  # 1678233600.0
+    def test_EC_NV_43(self):
+        """
+        ID: EC_NV_8
+        ORDER_TYPE NOT UPPER_CASE
+        """
+        self._order_type = "regular"
+
+        with self.assertRaises(OrderManagementException) as exception:
+            my_order_id = self.__my_manager.register_order(self._product_id, self._order_type, self._address,
+                                                           self._phone_number, self._zip_code)
+            self.assertEqual(exception.exception.message, "Order type not valid, must be REGULAR or PREMIUM")
+
     @freeze_time("2023-03-08") #1678233600.0
     def test_EC_NV_9(self):
         """

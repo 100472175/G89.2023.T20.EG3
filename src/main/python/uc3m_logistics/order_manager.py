@@ -163,6 +163,7 @@ class OrderManager:
         return my_order.order_id
 
     def send_product(self, input_file):
+        #re.fullmatch inestead of search
         pass
         # The input file is a string with the file path described in AM-FR-02-I1
         # Returns a String in hexadecimal which represents the tracking number (key that will be needed for AM-FR-02-O1 an AM-FR-02-02)
