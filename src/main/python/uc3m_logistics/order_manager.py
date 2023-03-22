@@ -164,7 +164,36 @@ class OrderManager:
 
     def send_product(self, input_file):
         #re.fullmatch inestead of search
-        pass
-        # The input file is a string with the file path described in AM-FR-02-I1
-        # Returns a String in hexadecimal which represents the tracking number (key that will be needed for AM-FR-02-O1 an AM-FR-02-02)
-        # In case of error, it returns an OrderManagementException described in AM-FR-02-O3
+        if order ==  hashlib.md5(json.dump({
+            "_OrderRequest_product_id": "1234567890123",
+            "_OrderRequest_order_type":"REGULAR",
+            "_OrderRequest_time_stamp":"",
+        }).encode(encoding="utf-8")).hexdigest():
+            pass
+
+    # The input file is a string with the file path described in AM-FR-02-I1
+    # Returns a String in hexadecimal which represents the tracking number (key that will be needed for AM-FR-02-O1 an AM-FR-02-02)
+    # In case of error, it returns an OrderManagementException described in AM-FR-02-O3
+
+    def Validate_Contents(self):
+        dictionary = {}
+        if "OrderId" not in dictionary:
+            raise OrderManagementException("Invalid file name: not order_request.json")
+    """
+        with open(self.__order_shipping_json_store,"r+",encoding="ut"):
+            data = json.load(file)
+            data.append(order_shipping.to_json())
+            file.seek(0)
+            json.dump(data,file,indent=4)
+        except Exception as exception:
+            raise OrderManagementException("Error writing Order request to file") from exception
+        return order_shipping.tracking_id
+    """
+
+    """
+        OTHER WAY
+        try: 
+            dictionary["OrderId"]
+        except:
+            raise OrderManagementException("Invalid file name: not order_request.json")
+        """
