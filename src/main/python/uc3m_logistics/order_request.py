@@ -78,10 +78,10 @@ class OrderRequest:
         """Returns the object as a JSON string"""
         return {
             "order_id": self.order_id,
-            "product_id": self.product_id,
-            "order_type": self.order_type,
-            "delivery_address": self.delivery_address,
-            "phone_number": self.phone_number,
-            "zip_code": self.zip_code,
-            "time_stamp": self.time_stamp,
+            "product_id": self.__product_id,
+            "order_type": self.__order_type,
+            "delivery_address": self.__delivery_address,
+            "phone_number": self.__phone_number,
+            "zip_code": self.__zip_code,
+            "time_stamp": self.__time_stamp,
         }

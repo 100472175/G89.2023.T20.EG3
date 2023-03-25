@@ -957,6 +957,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(my_order_id, order_id_check.order_id)
 
 
+    def iterate_json(self, json_file):
+        # for json that has a wrong format
+        with open(json_file, "r", encoding="utf-8") as file:
+            order_requests = json.load(file)
+            for item in order_requests:
+                print(item)
+
+
 
 if __name__ == '__main__':
     unittest.main()
