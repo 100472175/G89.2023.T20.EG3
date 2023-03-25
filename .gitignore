@@ -3,4 +3,8 @@ bin
 lib
 .idea
 env3.11
+__MACOSX
+__pycache__
+.DS_Store
+venv2
 
