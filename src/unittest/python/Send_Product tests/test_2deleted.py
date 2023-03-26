@@ -21,11 +21,21 @@ class MyTestCase(unittest.TestCase):
 
 
         with open(current_path, 'r', encoding="utf-8") as file:
-            data = json.read(file)
-            print(data)
+            data = file.read()
 
-          # add assertion here
+        try:
+            json_object = json.loads(data)
+            raise OrderManagementException("File is correct when it shouldn't be")
+        except:
+            data_test_1 = "{" + data
+            try:
+                json_object = json.loads(data_test_1)
+                self.assertTrue(json_object)
 
+            except FileNotFoundError:
+                raise OrderManagementException("File not found")
+            except json.JSONDecodeError as e:
+                raise OrderManagementException("The content of the variable is not valid JSON.")
 
 if __name__ == "__main__":
     current_path = os.path.dirname(__file__)
