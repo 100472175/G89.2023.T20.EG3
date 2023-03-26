@@ -223,13 +223,10 @@ class OrderManager:
         email = ""
 
         #Email check:
-        with open(input_file, "r+", encoding="utf-8") as file:
-            data_og_json = json.load(file)
-            data_og = str(data_og_json)
-            pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
-            match = re.finditer(pattern, data_og)
-            for m in match:
-                email = m.group(0)
+        pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
+        match = re.finditer(pattern, data_og)
+        for m in match:
+            email = m.group(0)
 
 
 
