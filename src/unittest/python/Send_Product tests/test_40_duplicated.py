@@ -24,8 +24,7 @@ class MyTestCase(unittest.TestCase):
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test = None
-
+            data_test = data[:72] + data[79:]
             try:
                 json_object = json.loads(data_test)
                 self.assertTrue(json_object)
