@@ -90,11 +90,10 @@ class MyTestCase(unittest.TestCase):
 
         # Generate an instance of the class OrderShipping
         # Email check:
-        pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
+        pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}'
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
-
         order_shipping = OrderShipping(saved["product_id"], saved["order_id"], email, saved["order_type"])
         # print tracking_code or signature string or tracking_code:
         tracking_code = order_shipping.tracking_code
@@ -108,7 +107,7 @@ class MyTestCase(unittest.TestCase):
                 json.dump(data, file, indent=4)
         except FileNotFoundError:
             raise OrderManagementException("Order file has not been found")
-        my_order_shipping = OrderShipping("e01521684a7f9535e9fa098a2b86565f","8421691423220","example@inf.uc3m.es","REGULAR")
+        my_order_shipping = OrderShipping("8421691423220","e01521684a7f9535e9fa098a2b86565f","example@inf.uc3m.es","REGULAR")
         our_tracking_code = my_order_shipping.tracking_code
         self.assertEqual(tracking_code,our_tracking_code)
 

@@ -17,14 +17,14 @@ class MyTestCase(unittest.TestCase):
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
         json_path = "main\JsonFiles"
-        current_path = os.path.join(current_path, json_path, "test_01_valid.json")
+        current_path = os.path.join(current_path, json_path, "test_02_deleted.json")
 
 
         with open(current_path, 'r', encoding="utf-8") as file:
-            data = json.load(file)
+            data = json.read(file)
             print(data)
 
-        self.assertEqual(True, True)  # add assertion here
+          # add assertion here
 
 
 if __name__ == "__main__":
