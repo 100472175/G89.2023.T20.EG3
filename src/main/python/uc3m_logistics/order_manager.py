@@ -4,14 +4,14 @@ import math
 import os
 import json
 import re
-from order_request import OrderRequest
-from order_management_exception import OrderManagementException
-from order_shipping import OrderShipping
+# from order_request import OrderRequest
+# from order_management_exception import OrderManagementException
+# from order_shipping import OrderShipping
 
 
-# from .order_request import OrderRequest
-# from .order_management_exception import OrderManagementException
-# from .order_shipping import OrderShipping
+from .order_request import OrderRequest
+from .order_management_exception import OrderManagementException
+from .order_shipping import OrderShipping
 
 
 class OrderManager:
@@ -170,34 +170,53 @@ class OrderManager:
         # In case of error, it returns an OrderManagementException described in AM-FR-02-O3
         # Get the order_id from the file
         order = None
-        with open(input_file, "r+", encoding="utf-8") as file:
-            data_og_json = json.load(file)
-            data_og = str(data_og_json)
-            pattern = r"[0-9a-f]{32}"
-            match = re.finditer(pattern, data_og)
-            for m in match:
-                order = m.group(0)
+        try:
+            with open(input_file, "r+", encoding="utf-8") as file:
+                data_og_json = json.load(file)
+                data_og = str(data_og_json)
+                pattern = r"[0-9a-f]{32}"
+                match = re.finditer(pattern, data_og)
+                for m in match:
+                    order = m.group(0)
+        except FileNotFoundError:
+            raise OrderManagementException("Input File not Found")
+        except json.decoder.JSONDecodeError:
+            raise OrderManagementException("Input file has not Json format")
 
 
 
         saved = None
         # Check the data has not been modified
-        with open(self.__order_request_json_store, "r+", encoding="utf-8") as file:
-            data = json.load(file)
-            data2 = str(data)
-            pattern = r"[0-9a-f]{32}"
-            match = re.finditer(pattern, data2)
-            for m in match:
-                if m.group(0) == order:
-                    order_hash = m.group(0)
-                    break
-
-            for i in data:
-                for j, k in i.items():
-                    if j == "order_id" and k == order_hash:
-                        saved = i
+        try:
+            with open(self.__order_request_json_store, "r+", encoding="utf-8") as file:
+                data = json.load(file)
+                data2 = str(data)
+                pattern = r"[0-9a-f]{32}"
+                match = re.finditer(pattern, data2)
+                for m in match:
+                    if m.group(0) == order:
+                        order_hash = m.group(0)
                         break
+
+                for i in data:
+                    for j, k in i.items():
+                        if j == "order_id" and k == order_hash:
+                            saved = i
+                            break
+        except FileNotFoundError:
+            raise OrderManagementException("Order_Request not Found")
+        except json.decoder.JSONDecodeError:
+            raise OrderManagementException("JSON has not the expected stucture")
+
         # print("hey", saved)
+        if not saved:
+            raise OrderManagementException("Data in Json has no valid values")
+
+        self.validate_order_type(saved["order_type"])
+        self.validate_address(saved["delivery_address"])
+        self.validate_phone_number(saved["phone_number"])
+        self.validate_zip_code(saved["zip_code"])
+        self.validate_ean13(saved["product_id"])
 
         checker = f'OrderRequest:{{"_OrderRequest__product_id": "{saved["product_id"]}", "_OrderRequest__delivery_address":' \
                   f' "{saved["delivery_address"]}", "_OrderRequest__order_type": "{saved["order_type"]}",' \
@@ -210,30 +229,16 @@ class OrderManager:
             raise OrderManagementException("The data has been modified")
 
         # Generate an instance of the class OrderShipping
-
-        # data_og = data_og
-
-        """patter_alg = r"[a-z0-9]{32}"
-        alg = re.findall(patter_alg, data_og)[0]
-        self.validate_alg(alg)
-
-        type = "UC3M"
-        """
-        order_id = checker
-        email = ""
-
         #Email check:
         pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
 
-
-
         order_shipping = OrderShipping(saved["product_id"], order_id, email, saved["order_type"])
         # print tracking_code or signature string or tracking_code:
         tracking_code = order_shipping.tracking_code
-
+        self.validate_tracking_code(tracking_code)
         # Save the order_shipping into the file
         try:
             with open(self.__order_shipping_json_store, "r+", encoding="utf-8") as file:
@@ -241,10 +246,17 @@ class OrderManager:
                 data.append(order_shipping.to_json())
                 file.seek(0)
                 json.dump(data, file, indent=4)
-        except FileNotFoundError as exception:
-            raise OrderManagementException("File not found") from exception
+        except FileNotFoundError:
+            raise OrderManagementException("Order file has not been found")
+
+        return tracking_code
 
 
+    def validate_tracking_code(self,sha256):
+        pattern = r'[a-f0-9]{64}'
+        match = re.fullmatch(pattern,sha256)
+        if not match:
+            raise OrderManagementException("Internal processing error")
 
 
     def Validate_Contents(self):
