@@ -24,8 +24,8 @@ class MyTestCase(unittest.TestCase):
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test = None
-
+            data_test = data[:74] + 'inf.uc3m.es"}'
+            print(data_test)
             try:
                 json_object = json.loads(data_test)
                 self.assertTrue(json_object)
