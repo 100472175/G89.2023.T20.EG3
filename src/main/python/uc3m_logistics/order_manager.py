@@ -1,16 +1,23 @@
 """Module """
+import hashlib
 import math
 import os
 import json
-from .order_request import OrderRequest
-from .order_management_exception import OrderManagementException
+import re
+from order_request import OrderRequest
+from order_management_exception import OrderManagementException
+from order_shipping import OrderShipping
+
+
+# from .order_request import OrderRequest
+# from .order_management_exception import OrderManagementException
+# from .order_shipping import OrderShipping
 
 
 class OrderManager:
     """Class for providing the methods for managing the orders"""
 
     def __init__(self):
-        #store_path = "C:\\Users\\josep\\Desktop\\UC3M\\2º\\2º Cuatrimestre\\Seguridad en Sistemas Informáticos\\Prácticas\\Práctica 2\\src\\main\\python\\uc3m_logistics\\orders.txt"
         store_path = "../stores"
         current_path = os.path.dirname(__file__)
 
@@ -31,7 +38,6 @@ class OrderManager:
 
         except FileNotFoundError as exception:
             raise OrderManagementException("Error creating the stores") from exception
-
 
     @staticmethod
     def validate_ean13(ean13: str):
@@ -56,13 +62,10 @@ class OrderManager:
             else:
                 CheckSum += CurrentNumber
         Difference = 10 * math.ceil(CheckSum / 10) - CheckSum
-        if int(ean13[-1]) == Difference :
+        if int(ean13[-1]) == Difference:
             return True
         else:
             raise OrderManagementException("Product Id not valid, invalid EAN13 code")
-
-
-
 
     @staticmethod
     def validate_order_type(order_type: str):
@@ -159,41 +162,119 @@ class OrderManager:
         except FileNotFoundError as exception:
             raise OrderManagementException("File not found") from exception
 
-
         return my_order.order_id
 
     def send_product(self, input_file):
-        #re.fullmatch inestead of search
-        if order ==  hashlib.md5(json.dump({
-            "_OrderRequest_product_id": "1234567890123",
-            "_OrderRequest_order_type":"REGULAR",
-            "_OrderRequest_time_stamp":"",
-        }).encode(encoding="utf-8")).hexdigest():
-            pass
+        # The input file is a string with the file path described in AM-FR-02-I1, OrderID and ContactEmail
+        # Returns a String in hexadecimal which represents the tracking number (key that will be needed for AM-FR-02-O1 an AM-FR-02-02)
+        # In case of error, it returns an OrderManagementException described in AM-FR-02-O3
+        # Get the order_id from the file
+        order = None
+        with open(input_file, "r+", encoding="utf-8") as file:
+            data_og_json = json.load(file)
+            data_og = str(data_og_json)
+            pattern = r"[0-9a-f]{32}"
+            match = re.finditer(pattern, data_og)
+            for m in match:
+                order = m.group(0)
 
-    # The input file is a string with the file path described in AM-FR-02-I1
-    # Returns a String in hexadecimal which represents the tracking number (key that will be needed for AM-FR-02-O1 an AM-FR-02-02)
-    # In case of error, it returns an OrderManagementException described in AM-FR-02-O3
+
+
+        saved = None
+        # Check the data has not been modified
+        with open(self.__order_request_json_store, "r+", encoding="utf-8") as file:
+            data = json.load(file)
+            data2 = str(data)
+            pattern = r"[0-9a-f]{32}"
+            match = re.finditer(pattern, data2)
+            for m in match:
+                if m.group(0) == order:
+                    order_hash = m.group(0)
+                    break
+
+            for i in data:
+                for j, k in i.items():
+                    if j == "order_id" and k == order_hash:
+                        saved = i
+                        break
+        # print("hey", saved)
+
+        checker = f'OrderRequest:{{"_OrderRequest__product_id": "{saved["product_id"]}", "_OrderRequest__delivery_address":' \
+                  f' "{saved["delivery_address"]}", "_OrderRequest__order_type": "{saved["order_type"]}",' \
+                  f' "_OrderRequest__phone_number": "{saved["phone_number"]}", ' \
+                  f'"_OrderRequest__zip_code": "{saved["zip_code"]}", "_OrderRequest__time_stamp": {saved["time_stamp"]}}}'
+        # print(a)
+        checker = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
+        # print(a)
+        if checker != order:
+            raise OrderManagementException("The data has been modified")
+
+        # Generate an instance of the class OrderShipping
+
+        # data_og = data_og
+
+        """patter_alg = r"[a-z0-9]{32}"
+        alg = re.findall(patter_alg, data_og)[0]
+        self.validate_alg(alg)
+
+        type = "UC3M"
+        """
+        order_id = checker
+        email = ""
+
+        #Email check:
+        with open(input_file, "r+", encoding="utf-8") as file:
+            data_og_json = json.load(file)
+            data_og = str(data_og_json)
+            pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
+            match = re.finditer(pattern, data_og)
+            for m in match:
+                email = m.group(0)
+
+
+
+        order_shipping = OrderShipping(saved["product_id"], order_id, email, saved["order_type"])
+        # print tracking_code or signature string or tracking_code:
+        tracking_code = order_shipping.tracking_code
+
+        # Save the order_shipping into the file
+        try:
+            with open(self.__order_shipping_json_store, "r+", encoding="utf-8") as file:
+                data = json.load(file)
+                data.append(order_shipping.to_json())
+                file.seek(0)
+                json.dump(data, file, indent=4)
+        except FileNotFoundError as exception:
+            raise OrderManagementException("File not found") from exception
+
+
+
 
     def Validate_Contents(self):
         dictionary = {}
         if "OrderId" not in dictionary:
             raise OrderManagementException("Invalid file name: not order_request.json")
-    """
-        with open(self.__order_shipping_json_store,"r+",encoding="ut"):
-            data = json.load(file)
-            data.append(order_shipping.to_json())
-            file.seek(0)
-            json.dump(data,file,indent=4)
-        except Exception as exception:
-            raise OrderManagementException("Error writing Order request to file") from exception
-        return order_shipping.tracking_id
-    """
-
-    """
-        OTHER WAY
-        try: 
-            dictionary["OrderId"]
-        except:
-            raise OrderManagementException("Invalid file name: not order_request.json")
         """
+            with open(self.__order_shipping_json_store,"r+",encoding="ut"):
+                data = json.load(file)
+                data.append(order_shipping.to_json())
+                file.seek(0)
+                json.dump(data,file,indent=4)
+            except Exception as exception:
+                raise OrderManagementException("Error writing Order request to file") from exception
+            return order_shipping.tracking_id
+        """
+
+        """
+            OTHER WAY
+            try: 
+                dictionary["OrderId"]
+            except:
+                raise OrderManagementException("Invalid file name: not order_request.json")
+            """
+
+
+if __name__ == "__main__":
+    a = OrderManager()
+    a.register_order("1234567890128", "PREMIUM", "Calle de las tinieblas 1", "123456789", "12345")
+    a.send_product("..//stores//Function2.json")

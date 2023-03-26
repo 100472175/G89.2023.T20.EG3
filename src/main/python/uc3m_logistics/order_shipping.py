@@ -7,7 +7,7 @@ class OrderShipping():
 
     def __init__(self, product_id, order_id, delivery_email, order_type):
         self.__alg = "SHA-256"
-        self.__type = "DS"
+        self.__type = "UC3M"
         self.__product_id = product_id
         self.__order_id = order_id
         self.__delivery_email = delivery_email
@@ -24,9 +24,10 @@ class OrderShipping():
 
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""
+        # print(self.__alg + self.__type + self.__order_id + str(self.__issued_at) + str(self.__delivery_day))
         return "{alg:" + self.__alg +",typ:" + self.__type +",order_id:" + \
-               self.__order_id + ",issuedate:" + self.__issued_at + \
-               ",deliveryday:" + self.__delivery_day + "}"
+               self.__order_id + ",issuedate:" + str(self.__issued_at) + \
+               ",deliveryday:" + str(self.__delivery_day) + "}"
 
     @property
     def product_id( self ):
@@ -72,3 +73,14 @@ class OrderShipping():
     def delivery_day( self ):
         """Returns the delivery day for the order"""
         return self.__delivery_day
+
+    def to_json(self):
+        """Returns a json representation of the object"""
+        return {
+            "product_id": self.__product_id,
+            "order_id": self.__order_id,
+            "delivery_email": self.__delivery_email,
+            "issued_at": self.__issued_at,
+            "delivery_day": self.__delivery_day,
+            "tracking_code": self.tracking_code
+        }
