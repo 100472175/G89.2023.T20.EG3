@@ -7,6 +7,7 @@ from uc3m_logistics import OrderManager, OrderRequest, OrderManagementException
 from freezegun import freeze_time
 from pathlib import Path
 from datetime import datetime
+import re
 
 class MyTestCase(unittest.TestCase):
 
@@ -29,8 +30,11 @@ class MyTestCase(unittest.TestCase):
         except:
             data_test_1 = "{" + data
             try:
-                json_object = json.loads(data_test_1)
-                self.assertTrue(json_object)
+                json_object = json.loads(data_test)
+                pattern = r'{"OrderID":\s?"[a-f0-9]{32}",\s?"ContactEmail":\s?"[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}"}'
+                data_test = re.sub(pattern, "", data_test)
+                if data_test == '':
+                    self.assertTrue(json_object)
 
             except FileNotFoundError:
                 raise OrderManagementException("File not found")

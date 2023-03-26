@@ -1,5 +1,10 @@
 {
-  "errors": [],
+  "errors": [
+    {
+      "test": "unittest.loader._FailedTest.test_register_order_tests",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\\lib\\unittest\\case.py\", line 59, in testPartExecutor\n    yield\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\\lib\\unittest\\case.py\", line 591, in run\n    self._callTestMethod(testMethod)\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\\lib\\unittest\\case.py\", line 549, in _callTestMethod\n    method()\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\\lib\\unittest\\loader.py\", line 34, in testFailure\n    raise self._exception\nImportError: Failed to import test module: test_register_order_tests\nTraceback (most recent call last):\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\\lib\\unittest\\loader.py\", line 154, in loadTestsFromName\n    module = __import__(module_name)\n  File \"c:\\users\\edu\\pycharmprojects\\g89.2023.t20.eg3\\src\\unittest\\python\\test_register_order_tests.py\", line 7, in <module>\n    from freezegun import freeze_time\nModuleNotFoundError: No module named 'freezegun'\n\n"
+    }
+  ],
   "failures": [],
-  "tests-run": 39
+  "tests-run": 1
 }
