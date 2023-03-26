@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
         json_path = "main\JsonFiles"
-        current_path = os.path.join(current_path, json_path, "test_16_duplicated.json.json")
+        current_path = os.path.join(current_path, json_path, "test_16_duplicated.json")
 
         with open(current_path, "r", encoding="utf-8") as file: 
             data = file.read()
@@ -24,10 +24,10 @@ class MyTestCase(unittest.TestCase):
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test_1 = None
+            data_test = None
 
             try:
-                json_object = json.loads(data_test_1)
+                json_object = json.loads(data_test)
                 self.assertTrue(json_object)
 
             except FileNotFoundError:
