@@ -10,24 +10,26 @@ from datetime import datetime
 
 class MyTestCase(unittest.TestCase):
 
+
+
     @freeze_time("2023-03-08")
-    def test_02_duplicated(self):
+    def test_02_deleted(self):
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
         json_path = "main\JsonFiles"
-        current_path = os.path.join(current_path, json_path, "test_02_duplicated.json")
+        current_path = os.path.join(current_path, json_path, "test_02_deleted.json")
 
-        with open(current_path, "r", encoding="utf-8") as file: 
+
+        with open(current_path, 'r', encoding="utf-8") as file:
             data = file.read()
 
         try:
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test = None
-
+            data_test_1 = "{" + data
             try:
-                json_object = json.loads(data_test)
+                json_object = json.loads(data_test_1)
                 self.assertTrue(json_object)
 
             except FileNotFoundError:
