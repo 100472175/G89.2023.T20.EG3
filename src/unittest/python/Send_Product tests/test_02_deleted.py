@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test = None
+            data_test = "{" + data
 
             try:
                 json_object = json.loads(data_test)
@@ -32,7 +32,7 @@ class MyTestCase(unittest.TestCase):
 
             except FileNotFoundError:
                 raise OrderManagementException("File not found")
-            except json.JSONDecodeError as e:
+            except json.JSONDecodeError:
                 raise OrderManagementException("The content of the variable is not valid JSON.")
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ from uc3m_logistics import OrderManager, OrderRequest, OrderManagementException
 from freezegun import freeze_time
 from pathlib import Path
 from datetime import datetime
+import re
 
 class MyTestCase(unittest.TestCase):
 
@@ -24,7 +25,14 @@ class MyTestCase(unittest.TestCase):
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test = None
+            data_test_start = data[0:1]
+            data_test_end = data[-1:]
+            data_test = data[1:-1]
+            pattern = r'"OrderID":\s?"[a-f0-9]{32}",\s?"ContactEmail":\s?"[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}"'
+            # Regular expresion for the content of the file
+            data_test = re.sub(pattern, "", data_test)
+            print(data_test)
+
 
             try:
                 json_object = json.loads(data_test)
