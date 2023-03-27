@@ -25,7 +25,7 @@ class MyTestCase(unittest.TestCase):
         # Path to the order_request & order_shipping jsons
         json_store_path = os.path.dirname(__file__)
         json_store_path = current_path[:-34]
-        json_path = "main\python\stores"
+        json_path = "main/python/stores"
         json_store_path = os.path.join(json_store_path,json_path,"order_request.json")
 
         json_order_shipping = os.path.join(os.path.dirname(__file__)[:-34],json_path,"order_shipping.json")

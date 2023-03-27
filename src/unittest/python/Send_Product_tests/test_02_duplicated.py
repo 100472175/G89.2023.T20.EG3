@@ -12,21 +12,24 @@ from datetime import datetime
 
 class MyTestCase(unittest.TestCase):
 
+
+
     @freeze_time("2023-03-08")
-    def test_49_modified(self):
+    def test_02_deleted(self):
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
         json_path = "main/JsonFiles"
-        current_path = os.path.join(current_path, json_path, "test_49_modified.json")
+        current_path = os.path.join(current_path, json_path, "test_02_deleted.json")
 
-        with open(current_path, "r", encoding="utf-8") as file: 
+
+        with open(current_path, 'r', encoding="utf-8") as file:
             data = file.read()
 
         try:
             json_object = json.loads(data)
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
-            data_test = data[:-5] + "." + data[82:]
+            data_test = "{" + data
             try:
                 json_object = json.loads(data_test)
                 pattern = r'{"OrderID":\s?"[a-f0-9]{32}",\s?"ContactEmail":\s?"[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}"}'
