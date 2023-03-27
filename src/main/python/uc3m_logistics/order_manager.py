@@ -283,7 +283,7 @@ class OrderManager:
         order_request = None
         try:
             with open(self.__order_request_json_store, "r", encoding="UTF-8") as database:
-            data = json.load(database)
+            database = json.load(database)
             for i in data:
                 if i["order_id"] == order_shipping["order_id"]:
                     order_request = i
