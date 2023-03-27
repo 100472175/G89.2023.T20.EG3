@@ -67,7 +67,6 @@ class MyTestCase(unittest.TestCase):
         except json.decoder.JSONDecodeError:
             raise OrderManagementException("JSON has not the expected stucture")
 
-        # print("hey", saved)
         if not saved:
             raise OrderManagementException("Data in Json has no valid values")
 

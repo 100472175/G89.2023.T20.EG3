@@ -11,9 +11,6 @@ from pathlib import Path
 from datetime import datetime
 
 class MyTestCase(unittest.TestCase):
-
-
-
     @freeze_time("2023-03-08")
     def test_02_deleted(self):
         current_path = os.path.dirname(__file__)

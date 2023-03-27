@@ -7,5 +7,14 @@
         "phone_number": "654314159",
         "zip_code": "28005",
         "time_stamp": 1678233600.0
+    },
+    {
+        "order_id": "b862730281f9a9701d5fdbdbdb11d0f4",
+        "product_id": "1234567890128",
+        "order_type": "PREMIUM",
+        "delivery_address": "Calle de las tinieblas 1",
+        "phone_number": "123456789",
+        "zip_code": "12345",
+        "time_stamp": 1679903693.84756
     }
 ]
