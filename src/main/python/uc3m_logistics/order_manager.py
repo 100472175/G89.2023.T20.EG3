@@ -185,7 +185,14 @@ class OrderManager:
         except json.decoder.JSONDecodeError:
             raise OrderManagementException("Input file has not Json format")
 
-
+        regex_found = None
+        # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
+        pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\'}'
+        match = re.finditer(pattern, data_og)
+        for m in match:
+            regex_found = m.group(0)
+        if not regex_found:
+            raise OrderManagementException("Data in JSON has no valid values")
 
         saved = None
         # Check the data has not been modified
@@ -226,26 +233,27 @@ class OrderManager:
                   f' "{saved["delivery_address"]}", "_OrderRequest__order_type": "{saved["order_type"]}",' \
                   f' "_OrderRequest__phone_number": "{saved["phone_number"]}", ' \
                   f'"_OrderRequest__zip_code": "{saved["zip_code"]}", "_OrderRequest__time_stamp": {saved["time_stamp"]}}}'
-        # print(a)
         checker = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
-        # print(a)
         if checker != order:
             raise OrderManagementException("The data has been modified")
 
-        # Generate an instance of the class OrderShipping
-        #Email check:
+        # Finding Email
         email = None
-        # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
-        pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\'}'
+        pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
+        # Redundant check for mail, as tested before
         if not email:
             raise OrderManagementException("Data in JSON has no valid values")
+
+        # Generate an instance of the class OrderShipping
         order_shipping = OrderShipping(saved["product_id"], saved["order_id"], email, saved["order_type"])
+
         # print tracking_code or signature string or tracking_code:
         tracking_code = order_shipping.tracking_code
         self.validate_tracking_code(tracking_code)
+
         # Save the order_shipping into the file
         try:
             with open(self.__order_shipping_json_store, "r+", encoding="utf-8") as file:
@@ -258,13 +266,11 @@ class OrderManager:
 
         return tracking_code
 
-
-    def validate_tracking_code(self,sha256):
+    def validate_tracking_code(self, sha256):
         pattern = r'[a-f0-9]{64}'
         match = re.fullmatch(pattern, sha256)
         if not match:
             raise OrderManagementException("Internal processing error")
-
 
     def deliver_product(self, tracking_code) -> str:
         # The date_signature is a string with the value described in AM-FR-03-I1
@@ -303,8 +309,6 @@ class OrderManager:
         if not order_request:
             raise OrderManagementException("Order request not found in the database of shipping")
 
-
-
         checker = f'OrderRequest:{{"_OrderRequest__product_id": "{order_request["product_id"]}", "_OrderRequest__delivery_address":' \
                   f' "{order_request["delivery_address"]}", "_OrderRequest__order_type": "{order_request["order_type"]}",' \
                   f' "_OrderRequest__phone_number": "{order_request["phone_number"]}", ' \
@@ -315,8 +319,8 @@ class OrderManager:
             raise OrderManagementException("The data has been modified")
 
         shipping_check = "{alg:" + "SHA-256" + ",typ:" + "UC3M" + ",order_id:" + \
-                         order_shipping["order_id"]+ ",issuedate:" + str(order_shipping["issued_at"]) + \
-                        ",deliveryday:" + str(order_shipping["delivery_day"]) + "}"
+                         order_shipping["order_id"] + ",issuedate:" + str(order_shipping["issued_at"]) + \
+                         ",deliveryday:" + str(order_shipping["delivery_day"]) + "}"
 
         shipping_check_hash = hashlib.sha256(shipping_check.encode()).hexdigest()
         if shipping_check_hash != order_shipping["tracking_code"]:
