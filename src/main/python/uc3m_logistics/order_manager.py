@@ -236,7 +236,7 @@ class OrderManager:
         #Email check:
         email = None
         # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
-        pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[a-zA-Z0-9.-]+(?!..)[a-zA-Z]{1,3}\'}'
+        pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\'}'
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
