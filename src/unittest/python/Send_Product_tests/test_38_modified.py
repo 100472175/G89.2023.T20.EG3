@@ -27,7 +27,7 @@ class MyTestCase(unittest.TestCase):
             raise OrderManagementException("File is correct when it shouldn't be")
         except:
             data_test = data[:61] + '"' + data[62:]
-            print(data_test)
+            
             try:
                 json_object = json.loads(data_test)
                 pattern = r'{"OrderID":\s?"[a-f0-9]{32}",\s?"ContactEmail":\s?"[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}"}'

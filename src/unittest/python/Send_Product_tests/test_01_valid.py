@@ -1,4 +1,3 @@
-import unittest
 import hashlib
 import os.path
 import unittest
@@ -7,8 +6,6 @@ import os
 import re
 from uc3m_logistics import OrderManager, OrderRequest,OrderShipping, OrderManagementException
 from freezegun import freeze_time
-from pathlib import Path
-from datetime import datetime
 
 class MyTestCase(unittest.TestCase):
 

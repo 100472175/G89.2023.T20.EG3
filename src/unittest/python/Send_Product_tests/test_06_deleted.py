@@ -28,7 +28,7 @@ class MyTestCase(unittest.TestCase):
             data_test_start = data[:1]
             data = data[1:]
             data_test = data_test_start + str('"OrderID": "e01521684a7f9535e9fa098a2b86565f"')+data
-            print(data_test)
+            
 
 
             try:

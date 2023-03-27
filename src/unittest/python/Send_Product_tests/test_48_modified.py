@@ -1,14 +1,8 @@
-import unittest
-import hashlib
 import os.path
 import unittest
-import json
 import os
-import re
-from uc3m_logistics import OrderManager, OrderRequest, OrderManagementException
+from uc3m_logistics import OrderManager, OrderShipping,OrderRequest, OrderManagementException
 from freezegun import freeze_time
-from pathlib import Path
-from datetime import datetime
 
 class MyTestCase(unittest.TestCase):
 
@@ -19,12 +13,11 @@ class MyTestCase(unittest.TestCase):
         json_path = "main/JsonFiles"
         current_path = os.path.join(current_path, json_path, "test_48_modified.json")
 
-        with open(current_path, "r", encoding="utf-8") as file:
-            data = file.read()
+        my_order = OrderManager()
+        my_tracking_code = my_order.send_product(current_path)
 
-        pattern = r'{"OrderID":\s?"[a-f0-9]{32}",\s?"ContactEmail":\s?"[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}"}'
-        match = re.search(pattern, data)
-        self.assertNotEqual(match, None)
+        my_shipping = OrderShipping("8421691423220","e01521684a7f9535e9fa098a2b86565f","example@grade.es","REGULAR").tracking_code
+        self.assertEqual(my_shipping,my_tracking_code)
 
 
 if __name__ == "__main__":
