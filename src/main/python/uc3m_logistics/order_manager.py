@@ -195,11 +195,13 @@ class OrderManager:
                 data2 = str(data)
                 pattern = r"[0-9a-f]{32}"
                 match = re.finditer(pattern, data2)
+                order_hash = None
                 for m in match:
                     if m.group(0) == order:
                         order_hash = m.group(0)
                         break
-
+                if not order_hash:
+                    raise OrderManagementException("Data in JSON has no valid values")
                 for i in data:
                     for j, k in i.items():
                         if j == "order_id" and k == order_hash:
@@ -212,7 +214,7 @@ class OrderManager:
 
         # print("hey", saved)
         if not saved:
-            raise OrderManagementException("Data in Json has no valid values")
+            raise OrderManagementException("Data in JSON has no valid values")
 
         self.validate_order_type(saved["order_type"])
         self.validate_address(saved["delivery_address"])
@@ -233,12 +235,12 @@ class OrderManager:
         # Generate an instance of the class OrderShipping
         #Email check:
         email = None
-        pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
+        pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\"'
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
         if not email:
-            raise OrderManagementException("The data of the json has no valid values")
+            raise OrderManagementException("Data in JSON has no valid values")
         order_shipping = OrderShipping(saved["product_id"], saved["order_id"], email, saved["order_type"])
         # print tracking_code or signature string or tracking_code:
         tracking_code = order_shipping.tracking_code
