@@ -3,12 +3,12 @@ import hashlib
 import os.path
 import unittest
 import json
+import os
+import re
 from uc3m_logistics import OrderManager, OrderRequest,OrderShipping, OrderManagementException
 from freezegun import freeze_time
 from pathlib import Path
 from datetime import datetime
-import os
-import re
 
 class MyTestCase(unittest.TestCase):
 
@@ -19,7 +19,7 @@ class MyTestCase(unittest.TestCase):
         # Path to The Json test
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
-        json_path = "main\JsonFiles"
+        json_path = "main/JsonFiles"
         current_path = os.path.join(current_path, json_path, "test_01_valid.json")
 
         # Path to the order_request & order_shipping jsons
@@ -30,7 +30,7 @@ class MyTestCase(unittest.TestCase):
 
         json_order_shipping = os.path.join(os.path.dirname(__file__)[:-34],json_path,"order_shipping.json")
 
-        # input_file = "..\..\..\..\main\JsonFiles\\test_01_valid.json"
+        # input_file = "..\..\..\..\main/JsonFiles\\test_01_valid.json"
         try:
             with open(current_path, "r+", encoding="utf-8") as file:
                 data_og_json = json.load(file)

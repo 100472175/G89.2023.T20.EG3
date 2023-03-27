@@ -3,18 +3,19 @@ import hashlib
 import os.path
 import unittest
 import json
+import os
+import re
 from uc3m_logistics import OrderManager, OrderRequest, OrderManagementException
 from freezegun import freeze_time
 from pathlib import Path
 from datetime import datetime
-import re
 class MyTestCase(unittest.TestCase):
 
     @freeze_time("2023-03-08")
     def test_13_duplicated(self):
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
-        json_path = "main\JsonFiles"
+        json_path = "main/JsonFiles"
         current_path = os.path.join(current_path, json_path, "test_13_duplicated.json")
 
         with open(current_path, "r", encoding="utf-8") as file: 

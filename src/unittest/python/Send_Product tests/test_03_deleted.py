@@ -3,6 +3,8 @@ import hashlib
 import os.path
 import unittest
 import json
+import os
+import re
 from uc3m_logistics import OrderManager, OrderRequest, OrderManagementException
 from freezegun import freeze_time
 from pathlib import Path
@@ -14,7 +16,7 @@ class MyTestCase(unittest.TestCase):
     def test_03_deleted(self):
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
-        json_path = "main\JsonFiles"
+        json_path = "main/JsonFiles"
         current_path = os.path.join(current_path, json_path, "test_03_deleted.json")
 
         with open(current_path, "r", encoding="utf-8") as file: 
