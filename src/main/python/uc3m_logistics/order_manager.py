@@ -176,6 +176,8 @@ class OrderManager:
                 data_og = str(data_og_json)
                 pattern = r"[0-9a-f]{32}"
                 match = re.finditer(pattern, data_og)
+                if not match:
+                    raise OrderManagementException("Input file has not Json valid format")
                 for m in match:
                     order = m.group(0)
         except FileNotFoundError:
@@ -283,8 +285,8 @@ class OrderManager:
         order_request = None
         try:
             with open(self.__order_request_json_store, "r", encoding="UTF-8") as database:
-            database = json.load(database)
-            for i in data:
+                database = json.load(database)
+            for i in database:
                 if i["order_id"] == order_shipping["order_id"]:
                     order_request = i
                     break
@@ -303,6 +305,7 @@ class OrderManager:
                   f' "_OrderRequest__phone_number": "{order_request["phone_number"]}", ' \
                   f'"_OrderRequest__zip_code": "{order_request["zip_code"]}", "_OrderRequest__time_stamp": {order_request["time_stamp"]}}}'
         check_hash = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
+
         if check_hash != order_request["order_id"]:
             raise OrderManagementException("The data has been modified")
 
