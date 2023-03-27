@@ -232,11 +232,13 @@ class OrderManager:
 
         # Generate an instance of the class OrderShipping
         #Email check:
+        email = None
         pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}'
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
-
+        if not email:
+            raise OrderManagementException("The data of the json has no valid values")
         order_shipping = OrderShipping(saved["product_id"], saved["order_id"], email, saved["order_type"])
         # print tracking_code or signature string or tracking_code:
         tracking_code = order_shipping.tracking_code
