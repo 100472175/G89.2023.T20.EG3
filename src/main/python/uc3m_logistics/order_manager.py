@@ -199,7 +199,6 @@ class OrderManager:
         # Get the order_id from the file
         # ords = order, regex_found
         ords = [None, None, None]
-
         try:
             with open(input_file, "r+", encoding="utf-8") as file:
                 data_og_json = json.load(file)
@@ -215,7 +214,8 @@ class OrderManager:
         except json.decoder.JSONDecodeError:
             raise OrderManagementException("Input file has not Json format")
 
-        ords[1] = None
+
+
         # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?' \
                   r'\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
@@ -225,6 +225,7 @@ class OrderManager:
         if not ords[1]:
             raise OrderManagementException("Data in JSON has no valid values")
 
+
         saved = None
         # Check the data has not been modified
         try:
@@ -232,20 +233,8 @@ class OrderManager:
                 data = json.load(file)
                 # data2 = str(data)
                 # pattern = r"[0-9a-f]{32}"
-                match = re.finditer(r"[0-9a-f]{32}", str(data))
-                ords[2] = None
-                for element in match:
-                    if element.group(0) == ords[0]:
-                        ords[2] = element.group(0)
-                        break
-                if not ords[2]:
-                    raise OrderManagementException("Data in JSON has no valid values")
-                list_checker = [0, 0]
-                for i in data:
-                    for list_checker in i.items():
-                        if list_checker[0] == "order_id" and list_checker[1] == ords[2]:
-                            saved = i
-                            break
+                data, ords, saved = self.process_data(data, ords, saved)
+
         except FileNotFoundError:
             raise OrderManagementException("Order_Request not Found")
         except json.decoder.JSONDecodeError:
@@ -257,17 +246,8 @@ class OrderManager:
 
         self.total_validation(saved)
 
-
-        checker = f'OrderRequest:{{"_OrderRequest__product_id": ' \
-                  f'"{saved["product_id"]}", "_OrderRequest__delivery_address":' \
-                  f' "{saved["delivery_address"]}", "_OrderRequest__order_type":' \
-                  f' "{saved["order_type"]}",' \
-                  f' "_OrderRequest__phone_number": "{saved["phone_number"]}", ' \
-                  f'"_OrderRequest__zip_code": "{saved["zip_code"]}", ' \
-                  f'"_OrderRequest__time_stamp": {saved["time_stamp"]}}}'
-        checker = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
-        if checker != ords[0]:
-            raise OrderManagementException("The data has been modified")
+        # Check the md5 code
+        self.checker_checker(saved, ords)
 
         # Finding Email
         saved["email"] = self.find_email(data_og_json)
@@ -284,6 +264,35 @@ class OrderManager:
         self.saving_to_file(order_shipping)
 
         return tracking_code
+
+    def process_data(self, data, ords, saved):
+        match = re.finditer(r"[0-9a-f]{32}", str(data))
+        ords[2] = None
+        for element in match:
+            if element.group(0) == ords[0]:
+                ords[2] = element.group(0)
+                break
+        if not ords[2]:
+            raise OrderManagementException("Data in JSON has no valid values")
+        list_checker = [0, 0]
+        for i in data:
+            for list_checker in i.items():
+                if list_checker[0] == "order_id" and list_checker[1] == ords[2]:
+                    saved = i
+                    break
+        return data, ords, saved
+
+    def checker_checker(self, saved, ords):
+        checker = f'OrderRequest:{{"_OrderRequest__product_id": ' \
+                  f'"{saved["product_id"]}", "_OrderRequest__delivery_address":' \
+                  f' "{saved["delivery_address"]}", "_OrderRequest__order_type":' \
+                  f' "{saved["order_type"]}",' \
+                  f' "_OrderRequest__phone_number": "{saved["phone_number"]}", ' \
+                  f'"_OrderRequest__zip_code": "{saved["zip_code"]}", ' \
+                  f'"_OrderRequest__time_stamp": {saved["time_stamp"]}}}'
+        checker = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
+        if checker != ords[0]:
+            raise OrderManagementException("The data has been modified")
 
     def find_email(self, data_og_json) -> str:
         email = None
