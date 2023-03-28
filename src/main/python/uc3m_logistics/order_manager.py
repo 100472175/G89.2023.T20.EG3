@@ -4,9 +4,9 @@ import math
 import os
 import json
 import re
-# from order_request import OrderRequest
-# from order_management_exception import OrderManagementException
-# from order_shipping import OrderShipping
+#from order_request import OrderRequest
+#from order_management_exception import OrderManagementException
+#from order_shipping import OrderShipping
 
 
 from .order_request import OrderRequest
@@ -71,12 +71,12 @@ class OrderManager:
     def validate_order_type(order_type: str):
         if not isinstance(order_type, str):
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+        valid = ["REGULAR","PREMIUM"]
         if (order_type == "REGULAR" or order_type == "PREMIUM"):
             return True
-        else:
-            if order_type.upper() != order_type:
-                raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+        if order_type.upper() != order_type:
             raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
+        raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
 
     @staticmethod
     def validate_address(address: str):
@@ -89,38 +89,30 @@ class OrderManager:
                         addres_list = address.split(" ")
                         if len(addres_list) > 1:
                             return True
-                        else:
-                            raise OrderManagementException("Address not valid")
-                    else:
-                        raise OrderManagementException("Address not valid, must have a space")
-                else:
-                    raise OrderManagementException("Address not valid, must have more than 20 characters")
-            else:
-                raise OrderManagementException("Address not valid, must have less than 100 characters")
-        else:
-            raise OrderManagementException("Address not valid, must be a string")
+                        raise OrderManagementException("Address not valid")
+                    raise OrderManagementException("Address not valid, must have a space")
+                raise OrderManagementException("Address not valid, must have more than 20 characters")
+            raise OrderManagementException("Address not valid, must have less than 100 characters")
+        raise OrderManagementException("Address not valid, must be a string")
 
     @staticmethod
     def validate_phone_number(phone_number: str):
         if not isinstance(phone_number, str):
             raise OrderManagementException("Phone number not valid, must be numeric ")
-        if type(phone_number) == str:
+        if isinstance(phone_number,str):
             if phone_number.isdigit():
                 if len(phone_number) == 9:
                     return True
-                elif len(phone_number) > 9:
+                if len(phone_number) > 9:
                     raise OrderManagementException("Phone number not valid, must have less than 10 characters")
-                elif len(phone_number) < 9:
+                if len(phone_number) < 9:
                     raise OrderManagementException("Phone number not valid, must have more than 8 characters")
-                else:
-                    raise OrderManagementException("Phone number not valid, must have 9 characters")
-            elif len(phone_number) == 12 and phone_number[0:3] == "+34":
+                raise OrderManagementException("Phone number not valid, must have 9 characters")
+            if len(phone_number) == 12 and phone_number[0:3] == "+34":
                 if phone_number[3:].isdigit():
                     return True
-                else:
-                    raise OrderManagementException("Phone number not valid, must be numeric")
-            else:
                 raise OrderManagementException("Phone number not valid, must be numeric")
+            raise OrderManagementException("Phone number not valid, must be numeric")
 
     @staticmethod
     def validate_zip_code(zip_code: str):
@@ -130,15 +122,14 @@ class OrderManager:
             if len(zip_code) == 5:
                 if int(zip_code) < 1000:
                     raise OrderManagementException("Zip code not valid, must be greater or equal than 01000")
-                elif int(zip_code) >= 53000:
+                if int(zip_code) >= 53000:
                     raise OrderManagementException("Zip code not valid, must be less than 53000")
                 return True
-            elif len(zip_code) > 5:
+            if len(zip_code) > 5:
                 raise OrderManagementException("Zip code not valid, must have less than 6 digits")
-            elif len(zip_code) < 5:
+            if len(zip_code) < 5:
                 raise OrderManagementException("Zip code not valid, must have more than 4 digits")
-        else:
-            raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
+        raise OrderManagementException("Zip code not valid, must be numeric in the range {01000-52999}")
 
     def register_order(self, product_id: str, order_type: str, address: str, phone_number: str, zip_code: str) -> str:
         # Returns a string representing AM-FR-01-O1
@@ -188,7 +179,6 @@ class OrderManager:
         regex_found = None
         # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
-        patt2 = r'[A-z0-9]+(\.?[A-z0-9]+)*'
         match = re.finditer(pattern, data_og)
         for m in match:
             regex_found = m.group(0)
@@ -353,6 +343,13 @@ class OrderManager:
 
 if __name__ == "__main__":
     a = OrderManager()
+
+    my_order = OrderManager()
+    my_tracking_code = my_order.send_product("../../JsonFiles/test_01_valid.json")
+
+    my_shipping = OrderShipping("8421691423220", "e01521684a7f9535e9fa098a2b86565f", "example@inf.uc3m.es",
+                                "REGULAR").tracking_code
+    print(my_shipping)
     # Add an order to order_request.json
     a.register_order("1234567890128", "PREMIUM", "Calle de las tinieblas 1", "123456789", "12345")
     # Add an order to order_shipping.json
