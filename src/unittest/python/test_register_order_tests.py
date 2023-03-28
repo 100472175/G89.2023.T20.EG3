@@ -909,35 +909,6 @@ class MyTestCase(unittest.TestCase):
                                       self._phone_number, self._zip_code)
         self.assertEqual(my_order_id, order_id_check.order_id)
 
-    ##################################
-    # FILE STORE ID VALIDATION TESTS #
-    ##################################
-    """    @freeze_time("2023-03-08")
-        def test_VE_V_37(self):
-            # Este Path es un problema porq pilla las back slash y sino no pilla el archivo (archivo de prueba porque no se cual hay q abrir)
-            JSON_FILES_PATH = str(Path.home()) + "G89.2023.T20.EG3\target\reports"
-            file_store = JSON_FILES_PATH + "GE3_2023_coverage.json"
-            if os.path.isfile(file_store):
-                os.remove(file_store)
-           self.__my_manager = OrderManager()
-            my_order_id =self.__my_manager.register_order(product_id="8421691423220",
-                                                    order_type="REGULAR",
-                                                    address="C/LISBOA,4, MADRID, SPAIN",
-                                                    phone_number="654314159",
-                                                    zip_code="28005")
-            self.assertEqual(my_order_id, "e01521684a7f9535e9fa098a2b86565f")
-    #   try:
-            with (open(file_store, "r", encoding= "UTF-W", newline="")) as file:
-                data_list = json.load(file)
-                found = False
-                for item in data_list:
-                    if item["_OrderRequest__order_id"] == "9bdbf4d0c007547a39ee10b4287b7dc1":
-                        found = True
-                self.assertTrue(found)
-    #   except FileNotFoundError as ex:
-    #       raise OrderManagementException("Wromg file or path") from ex
-    """
-
     @freeze_time("2023-03-08")
     def test_EC_NV_37(self):
         prev_json_items = 0
