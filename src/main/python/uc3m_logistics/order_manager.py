@@ -49,20 +49,20 @@ class OrderManager:
             raise OrderManagementException("Product Id not valid, id must be a string")
         if len(ean13) < 13:
             raise OrderManagementException("Product Id not valid, id too short")
-        elif len(ean13) > 13:
+        if len(ean13) > 13:
             raise OrderManagementException("Product Id not valid, id too long")
-        elif ean13.isdigit() is False:
+        if ean13.isdigit() is False:
             raise OrderManagementException("Product Id not valid, id must be numeric")
 
-        CheckSum: int = 0
+        check_sum: int = 0
         for i in range(len(ean13) - 1):
-            CurrentNumber = int(ean13[i])
+            current_number = int(ean13[i])
             if i % 2 != 0:
-                CheckSum += CurrentNumber * 3
+                check_sum += current_number * 3
             else:
-                CheckSum += CurrentNumber
-        Difference = 10 * math.ceil(CheckSum / 10) - CheckSum
-        if int(ean13[-1]) == Difference:
+                check_sum += current_number
+        difference = 10 * math.ceil(check_sum / 10) - check_sum
+        if int(ean13[-1]) == difference:
             return True
         else:
             raise OrderManagementException("Product Id not valid, invalid EAN13 code")
