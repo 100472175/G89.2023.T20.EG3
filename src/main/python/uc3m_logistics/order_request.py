@@ -14,7 +14,6 @@ class OrderRequest:
         self.__phone_number = phone_number
         self.__zip_code = zip_code
         justnow = datetime.utcnow()
-        # self.time_stamp2 = datetime.timestamp(justnow)
         self.__time_stamp = datetime.timestamp(justnow)
 
     def __str__(self):

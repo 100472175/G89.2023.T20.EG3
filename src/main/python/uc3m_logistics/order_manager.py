@@ -1,4 +1,4 @@
-"""Module """
+from datetime import datetime
 import hashlib
 import math
 import os
@@ -24,7 +24,7 @@ class OrderManager:
         self.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
         self.__order_shipping_json_store = os.path.join(current_path, store_path, "order_shipping.json")
         self.__order_delivery_json_store = os.path.join(current_path, store_path, "order_delivery.json")
-        # Create file if it doesn't exists and initialize it with an empty list
+        # Create file if it doesn't exist and initialize it with an empty list
         try:
             if not os.path.exists(self.__order_request_json_store):
                 with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
@@ -178,7 +178,8 @@ class OrderManager:
 
         regex_found = None
         # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
-        pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
+        pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?' \
+                  r'\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
         match = re.finditer(pattern, data_og)
         for m in match:
             regex_found = m.group(0)
@@ -220,10 +221,12 @@ class OrderManager:
         self.validate_zip_code(saved["zip_code"])
         self.validate_ean13(saved["product_id"])
 
-        checker = f'OrderRequest:{{"_OrderRequest__product_id": "{saved["product_id"]}", "_OrderRequest__delivery_address":' \
+        checker = f'OrderRequest:{{"_OrderRequest__product_id": ' \
+                  f'"{saved["product_id"]}", "_OrderRequest__delivery_address":' \
                   f' "{saved["delivery_address"]}", "_OrderRequest__order_type": "{saved["order_type"]}",' \
                   f' "_OrderRequest__phone_number": "{saved["phone_number"]}", ' \
-                  f'"_OrderRequest__zip_code": "{saved["zip_code"]}", "_OrderRequest__time_stamp": {saved["time_stamp"]}}}'
+                  f'"_OrderRequest__zip_code": "{saved["zip_code"]}", ' \
+                  f'"_OrderRequest__time_stamp": {saved["time_stamp"]}}}'
         checker = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
         if checker != order:
             raise OrderManagementException("The data has been modified")
@@ -265,10 +268,7 @@ class OrderManager:
         if not match:
             raise OrderManagementException("Internal processing error")
 
-    def deliver_product(self, tracking_code) -> str:
-        # The date_signature is a string with the value described in AM-FR-03-I1
-        # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
-        # On errors, returns a VaccineManagementException representing AM-RF -03-O3
+    def tracking_code_searcher(self, tracking_code) -> str:
         order_shipping = None
         try:
             self.validate_tracking_code(tracking_code)
@@ -282,63 +282,24 @@ class OrderManager:
             raise OrderManagementException("File not found")
         except json.decoder.JSONDecodeError:
             raise OrderManagementException("JSON has not the expected stucture")
-
         if not order_shipping:
             raise OrderManagementException("Tracking code not found in the database of requests")
+        return order_shipping
 
-        order_request = None
-        try:
-            with open(self.__order_request_json_store, "r", encoding="UTF-8") as database:
-                database = json.load(database)
-            for i in database:
-                if i["order_id"] == order_shipping["order_id"]:
-                    order_request = i
-                    break
-        except FileNotFoundError:
-            raise OrderManagementException("File not found")
-        except json.decoder.JSONDecodeError:
-            raise OrderManagementException("JSON has not the expected stucture")
 
-        if not order_request:
-            raise OrderManagementException("Order request not found in the database of shipping")
+    def deliver_product(self, tracking_code) -> str:
+        # The date_signature is a string with the value described in AM-FR-03-I1
+        # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
+        # On errors, returns a VaccineManagementException representing AM-RF -03-O3
+        order_shipping = self.tracking_code_searcher(tracking_code)
 
-        checker = f'OrderRequest:{{"_OrderRequest__product_id": "{order_request["product_id"]}", "_OrderRequest__delivery_address":' \
-                  f' "{order_request["delivery_address"]}", "_OrderRequest__order_type": "{order_request["order_type"]}",' \
-                  f' "_OrderRequest__phone_number": "{order_request["phone_number"]}", ' \
-                  f'"_OrderRequest__zip_code": "{order_request["zip_code"]}", "_OrderRequest__time_stamp": {order_request["time_stamp"]}}}'
-        check_hash = hashlib.md5(checker.encode(encoding="utf-8")).hexdigest()
+        now = datetime.utcnow()
+        timestamp = datetime.timestamp(now)
 
-        if check_hash != order_request["order_id"]:
-            raise OrderManagementException("The data has been modified")
-
-        shipping_check = "{alg:" + "SHA-256" + ",typ:" + "UC3M" + ",order_id:" + \
-                         order_shipping["order_id"] + ",issuedate:" + str(order_shipping["issued_at"]) + \
-                         ",deliveryday:" + str(order_shipping["delivery_day"]) + "}"
-
-        shipping_check_hash = hashlib.sha256(shipping_check.encode()).hexdigest()
-        if shipping_check_hash != order_shipping["tracking_code"]:
-            raise OrderManagementException("The data has been modified")
-
-    """
-    def Validate_Contents(self):
-        dictionary = {}
-        if "OrderId" not in dictionary:
-            raise OrderManagementException("Invalid file name: not order_request.json")
-            with open(self.__order_shipping_json_store,"r+",encoding="ut"):
-                data = json.load(file)
-                data.append(order_shipping.to_json())
-                file.seek(0)
-                json.dump(data,file,indent=4)
-            except Exception as exception:
-                raise OrderManagementException("Error writing Order request to file") from exception
-            return order_shipping.tracking_id
-        
-            OTHER WAY
-            try: 
-                dictionary["OrderId"]
-            except:
-                raise OrderManagementException("Invalid file name: not order_request.json")
-    """
+        if order_shipping['tracking_code'] == tracking_code and \
+                (datetime.fromtimestamp(order_shipping['delivery_day']) == datetime.fromtimestamp(timestamp).date()):
+            return True
+        raise OrderManagementException("The product has not been delivered yet")
 
 
 if __name__ == "__main__":
@@ -354,3 +315,5 @@ if __name__ == "__main__":
     a.register_order("1234567890128", "PREMIUM", "Calle de las tinieblas 1", "123456789", "12345")
     # Add an order to order_shipping.json
     a.send_product("..//stores//Function2.json")
+    # Datetime check
+    a.deliver_product(my_tracking_code)
