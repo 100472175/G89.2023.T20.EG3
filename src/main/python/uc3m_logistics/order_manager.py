@@ -10,10 +10,10 @@ import re
 #from order_request import OrderRequest
 #from order_management_exception import OrderManagementException
 #from order_shipping import OrderShipping
+from datetime import datetime
 from .order_request import OrderRequest
 from .order_management_exception import OrderManagementException
 from .order_shipping import OrderShipping
-from datetime import datetime
 
 
 class OrderManager:
@@ -126,6 +126,7 @@ class OrderManager:
                     return True
                 raise OrderManagementException("Phone number not valid, must be numeric")
             raise OrderManagementException("Phone number not valid, must be numeric")
+        return True
 
     @staticmethod
     def validate_zip_code(zip_code: str):
@@ -209,10 +210,10 @@ class OrderManager:
                     raise OrderManagementException("Input file has not Json valid format")
                 for element in match:
                     ords[0] = element.group(0)
-        except FileNotFoundError:
-            raise OrderManagementException("Input File not Found")
-        except json.decoder.JSONDecodeError:
-            raise OrderManagementException("Input file has not Json format")
+        except FileNotFoundError as fnf:
+            raise OrderManagementException("Input File not Found") from fnf
+        except json.decoder.JSONDecodeError as jsonin:
+            raise OrderManagementException("Input file has not Json format") from jsonin
 
 
 
@@ -235,10 +236,10 @@ class OrderManager:
                 # pattern = r"[0-9a-f]{32}"
                 data, ords, saved = self.process_data(data, ords, saved)
 
-        except FileNotFoundError:
-            raise OrderManagementException("Order_Request not Found")
-        except json.decoder.JSONDecodeError:
-            raise OrderManagementException("JSON has not the expected stucture")
+        except FileNotFoundError as fnf:
+            raise OrderManagementException("Order_Request not Found") from fnf
+        except json.decoder.JSONDecodeError as jsonin:
+            raise OrderManagementException("JSON has not the expected stucture") from jsonin
 
         # print("hey", saved)
         if not saved:
@@ -266,6 +267,9 @@ class OrderManager:
         return tracking_code
 
     def process_data(self, data, ords, saved):
+        """
+        Process the data from the file
+        """
         match = re.finditer(r"[0-9a-f]{32}", str(data))
         ords[2] = None
         for element in match:
@@ -283,6 +287,9 @@ class OrderManager:
         return data, ords, saved
 
     def checker_checker(self, saved, ords):
+        """
+        Checks weather the information from the order_request file has been modified
+        """
         checker = f'OrderRequest:{{"_OrderRequest__product_id": ' \
                   f'"{saved["product_id"]}", "_OrderRequest__delivery_address":' \
                   f' "{saved["delivery_address"]}", "_OrderRequest__order_type":' \
@@ -295,6 +302,9 @@ class OrderManager:
             raise OrderManagementException("The data has been modified")
 
     def find_email(self, data_og_json) -> str:
+        """
+        Finds the email in the string that is the JSON
+        """
         email = None
         pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         match = re.finditer(pattern, str(data_og_json))
@@ -308,22 +318,31 @@ class OrderManager:
         return email
 
     def saving_to_file(self, order_shipping):
+        """
+        Saves the order_shipping into the file order_shipping.json
+        """
         try:
             with open(self.__order_shipping_json_store, "r+", encoding="utf-8") as file:
                 data = json.load(file)
                 data.append(order_shipping.to_json())
                 file.seek(0)
                 json.dump(data, file, indent=4)
-        except FileNotFoundError:
-            raise OrderManagementException("Order file has not been found")
+        except FileNotFoundError as fnf:
+            raise OrderManagementException("Order file has not been found") from fnf
 
     def validate_tracking_code(self, sha256):
+        """
+        Validates the sha-256 tracking code
+        """
         pattern = r'[a-f0-9]{64}'
         match = re.fullmatch(pattern, sha256)
         if not match:
             raise OrderManagementException("Internal processing error")
 
     def tracking_code_searcher(self, tracking_code) -> str:
+        """
+        Searches the tracking code in the file order_shipping.json
+        """
         order_shipping = None
         try:
             self.validate_tracking_code(tracking_code)
@@ -333,16 +352,21 @@ class OrderManager:
                     if i["tracking_code"] == tracking_code:
                         order_shipping = i
                         break
-        except FileNotFoundError:
-            raise OrderManagementException("File not found")
-        except json.decoder.JSONDecodeError:
-            raise OrderManagementException("JSON has not the expected stucture")
+        except FileNotFoundError as fnf:
+            raise OrderManagementException("File not found") from fnf
+        except json.decoder.JSONDecodeError as jsonin:
+            raise OrderManagementException("JSON has not the expected stucture") from jsonin
         if not order_shipping:
             raise OrderManagementException("Tracking code not found in the database of requests")
         return order_shipping
 
 
     def deliver_product(self, tracking_code) -> str:
+        """
+        The date_signature is a string with the value described in AM-FR-03-I1
+        Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
+        On errors, returns a VaccineManagementException representing AM-RF -03-O3
+        """
         # The date_signature is a string with the value described in AM-FR-03-I1
         # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
         # On errors, returns a VaccineManagementException representing AM-RF -03-O3
@@ -356,20 +380,3 @@ class OrderManager:
                  == datetime.fromtimestamp(timestamp).date()):
             return True
         raise OrderManagementException("The product has not been delivered yet")
-
-
-if __name__ == "__main__":
-    a = OrderManager()
-
-    my_order = OrderManager()
-    my_tracking_code = my_order.send_product("../../JsonFiles/test_01_valid.json")
-
-    my_shipping = OrderShipping("8421691423220", "e01521684a7f9535e9fa098a2b86565f",
-                                "example@inf.uc3m.es", "REGULAR").tracking_code
-    print(my_shipping)
-    # Add an order to order_request.json
-    a.register_order("1234567890128", "PREMIUM", "Calle de las tinieblas 1", "123456789", "12345")
-    # Add an order to order_shipping.json
-    a.send_product("..//stores//Function2.json")
-    # Datetime check
-    a.deliver_product(my_tracking_code)
