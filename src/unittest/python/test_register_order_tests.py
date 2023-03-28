@@ -10,15 +10,16 @@ from datetime import datetime
 
 class MyTestCase(unittest.TestCase):
     """class for testing the register_order method"""
-    date = "2023-03-08" # wee could do this, to parametrize
-    __order_request_json_store: str = None
+    date = "2023-03-08" # we could do this, to parametrize
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(self) -> None:
         """setup class"""
         store_path = "../../main/python/stores"
         current_path = os.path.dirname(__file__)
-        cls.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
+        self.__order_request_json_store = os.path.join(current_path, store_path, "order_request.json")
+        with open(self.__order_request_json_store, "r", encoding="utf-8") as file:
+            self.a = file.read()
 
 
     def setUp(self) -> None:
@@ -32,6 +33,12 @@ class MyTestCase(unittest.TestCase):
         self._address = "C/LISBOA,4, MADRID, SPAIN"
         self._phone_number = "654314159"
         self._zip_code = "28005"
+
+
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write(self.a)
 
     ################################
     # PRODUCT ID VALIDATION TESTS #
