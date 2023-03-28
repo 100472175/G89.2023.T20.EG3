@@ -1,14 +1,23 @@
+"""
+Test 39 modified
+"""
+import os
 import os.path
 import unittest
-import os
 from uc3m_logistics import OrderManager, OrderManagementException
 from freezegun import freeze_time
 
 
-class MyTestCase(unittest.TestCase):
+class TestCase(unittest.TestCase):
+    """
+    test 39 modified class
+    """
 
     @freeze_time("2023-03-08")
     def test_39_modified(self):
+        """
+        Testcase test 39 modified
+        """
         current_path = os.path.dirname(__file__)
         current_path = current_path[:-34]
         json_path = "main/JsonFiles"
