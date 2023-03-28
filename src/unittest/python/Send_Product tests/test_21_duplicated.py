@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
 
         with self.assertRaises(OrderManagementException) as exception:
             OrderManager().send_product(current_path)
-            self.assertEqual(exception.exception.message, "JSON has not the expected stucture")
+        self.assertEqual(exception.exception.message, "Data in JSON has no valid values")
 
 if __name__ == "__main__":
     unittest.main()

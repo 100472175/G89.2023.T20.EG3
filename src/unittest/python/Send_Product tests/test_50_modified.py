@@ -14,9 +14,11 @@ class MyTestCase(unittest.TestCase):
         json_path = "main/JsonFiles"
         current_path = os.path.join(current_path, json_path, "test_50_modified.json")
 
-        with self.assertRaises(OrderManagementException) as exception:
-            OrderManager().send_product(current_path)
-            self.assertEqual(exception.exception.message, "The data of the json has no valid values")
+        with self.assertRaises(OrderManagementException) as hey:
+            a = OrderManager().send_product(current_path)
+        self.assertEqual(hey.exception.message, "Data in JSON has no valid values")
+        # self.assertEqual(exception.exception.message, "noup")
 
+        # self.assertEqual("True", "False")
 if __name__ == "__main__":
     unittest.main()
