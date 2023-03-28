@@ -188,7 +188,7 @@ class OrderManager:
         regex_found = None
         # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
-        patt2= r'[A-z0-9]+(\.?[A-z0-9]+)*'
+        patt2 = r'[A-z0-9]+(\.?[A-z0-9]+)*'
         match = re.finditer(pattern, data_og)
         for m in match:
             regex_found = m.group(0)
@@ -244,6 +244,8 @@ class OrderManager:
         match = re.finditer(pattern, data_og)
         for m in match:
             email = m.group(0)
+        email = email[:-1]
+
         # Redundant check for mail, as tested before
         if not email:
             raise OrderManagementException("Data in JSON has no valid values")
