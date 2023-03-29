@@ -42,28 +42,71 @@ class TrackingCodeSearcher(unittest.TestCase):
     """
     Class for testing all possible paths of function tracking_code_searcher
     """
-    def test_tracking_code_searcher_path1(self):
-        """
-        Valid Path A-B-C-E-G-H-G-H-I-J-K
-        """
-        my_order = OrderManager()
-        my_order.order_shipping_json_store = "aux_jsons/order_shipping.json"
-        with self.assertRaises(OrderManagementException) as hey:
-            my_order.tracking_code_searcher(
-                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-        self.assertEqual(hey.exception.message, "File not found")
+
+    def setUp(self) -> None:
+        self.my_order = OrderManager()
+        self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
+        set_issue_day(self.my_order, file_path)
+
     def test_tracking_code_searcher_path2(self):
         """
         Valid Path A-B-C-D
         """
-        my_order = OrderManager()
-        current_path = os.path.dirname(__file__)
-        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
-        my_order.order_shipping_json_store = file_path
+
+        self.my_order.order_shipping_json_store = "aux_jsons/order_shipping.json"
         with self.assertRaises(OrderManagementException) as hey:
-            my_order.tracking_code_searcher(
+            self.my_order.tracking_code_searcher(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message, "File not found")
+
+    def test_tracking_code_searcher_path3(self):
+        """
+        Valid Path A-B-C-E-F
+        """
+        self.my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path3.json"
+
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.tracking_code_searcher(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
         self.assertEqual(hey.exception.message, "JSON has not the expected structure")
+
+    def test_tracking_code_searcher_path4(self):
+        my_order = OrderManager()
+        my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path4.json"
+
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.tracking_code_searcher(
+                "fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message, "Tracking code not found in the database of requests")
+
+    def test_tracking_code_searcher_path5(self):
+        """
+        Valid Path A-B-C-E-F-G-H-I-J-K
+        """
+        self.my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path5.json"
+
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.tracking_code_searcher(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message, "JSON has not the expected structure")
+
+
+    def test_tracking_code_searcher_path6(self):
+        """
+        Valid path A-B-C-E-G-H-G-H-I-J-L
+        """
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.tracking_code_searcher(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d7775f277c28295b1e11aa0bfe")
+
+        self.assertEqual(hey.exception.message, "Tracking code not found in the database of requests")
+
+
+
+
 class DeliverProduct(unittest.TestCase):
     """
     Class for testing all possible paths of function deliver_product
@@ -71,7 +114,7 @@ class DeliverProduct(unittest.TestCase):
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
-        Valid Path A-B-C-E-G-H-G-H-I-J-K
+        Valid Path A-B-D
         """
         my_order = OrderManager()
         my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
@@ -84,11 +127,10 @@ class DeliverProduct(unittest.TestCase):
             my_order.deliver_product(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"), True)
 
-    def test_deliver_product_path2(self):
 
-    def test_deliver_product_path3(self):
+    def test_deliver_product_path2(self):
         """
-        Valid Path A-B-D-C
+        Valid Path A-B-C
         """
         my_order = OrderManager()
         current_path = os.path.dirname(__file__)

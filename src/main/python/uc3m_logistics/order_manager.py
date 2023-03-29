@@ -351,8 +351,10 @@ class OrderManager:
                         break
         except FileNotFoundError as fnf:
             raise OrderManagementException("File not found") from fnf
+        except KeyError as ke:
+            raise OrderManagementException("JSON has not the expected structure") from ke
         except json.decoder.JSONDecodeError as jsonin:
-            raise OrderManagementException("JSON has not the expected stucture") from jsonin
+            raise OrderManagementException("JSON has not the expected structure") from jsonin
         if not order_shipping:
             raise OrderManagementException("Tracking code not found in the database of requests")
         return order_shipping
@@ -371,10 +373,7 @@ class OrderManager:
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
 
-        print(str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9])
-        print(datetime.fromtimestamp(timestamp).date())
-        if tracking_code == order_shipping['tracking_code'] and \
-                (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
+        if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
                  == str(datetime.fromtimestamp(timestamp).date())):
             return True
         raise OrderManagementException("The product has not been delivered yet")
