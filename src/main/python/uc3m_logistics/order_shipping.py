@@ -21,7 +21,7 @@ class OrderShipping():
         #timestamp is represneted in seconds.microseconds
         #__delivery_day must be expressed in senconds to be added to the timestap
         self.__delivery_day = self.__issued_at + (delivery_days * 24 * 60 * 60)
-
+        print("NEW DELIVERY = " + str(self.__delivery_day))
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""
         # print(self.__alg + self.__type + self.__order_id + str(self.__issued_at) + str(self.__delivery_day))

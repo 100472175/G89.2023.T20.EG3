@@ -6,12 +6,7 @@ import unittest
 from uc3m_logistics import OrderManager,OrderManagementException
 from freezegun import freeze_time
 
-@freeze_time("2023-03-08")
-def set_issue_day(my_order, file_path):
-    """
-    Function for setting the order shipping when we want
-    """
-    my_order.send_product(file_path)
+
 class ValidateTrackingCode(unittest.TestCase):
     """
     Class for testing all possible paths of function validate tracking code
@@ -84,6 +79,7 @@ class TrackingCodeSearcher(unittest.TestCase):
         with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
 ################################################################################### CHECK THE TEST1 (ITERATE TWO TIMES)
+    @freeze_time("2023-03-08")
     def test_tracking_code_searcher_path1(self):
         """
         Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
@@ -171,7 +167,7 @@ class DeliverProduct(unittest.TestCase):
 
         current_path = os.path.dirname(__file__)
         self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
-        set_issue_day(self.my_order, self.file_path)
+        self.my_order.send_product(self.file_path)
 
 
     @freeze_time("2023-03-15")
@@ -180,7 +176,7 @@ class DeliverProduct(unittest.TestCase):
         Valid Path A-B-D
         """
         self.assertTrue(self.my_order.deliver_product(
-                "c6cc96f8f72d8680ac6e58b2ea3855f55ef468680352105f33eb1b04e71ee9b2"))
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"))
 
 
     def test_deliver_product_path2(self):
@@ -188,7 +184,7 @@ class DeliverProduct(unittest.TestCase):
         Valid Path A-B-C
         """
         my_order = OrderManager()
-        tracking_code = "db9b0d69207f3eebc0e77c24a42bdd8797be05deddf8adc3952038fcf6e23a84"
+        tracking_code = "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
         with self.assertRaises(OrderManagementException) as error:
             my_order.deliver_product(tracking_code)
 

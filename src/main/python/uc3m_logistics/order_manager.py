@@ -7,6 +7,7 @@ import math
 import os
 import json
 import re
+from freezegun import freeze_time
 # from order_request import OrderRequest
 # from order_management_exception import OrderManagementException
 # from order_shipping import OrderShipping
@@ -388,6 +389,7 @@ class OrderManager:
             raise OrderManagementException("JSON has not the expected structure") from jsonin
         if not order_shipping:
             raise OrderManagementException("Tracking code not found in the database of requests")
+        self.hash_checker(tracking_code)
         return order_shipping
 
     def deliver_product(self, tracking_code: str) -> bool:
@@ -401,12 +403,10 @@ class OrderManager:
         # On errors, returns a VaccineManagementException representing AM-RF -03-O3
         order_shipping = self.tracking_code_searcher(tracking_code)
 
-        #Comprobar el hash
-        self.hash_checker(tracking_code)
-
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
-
+        print((str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]))
+        print(str(datetime.fromtimestamp(timestamp).date()))
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
                  == str(datetime.fromtimestamp(timestamp).date())):
             # Guardar el json
@@ -437,14 +437,11 @@ class OrderManager:
                 raise OrderManagementException("Order id not found in the database of requests")
 
         #Comprobar el hash
+        freezer = freeze_time(datetime.timestamp(datetime.utcnow()))
+        freezer.start()
         prev_object_shipping = OrderShipping(object_shipping["product_id"], object["order_id"],
-                                             object_shipping["delivery_day"], object["order_type"])
-        print(prev_object_shipping.tracking_code)
-        print(object_shipping["product_id"])
-        print(object["order_id"])
-        print(object_shipping["delivery_day"])
-        print(object["order_type"])
-        print(tracking_code)
+                                             object_shipping["delivery_email"], object["order_type"])
+        freezer.stop()
         # prev_object_shipping = prev_object_shipping.tracking_code
         if prev_object_shipping.tracking_code == tracking_code:
             return True
