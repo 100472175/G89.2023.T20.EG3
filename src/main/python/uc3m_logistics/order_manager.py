@@ -212,7 +212,7 @@ class OrderManager:
 
     def total_validation(self, saved: dict):
         """
-        Validation of the parameters of the order
+        Validation of the parameters of the order (used for Function2)
         """
         self.validate_order_type(saved["order_type"])
         self.validate_address(saved["delivery_address"])
@@ -246,7 +246,7 @@ class OrderManager:
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("Input file has not Json format") from jsonin
 
-        # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
+        # Regular expression of our product objects
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?' \
                   r'\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
         match = re.finditer(pattern, str(data_og_json))
@@ -269,10 +269,10 @@ class OrderManager:
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("JSON has not the expected stucture") from jsonin
 
-        # print("hey", saved)
+        # In case data we want is not in order_request
         if not saved:
             raise OrderManagementException("Data in JSON has no valid values")
-
+        # Validate each element
         self.total_validation(saved)
 
         # Check the md5 code
