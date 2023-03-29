@@ -405,8 +405,6 @@ class OrderManager:
 
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
-        print((str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]))
-        print(str(datetime.fromtimestamp(timestamp).date()))
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
                  == str(datetime.fromtimestamp(timestamp).date())):
             # Guardar el json
@@ -436,33 +434,13 @@ class OrderManager:
             if not object:
                 raise OrderManagementException("Order id not found in the database of requests")
 
-        #Comprobar el hash
-        print(object_shipping["delivery_day"])
-        print(object_shipping["delivery_day"]-10)
         if object["order_type"] == "REGULAR":
             days = 7
         else:
             days = 1
         a = object_shipping["delivery_day"]-(days*24*60*60)
-        print(a)
-        print(datetime.fromtimestamp(a))
         b = str(datetime.fromtimestamp(a))[:-9]
-        print(b)
         freezer = freeze_time(b)
-        # print(datetime.timestamp(object_shipping["delivery_day"]-(7*24*60*60)))
-
-        print("##############TRAZA#################")
-
-        """if object["order_id"] == "REGULAR":
-            freezer = freeze_time(str(datetime.timestamp(object_shipping["delivery_day"]-(7*24*60*60))))
-        else:
-            freezer = freeze_time(str(datetime.timestamp(object_shipping["delivery_day"]-(1*24*60*60))))
-        print(freezer)
-        print(str(datetime.utcnow())[:-9])
-        print(datetime.timestamp(datetime.utcnow()))
-        print(object_shipping["issued_at"])"""
-        # freezer = freeze_time(object_shipping["issued_at"])
-        #freezer = freeze_time(str(datetime.timestamp(datetime.utcnow()))[:-9])
         freezer.start()
         prev_object_shipping = OrderShipping(object_shipping["product_id"], object["order_id"],
                                              object_shipping["delivery_email"], object["order_type"])

@@ -66,32 +66,26 @@ class TrackingCodeSearcher(unittest.TestCase):
         self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
         self.my_order.send_product(self.file_path)
 
-    def tearDown(self) -> None:
-        """Reset the json store"""
-        store_path = "../../main/python/stores"
-        current_path = os.path.dirname(__file__)
-        self.__order_request_json_store = os.path.join(current_path, store_path,
-                                                       "order_request.json")
-        self.__order_shipping_json_store = os.path.join(current_path, store_path,
-                                                        "order_shipping.json")
-        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
-            file.write("[]")
-        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
-            file.write("[]")
-################################################################################### CHECK THE TEST1 (ITERATE TWO TIMES)
     @freeze_time("2023-03-08")
     def test_tracking_code_searcher_path1(self):
         """
         Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
         """
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_tracking_code_searcher_path1.json")
+        self.my_order.send_product(self.file_path)
         my_track_code = self.my_order.tracking_code_searcher(
-            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-        self.assertEqual(my_track_code,{'delivery_day': 1678838400.0,
-                                        'delivery_email': '100472175@alumnos.uc3m.es',
-                                        'issued_at': 1678233600.0,
-                                        'order_id': 'e01521684a7f9535e9fa098a2b86565f',
-                                        'product_id': '8421691423220',
-                                        'tracking_code': '56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe'})
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        self.assertEqual(my_track_code,{"product_id": "8421691423220",
+                                        "order_id": "85472b176bfa29087aeb991f80385f6c",
+                                        "delivery_email": "example@alumnos.uc3m.es",
+                                        "issued_at": 1678233600.0,
+                                        "delivery_day": 1678320000.0,
+                                        "tracking_code":
+                                            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b"
+                                    })
     def test_tracking_code_searcher_path2(self):
         """
         Invalid Path A-B-C-D
@@ -169,6 +163,18 @@ class DeliverProduct(unittest.TestCase):
         self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
         self.my_order.send_product(self.file_path)
 
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        self.__order_request_json_store = os.path.join(current_path, store_path,
+                                                       "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path,
+                                                        "order_shipping.json")
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
 
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
