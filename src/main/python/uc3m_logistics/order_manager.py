@@ -404,7 +404,6 @@ class OrderManager:
         #Comprobar el hash
         self.hash_checker(tracking_code)
 
-
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
 
@@ -440,6 +439,12 @@ class OrderManager:
         #Comprobar el hash
         prev_object_shipping = OrderShipping(object_shipping["product_id"], object["order_id"],
                                              object_shipping["delivery_day"], object["order_type"])
+        print(prev_object_shipping.tracking_code)
+        print(object_shipping["product_id"])
+        print(object["order_id"])
+        print(object_shipping["delivery_day"])
+        print(object["order_type"])
+        print(tracking_code)
         # prev_object_shipping = prev_object_shipping.tracking_code
         if prev_object_shipping.tracking_code == tracking_code:
             return True

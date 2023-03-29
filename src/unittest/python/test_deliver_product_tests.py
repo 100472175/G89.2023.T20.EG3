@@ -6,7 +6,7 @@ import unittest
 from uc3m_logistics import OrderManager,OrderManagementException
 from freezegun import freeze_time
 
-@freeze_time("2023-03-01")
+@freeze_time("2023-03-08")
 def set_issue_day(my_order, file_path):
     """
     Function for setting the order shipping when we want
@@ -16,14 +16,29 @@ class ValidateTrackingCode(unittest.TestCase):
     """
     Class for testing all possible paths of function validate tracking code
     """
+    @freeze_time("2023-03-08")
     def setUp(self) -> None:
+
         self.my_order = OrderManager()
         self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
                                      "654314159", "28005")
+
         current_path = os.path.dirname(__file__)
         self.file_path = os.path.join(current_path, "aux_jsons", "test_validate_tracking_code.json")
-        set_issue_day(self.my_order, self.file_path)
+        self.my_order.send_product(self.file_path)
 
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        self.__order_request_json_store = os.path.join(current_path, store_path,
+                                                       "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path,
+                                                       "order_shipping.json")
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
     # VALIDATE TRACKING CODE #
     def test_validate_tracking_code_path1(self):
         """
@@ -46,14 +61,29 @@ class TrackingCodeSearcher(unittest.TestCase):
     Class for testing all possible paths of function tracking_code_searcher
     """
 
+    @freeze_time("2023-03-08")
     def setUp(self) -> None:
         self.my_order = OrderManager()
         self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
                                      "654314159", "28005")
-        current_path = os.path.dirname(__file__)
-        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
-        set_issue_day(self.my_order, file_path)
 
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
+        self.my_order.send_product(self.file_path)
+
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        self.__order_request_json_store = os.path.join(current_path, store_path,
+                                                       "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path,
+                                                        "order_shipping.json")
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+################################################################################### CHECK THE TEST1 (ITERATE TWO TIMES)
     def test_tracking_code_searcher_path1(self):
         """
         Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
@@ -61,11 +91,11 @@ class TrackingCodeSearcher(unittest.TestCase):
         my_track_code = self.my_order.tracking_code_searcher(
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
         self.assertEqual(my_track_code,{'delivery_day': 1678838400.0,
-                                        'delivery_email': 'example@inf.uc3m.es',
+                                        'delivery_email': '100472175@alumnos.uc3m.es',
                                         'issued_at': 1678233600.0,
                                         'order_id': 'e01521684a7f9535e9fa098a2b86565f',
                                         'product_id': '8421691423220',
-        'tracking_code': '56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe'})
+                                        'tracking_code': '56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe'})
     def test_tracking_code_searcher_path2(self):
         """
         Invalid Path A-B-C-D
@@ -132,21 +162,25 @@ class DeliverProduct(unittest.TestCase):
     """
     Class for testing all possible paths of function deliver_product
     """
+
+    @freeze_time("2023-03-08")
+    def setUp(self) -> None:
+        self.my_order = OrderManager()
+        self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
+        set_issue_day(self.my_order, self.file_path)
+
+
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
         Valid Path A-B-D
         """
-        my_order = OrderManager()
-        my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
-                                "654314159", "28005")
-        current_path = os.path.dirname(__file__)
-        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
-        set_issue_day(my_order, file_path)
-
-        self.assertEqual(
-            my_order.deliver_product(
-                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"), True)
+        self.assertTrue(self.my_order.deliver_product(
+                "c6cc96f8f72d8680ac6e58b2ea3855f55ef468680352105f33eb1b04e71ee9b2"))
 
 
     def test_deliver_product_path2(self):
