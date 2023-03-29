@@ -19,8 +19,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 14 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_14_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -33,8 +33,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 23 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_23_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -47,8 +47,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 41 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_41_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -61,8 +61,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 12 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_12_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -75,8 +75,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 33 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_33_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -89,8 +89,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 08 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_08_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -103,8 +103,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 16 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_16_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -117,8 +117,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 26 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_26_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -131,8 +131,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 28 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_28_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -145,8 +145,8 @@ class MyTestCase(unittest.TestCase):
         Code for checking testcase
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_46_modified.json")
 
         my_order = OrderManager()
@@ -162,8 +162,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 11 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_11_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -176,8 +176,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 11 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_11_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -190,8 +190,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 06 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_06_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -204,8 +204,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 44 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_44_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -218,8 +218,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 02 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_02_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -232,8 +232,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 15 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_15_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -246,8 +246,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 08 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_08_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -260,8 +260,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 07 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_07_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -274,8 +274,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 21 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_21_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -288,8 +288,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 16 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_16_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -302,8 +302,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 43 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_43_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -316,8 +316,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 22 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_22_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -330,8 +330,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 35 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_35_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -344,8 +344,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 45 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_45_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -358,8 +358,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 41 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_41_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -372,8 +372,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 50 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_50_modified.json")
 
         with self.assertRaises(OrderManagementException) as hey:
@@ -390,8 +390,8 @@ class MyTestCase(unittest.TestCase):
         """
 
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_02_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -404,8 +404,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 42 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_42_duplicated.json")
 
         my_order = OrderManager()
@@ -421,8 +421,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 39 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_39_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -435,8 +435,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 49 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_49_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -449,8 +449,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 29 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_29_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -463,8 +463,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 25 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_25_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -477,8 +477,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 21 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_21_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -491,8 +491,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 30 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_30_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -505,8 +505,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 18 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_18_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -519,8 +519,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 13 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_13_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -533,8 +533,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 24 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_24_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -547,8 +547,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 05 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_05_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -561,8 +561,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 47 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_47_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -575,8 +575,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 37 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_37_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -589,8 +589,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 43 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_43_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -603,8 +603,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 19 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_19_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -617,8 +617,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 27 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_27_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -631,8 +631,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 10 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_10_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -645,8 +645,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 20 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_20_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -659,8 +659,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 24 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_24_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -673,8 +673,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 46 modifiedNV
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_46_modifiedNV.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -687,8 +687,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 15 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_15_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -701,8 +701,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 22 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_22_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -715,8 +715,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 23 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_23_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -729,8 +729,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 09 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_09_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -743,8 +743,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 40 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_40_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -757,8 +757,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 27 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_27_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -771,8 +771,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 18 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_18_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -785,8 +785,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 44 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_44_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -799,8 +799,8 @@ class MyTestCase(unittest.TestCase):
         Function 1
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_01_valid.json")
 
         my_order = OrderManager()
@@ -816,8 +816,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 04 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_04_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -830,8 +830,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 32 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_32_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -844,8 +844,8 @@ class MyTestCase(unittest.TestCase):
         Code for checking testcase
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_40_duplicated.json")
 
         my_order = OrderManager()
@@ -861,8 +861,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 31 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_31_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -875,8 +875,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 03 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_03_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -889,8 +889,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 28 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_28_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -903,8 +903,8 @@ class MyTestCase(unittest.TestCase):
         Code for function
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_48_modified.json")
 
         my_order = OrderManager()
@@ -920,8 +920,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 14 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_14_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -934,8 +934,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 03 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_03_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -948,8 +948,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 38 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_38_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -962,8 +962,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 12 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_12_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -976,8 +976,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 25 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_25_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -990,8 +990,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 10 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_10_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1004,8 +1004,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 29 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_29_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1018,8 +1018,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 17 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_17_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1032,8 +1032,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 13 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_13_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1046,8 +1046,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 04 duplicated
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_04_duplicated.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1060,8 +1060,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 20 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_20_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1074,8 +1074,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 17 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_17_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1088,8 +1088,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 48 modifiedNV
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_48_modifiedNV.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1102,8 +1102,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 42 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_42_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1116,8 +1116,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 06 deleted
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_06_deleted.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1130,8 +1130,8 @@ class MyTestCase(unittest.TestCase):
         Testcase test 34 modified
         """
         current_path = os.path.dirname(__file__)
-        current_path = current_path[:-34]
-        json_path = "main/JsonFiles"
+
+        json_path = "aux_jsons"
         current_path = os.path.join(current_path, json_path, "test_34_modified.json")
 
         with self.assertRaises(OrderManagementException) as exception:
@@ -1139,5 +1139,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(exception.exception.message, "Data in JSON has no valid values")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
