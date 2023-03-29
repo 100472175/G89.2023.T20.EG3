@@ -47,25 +47,33 @@ class OrderManager:
                 This function validates the EAN13 code.
                 :param eAn13:
         """
+        # Check if its the correct type
         if not isinstance(ean13, str):
             raise OrderManagementException("Product Id not valid, id must be a string")
+        # Check ean13 shorter than expected
         if len(ean13) < 13:
             raise OrderManagementException("Product Id not valid, id too short")
+        # Check ean13 longer than expected
         if len(ean13) > 13:
             raise OrderManagementException("Product Id not valid, id too long")
+        # Knowing it can be an 13, the last direct check is if its made by numbers
         if ean13.isdigit() is False:
             raise OrderManagementException("Product Id not valid, id must be numeric")
-
+        # Validation for the 13 character long string of numbers
         check_sum: int = 0
         for i in range(len(ean13) - 1):
             current_number = int(ean13[i])
+            # Odd numbers * 3
             if i % 2 != 0:
                 check_sum += current_number * 3
             else:
                 check_sum += current_number
+        # Round and get the expected number
         difference = 10 * math.ceil(check_sum / 10) - check_sum
+        # In case it is, we have an EAN13
         if int(ean13[-1]) == difference:
             return True
+        # Else an error
         raise OrderManagementException("Product Id not valid, invalid EAN13 code")
 
     @staticmethod
@@ -73,11 +81,14 @@ class OrderManager:
         """
         Function that validates the order type
         """
+        # Check type of order_type
         if not isinstance(order_type, str):
             raise OrderManagementException("Type of the order_type is not valid, must be a STRING")
+        # Array of possible solutions
         valid = ["REGULAR", "PREMIUM"]
         if order_type in valid:
             return True
+        # If the string must be in uppercase
         if order_type.upper() != order_type:
             raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
         raise OrderManagementException("Order type not valid, must be REGULAR or PREMIUM")
@@ -87,17 +98,23 @@ class OrderManager:
         """
         Function that validates the adress
         """
+        # Check type of address
         if not isinstance(address, str):
             raise OrderManagementException("Address not valid, must be a string")
+        # Redundant if but just in case
         if isinstance(address, str):
+            # Must be shorter than 100 characters
             if len(address) <= 100:
+                # And longer than 20
                 if len(address) > 20:
+                    # As well as having at least one space
                     if " " in address:
                         addres_list = address.split(" ")
                         if len(addres_list) > 1:
                             return True
                         raise OrderManagementException("Address not valid")
                     raise OrderManagementException("Address not valid, must have a space")
+                # Message done this way because if not pylint gives line too long error
                 message = "Address not valid, must have more than 20 characters"
                 raise OrderManagementException(message)
             raise OrderManagementException("Address not valid, must have less than 100 characters")
@@ -108,12 +125,17 @@ class OrderManager:
         """
         Function that validates the phone number
         """
+        # Check type of phone_number
         if not isinstance(phone_number, str):
             raise OrderManagementException("Phone number not valid, must be numeric ")
+        # Redundant if just in case
         if isinstance(phone_number, str):
+            # It must be a number
             if phone_number.isdigit():
+                # With exactly nine digits
                 if len(phone_number) == 9:
                     return True
+                # Otherwise
                 if len(phone_number) > 9:
                     message = "Phone number not valid, must have less than 10 characters"
                     raise OrderManagementException(message)
@@ -121,6 +143,7 @@ class OrderManager:
                     message = "Phone number not valid, must have more than 8 characters"
                     raise OrderManagementException(message)
                 raise OrderManagementException("Phone number not valid, must have 9 characters")
+            # In case it starts by +34 (spain) we also pass it as valid
             if len(phone_number) == 12 and phone_number[0:3] == "+34":
                 if phone_number[3:].isdigit():
                     return True
@@ -133,19 +156,27 @@ class OrderManager:
         """
         Function that validates the zip_code
         """
+        # Check zip_code type
         if not isinstance(zip_code, str):
             message = "Zip code not valid, must be numeric in the range {01000-52999}"
             raise OrderManagementException(message)
+        # Check it's contents are numbers
         if zip_code.isdigit():
+            # Exact length
+            # (different digits are unnecessary but we wanted to give more detailed errors)
             if len(zip_code) == 5:
+                # In Spain doesnt exists less than 1000
                 if int(zip_code) < 1000:
                     message = "Zip code not valid, must be greater or equal than 01000"
                     raise OrderManagementException(message)
+                # The same happens with more than 53000
                 if int(zip_code) >= 53000:
                     raise OrderManagementException("Zip code not valid, must be less than 53000")
                 return True
+            # Bigger with more than 5 digits
             if len(zip_code) > 5:
                 raise OrderManagementException("Zip code not valid, must have less than 6 digits")
+            # Shorter with less than 5 digits
             if len(zip_code) < 5:
                 message = "Zip code not valid, must have more than 4 digits"
                 raise OrderManagementException(message)
@@ -158,7 +189,7 @@ class OrderManager:
         Returns a string representing AM-FR-01-O1
         On errors, returns a VaccineManagementException according to AM-FR-01-O2
         """
-
+        # Validate each element received
         self.validate_order_type(order_type)
         self.validate_address(address)
         self.validate_phone_number(phone_number)
@@ -181,7 +212,7 @@ class OrderManager:
 
     def total_validation(self, saved: dict):
         """
-        Validation of the parameters of the order
+        Validation of the parameters of the order (used for Function2)
         """
         self.validate_order_type(saved["order_type"])
         self.validate_address(saved["delivery_address"])
@@ -215,7 +246,7 @@ class OrderManager:
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("Input file has not Json format") from jsonin
 
-        # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
+        # Regular expression of our product objects
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?' \
                   r'\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
         match = re.finditer(pattern, str(data_og_json))
@@ -238,10 +269,10 @@ class OrderManager:
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("JSON has not the expected stucture") from jsonin
 
-        # print("hey", saved)
+        # In case data we want is not in order_request
         if not saved:
             raise OrderManagementException("Data in JSON has no valid values")
-
+        # Validate each element
         self.total_validation(saved)
 
         # Check the md5 code
@@ -351,8 +382,8 @@ class OrderManager:
                         break
         except FileNotFoundError as fnf:
             raise OrderManagementException("File not found") from fnf
-        except KeyError as key_error:
-            raise OrderManagementException("JSON has not the expected structure") from key_error
+        except KeyError as k_e:
+            raise OrderManagementException("JSON has not the expected structure") from k_e
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("JSON has not the expected structure") from jsonin
         if not order_shipping:
