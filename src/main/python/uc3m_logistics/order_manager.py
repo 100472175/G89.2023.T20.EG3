@@ -7,9 +7,9 @@ import math
 import os
 import json
 import re
-#from order_request import OrderRequest
-#from order_management_exception import OrderManagementException
-#from order_shipping import OrderShipping
+# from order_request import OrderRequest
+# from order_management_exception import OrderManagementException
+# from order_shipping import OrderShipping
 from datetime import datetime
 from .order_request import OrderRequest
 from .order_management_exception import OrderManagementException
@@ -179,7 +179,7 @@ class OrderManager:
 
         return my_order_object.order_id
 
-    def total_validation(self, saved):
+    def total_validation(self, saved: dict):
         """
         Validation of the parameters of the order
         """
@@ -189,7 +189,7 @@ class OrderManager:
         self.validate_zip_code(saved["zip_code"])
         self.validate_ean13(saved["product_id"])
 
-    def send_product(self, input_file) -> str:
+    def send_product(self, input_file: str) -> str:
         """
         The input file is a string with the file path described in AM-FR-02-I1,
         OrderID and ContactEmail
@@ -215,8 +215,6 @@ class OrderManager:
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("Input file has not Json format") from jsonin
 
-
-
         # pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?' \
                   r'\'[A-z0-9.-]+@[A-z0-9]+(\.?[A-z0-9]+)*\.[a-zA-Z]{1,3}\'}'
@@ -225,7 +223,6 @@ class OrderManager:
             ords[1] = element.group(0)
         if not ords[1]:
             raise OrderManagementException("Data in JSON has no valid values")
-
 
         saved = None
         # Check the data has not been modified
@@ -266,7 +263,7 @@ class OrderManager:
 
         return tracking_code
 
-    def process_data(self, data, ords, saved):
+    def process_data(self, data: dict, ords: list, saved: None):
         """
         Process the data from the file
         """
@@ -286,7 +283,7 @@ class OrderManager:
                     break
         return data, ords, saved
 
-    def checker_checker(self, saved, ords):
+    def checker_checker(self, saved: dict, ords: list):
         """
         Checks weather the information from the order_request file has been modified
         """
@@ -301,7 +298,7 @@ class OrderManager:
         if checker != ords[0]:
             raise OrderManagementException("The data has been modified")
 
-    def find_email(self, data_og_json) -> str:
+    def find_email(self, data_og_json: dict | list) -> str:
         """
         Finds the email in the string that is the JSON
         """
@@ -317,7 +314,7 @@ class OrderManager:
             raise OrderManagementException("Data in JSON has no valid values")
         return email
 
-    def saving_to_file(self, order_shipping):
+    def saving_to_file(self, order_shipping: OrderShipping) -> None:
         """
         Saves the order_shipping into the file order_shipping.json
         """
@@ -330,7 +327,7 @@ class OrderManager:
         except FileNotFoundError as fnf:
             raise OrderManagementException("Order file has not been found") from fnf
 
-    def validate_tracking_code(self, sha256):
+    def validate_tracking_code(self, sha256: str) -> None:
         """
         Validates the sha-256 tracking code
         """
@@ -339,7 +336,7 @@ class OrderManager:
         if not match:
             raise OrderManagementException("Internal processing error")
 
-    def tracking_code_searcher(self, tracking_code) -> str:
+    def tracking_code_searcher(self, tracking_code: str) -> dict:
         """
         Searches the tracking code in the file order_shipping.json
         """
@@ -360,8 +357,7 @@ class OrderManager:
             raise OrderManagementException("Tracking code not found in the database of requests")
         return order_shipping
 
-
-    def deliver_product(self, tracking_code) -> str:
+    def deliver_product(self, tracking_code: str) -> bool:
         """
         The date_signature is a string with the value described in AM-FR-03-I1
         Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
