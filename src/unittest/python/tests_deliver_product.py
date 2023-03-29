@@ -8,6 +8,9 @@ from freezegun import freeze_time
 
 @freeze_time("2023-03-01")
 def set_issue_day(my_order, file_path):
+    """
+    Function for setting the order shipping when we want
+    """
     my_order.send_product(file_path)
 class ValidateTrackingCode(unittest.TestCase):
     """
@@ -62,10 +65,10 @@ class TrackingCodeSearcher(unittest.TestCase):
                                         'issued_at': 1678233600.0,
                                         'order_id': 'e01521684a7f9535e9fa098a2b86565f',
                                         'product_id': '8421691423220',
-                                        'tracking_code': '56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe'})
+        'tracking_code': '56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe'})
     def test_tracking_code_searcher_path2(self):
         """
-        Valid Path A-B-C-D
+        Invalid Path A-B-C-D
         """
         self.my_order.order_shipping_json_store = "aux_jsons/order_shipping.json"
         with self.assertRaises(OrderManagementException) as hey:
@@ -75,7 +78,7 @@ class TrackingCodeSearcher(unittest.TestCase):
 
     def test_tracking_code_searcher_path3(self):
         """
-        Valid Path A-B-C-E-F
+        Invalid Path A-B-C-E-F
         """
         self.my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path3.json"
 
@@ -85,17 +88,21 @@ class TrackingCodeSearcher(unittest.TestCase):
         self.assertEqual(hey.exception.message, "JSON has not the expected structure")
 
     def test_tracking_code_searcher_path4(self):
+        """
+        Invalid Path A-B-C-E-G-J-K
+        """
         my_order = OrderManager()
         my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path4.json"
 
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.tracking_code_searcher(
                 "fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-        self.assertEqual(hey.exception.message, "Tracking code not found in the database of requests")
+        self.assertEqual(hey.exception.message,
+                         "Tracking code not found in the database of requests")
 
     def test_tracking_code_searcher_path5(self):
         """
-        Valid Path A-B-C-E-F-G-H-I-J-K
+        Invalid Path A-B-C-E-F-G-H-I-J-K
         """
         self.my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path5.json"
 
@@ -107,13 +114,13 @@ class TrackingCodeSearcher(unittest.TestCase):
 
     def test_tracking_code_searcher_path6(self):
         """
-        Valid path A-B-C-E-G-H-G-H-I-J-L
+        Invalid path A-B-C-E-G-H-G-H-I-J-L
         """
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.tracking_code_searcher(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d7775f277c28295b1e11aa0bfe")
-
-        self.assertEqual(hey.exception.message, "Tracking code not found in the database of requests")
+        self.assertEqual(hey.exception.message,
+                         "Tracking code not found in the database of requests")
 
 
 
@@ -144,8 +151,6 @@ class DeliverProduct(unittest.TestCase):
         Valid Path A-B-C
         """
         my_order = OrderManager()
-        current_path = os.path.dirname(__file__)
-        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
         tracking_code = "db9b0d69207f3eebc0e77c24a42bdd8797be05deddf8adc3952038fcf6e23a84"
         with self.assertRaises(OrderManagementException) as error:
             my_order.deliver_product(tracking_code)
