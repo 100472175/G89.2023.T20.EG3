@@ -371,8 +371,10 @@ class OrderManager:
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
 
+        print(str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9])
+        print(datetime.fromtimestamp(timestamp).date())
         if tracking_code == order_shipping['tracking_code'] and \
-                (datetime.fromtimestamp(order_shipping['delivery_day'])
-                 == datetime.fromtimestamp(timestamp).date()):
+                (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
+                 == str(datetime.fromtimestamp(timestamp).date())):
             return True
         raise OrderManagementException("The product has not been delivered yet")

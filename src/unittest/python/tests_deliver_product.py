@@ -6,8 +6,8 @@ import unittest
 from uc3m_logistics import OrderManager,OrderManagementException
 from freezegun import freeze_time
 
-@freeze_time("2023-03-08")
-def set_issue_day(my_order,file_path):
+@freeze_time("2023-03-01")
+def set_issue_day(my_order, file_path):
     my_order.send_product(file_path)
 class ValidateTrackingCode(unittest.TestCase):
     """
@@ -22,7 +22,7 @@ class ValidateTrackingCode(unittest.TestCase):
         my_order = OrderManager()
         my_order.validate_tracking_code(
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-    @freeze_time("2025-03-20")
+    @freeze_time("2023-03-08")
     def test_validate_tracking_code_path2(self):
         """
         Invalid tracking code Path A-B-C
@@ -32,7 +32,7 @@ class ValidateTrackingCode(unittest.TestCase):
                                 "654314159", "28005")
         current_path = os.path.dirname(__file__)
         file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
-        set_issue_day(my_order,file_path)
+        set_issue_day(my_order, file_path)
         with self.assertRaises(OrderManagementException) as hey:
             my_order.validate_tracking_code(
                 "56df104b603f55548cdf5fff4bfe")
@@ -68,12 +68,38 @@ class DeliverProduct(unittest.TestCase):
     """
     Class for testing all possible paths of function deliver_product
     """
+    @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
         Valid Path A-B-C-E-G-H-G-H-I-J-K
         """
-        return OrderManager.deliver_product(
-            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        my_order = OrderManager()
+        my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
+        set_issue_day(my_order, file_path)
+
+        self.assertEqual(
+            my_order.deliver_product(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"), True)
+
+    def test_deliver_product_path2(self):
+
+    def test_deliver_product_path3(self):
+        """
+        Valid Path A-B-D-C
+        """
+        my_order = OrderManager()
+        current_path = os.path.dirname(__file__)
+        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
+        tracking_code = "db9b0d69207f3eebc0e77c24a42bdd8797be05deddf8adc3952038fcf6e23a84"
+        with self.assertRaises(OrderManagementException) as error:
+            my_order.deliver_product(tracking_code)
+
+        self.assertEqual(error.exception.message, "The product has not been delivered yet")
+
+
 
 
 if __name__ == '__main__':
