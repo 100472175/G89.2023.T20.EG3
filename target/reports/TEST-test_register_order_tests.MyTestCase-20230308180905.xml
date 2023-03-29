@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="test_register_order_tests.MyTestCase-20230308180905" tests="1" file="test_register_order_tests.py" time="0.026" timestamp="2023-03-08T18:09:06" failures="0" errors="0" skipped="0">
-	<testcase classname="test_register_order_tests.MyTestCase" name="test_something" time="0.026" timestamp="2023-03-08T18:09:06"/>
-</testsuite>
