@@ -13,28 +13,28 @@ class ValidateTrackingCode(unittest.TestCase):
     """
     Class for testing all possible paths of function validate tracking code
     """
+    def setUp(self) -> None:
+        self.my_order = OrderManager()
+        self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        file_path = os.path.join(current_path, "aux_jsons", "test_validate_tracking_code.json")
+        set_issue_day(self.my_order, file_path)
 
     # VALIDATE TRACKING CODE #
     def test_validate_tracking_code_path1(self):
         """
         Valid tracking code Path A-B
         """
-        my_order = OrderManager()
-        my_order.validate_tracking_code(
+        self.my_order.validate_tracking_code(
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
     @freeze_time("2023-03-08")
     def test_validate_tracking_code_path2(self):
         """
         Invalid tracking code Path A-B-C
         """
-        my_order = OrderManager()
-        my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
-                                "654314159", "28005")
-        current_path = os.path.dirname(__file__)
-        file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
-        set_issue_day(my_order, file_path)
         with self.assertRaises(OrderManagementException) as hey:
-            my_order.validate_tracking_code(
+            self.my_order.validate_tracking_code(
                 "56df104b603f55548cdf5fff4bfe")
         self.assertEqual(hey.exception.message, "Internal processing error")
 
@@ -51,11 +51,22 @@ class TrackingCodeSearcher(unittest.TestCase):
         file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
         set_issue_day(self.my_order, file_path)
 
+    def test_tracking_code_searcher_path1(self):
+        """
+        Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
+        """
+        my_track_code = self.my_order.tracking_code_searcher(
+            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(my_track_code,{'delivery_day': 1678838400.0,
+                                        'delivery_email': 'example@inf.uc3m.es',
+                                        'issued_at': 1678233600.0,
+                                        'order_id': 'e01521684a7f9535e9fa098a2b86565f',
+                                        'product_id': '8421691423220',
+                                        'tracking_code': '56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe'})
     def test_tracking_code_searcher_path2(self):
         """
         Valid Path A-B-C-D
         """
-
         self.my_order.order_shipping_json_store = "aux_jsons/order_shipping.json"
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.tracking_code_searcher(
