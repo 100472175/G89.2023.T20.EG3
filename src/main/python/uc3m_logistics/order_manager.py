@@ -370,10 +370,13 @@ class OrderManager:
         # On errors, returns a VaccineManagementException representing AM-RF -03-O3
         order_shipping = self.tracking_code_searcher(tracking_code)
 
+        #Comprobar el hash
+
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
 
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
                  == str(datetime.fromtimestamp(timestamp).date())):
+            # Gardar el json
             return True
         raise OrderManagementException("The product has not been delivered yet")
