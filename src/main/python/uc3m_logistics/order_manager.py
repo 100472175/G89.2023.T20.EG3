@@ -24,15 +24,15 @@ class OrderManager:
         current = os.path.dirname(__file__)
 
         self.__order_request_json_store = os.path.join(current, st_path, "order_request.json")
-        self.__order_shipping_json_store = os.path.join(current, st_path, "order_shipping.json")
+        self.order_shipping_json_store = os.path.join(current, st_path, "order_shipping.json")
         self.__order_delivery_json_store = os.path.join(current, st_path, "order_delivery.json")
         # Create file if it doesn't exist and initialize it with an empty list
         try:
             if not os.path.exists(self.__order_request_json_store):
                 with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
                     file.write("[]")
-            if not os.path.exists(self.__order_shipping_json_store):
-                with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            if not os.path.exists(self.order_shipping_json_store):
+                with open(self.order_shipping_json_store, "w", encoding="utf-8") as file:
                     file.write("[]")
             if not os.path.exists(self.__order_delivery_json_store):
                 with open(self.__order_delivery_json_store, "w", encoding="utf-8") as file:
@@ -298,7 +298,7 @@ class OrderManager:
         if checker != ords[0]:
             raise OrderManagementException("The data has been modified")
 
-    def find_email(self, data_og_json: dict | list) -> str:
+    def find_email(self, data_og_json: dict or list) -> str:
         """
         Finds the email in the string that is the JSON
         """
@@ -319,7 +319,7 @@ class OrderManager:
         Saves the order_shipping into the file order_shipping.json
         """
         try:
-            with open(self.__order_shipping_json_store, "r+", encoding="utf-8") as file:
+            with open(self.order_shipping_json_store, "r+", encoding="utf-8") as file:
                 data = json.load(file)
                 data.append(order_shipping.to_json())
                 file.seek(0)
@@ -343,7 +343,7 @@ class OrderManager:
         order_shipping = None
         try:
             self.validate_tracking_code(tracking_code)
-            with open(self.__order_shipping_json_store, "r", encoding="UTF-8") as database:
+            with open(self.order_shipping_json_store, "r", encoding="UTF-8") as database:
                 data = json.load(database)
                 for i in data:
                     if i["tracking_code"] == tracking_code:
