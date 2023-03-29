@@ -402,12 +402,46 @@ class OrderManager:
         order_shipping = self.tracking_code_searcher(tracking_code)
 
         #Comprobar el hash
+        self.hash_checker(tracking_code)
+
 
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
 
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
                  == str(datetime.fromtimestamp(timestamp).date())):
-            # Gardar el json
+            # Guardar el json
             return True
         raise OrderManagementException("The product has not been delivered yet")
+
+    def hash_checker(self, tracking_code: str) -> None:
+        """
+        Checks the hash of the order_shipping
+        """
+        object_shipping = None
+        with open(self.order_shipping_json_store, "r", encoding="UTF-8") as database:
+            data = json.load(database)
+            for i in data:
+                if i["tracking_code"] == tracking_code:
+                    object_shipping = i
+                    break
+            if not object_shipping:
+                raise OrderManagementException("Tracking code not found in the database of requests")
+        object = None
+        with open(self.__order_request_json_store, "r", encoding="UTF-8") as database:
+            data = json.load(database)
+            for i in data:
+                if i["order_id"] == object_shipping["order_id"]:
+                    object = i
+                    break
+            if not object:
+                raise OrderManagementException("Order id not found in the database of requests")
+
+        #Comprobar el hash
+        prev_object_shipping = OrderShipping(object_shipping["product_id"], object["order_id"],
+                                             object_shipping["delivery_day"], object["order_type"])
+        # prev_object_shipping = prev_object_shipping.tracking_code
+        if prev_object_shipping.tracking_code == tracking_code:
+            return True
+        else:
+            raise OrderManagementException("The data has been modified")

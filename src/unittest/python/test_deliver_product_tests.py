@@ -158,7 +158,7 @@ class DeliverProduct(unittest.TestCase):
         with self.assertRaises(OrderManagementException) as error:
             my_order.deliver_product(tracking_code)
 
-        self.assertEqual(error.exception.message, "The product has not been delivered yet")
+        self.assertEqual(error.exception.message, "The data has been modified")
 
 
 
