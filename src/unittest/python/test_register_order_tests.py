@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         self.__order_request_json_store = os.path.join(current_path, store_path,
                                                        "order_request.json")
         with open(self.__order_request_json_store, "r", encoding="utf-8") as file:
-            self.a = file.read()
+            self.back = file.read()
 
 
     def setUp(self) -> None:
@@ -37,7 +37,7 @@ class MyTestCase(unittest.TestCase):
     def tearDown(self) -> None:
         """Reset the json store"""
         with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
-            file.write(self.a)
+            file.write(self.back)
 
     ################################
     # PRODUCT ID VALIDATION TESTS #

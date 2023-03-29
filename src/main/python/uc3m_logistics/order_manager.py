@@ -351,8 +351,8 @@ class OrderManager:
                         break
         except FileNotFoundError as fnf:
             raise OrderManagementException("File not found") from fnf
-        except KeyError as ke:
-            raise OrderManagementException("JSON has not the expected structure") from ke
+        except KeyError as key_error:
+            raise OrderManagementException("JSON has not the expected structure") from key_error
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("JSON has not the expected structure") from jsonin
         if not order_shipping:
