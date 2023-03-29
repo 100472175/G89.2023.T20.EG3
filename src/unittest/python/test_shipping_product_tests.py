@@ -13,11 +13,58 @@ class MyTestCase(unittest.TestCase):
     Tests class
     """
 
+    def setUp(self) -> None:
+        data = '[\n' \
+            '    {\n' \
+            '        "order_id": "e01521684a7f9535e9fa098a2b86565f",\n' \
+            '        "product_id": "8421691423220",\n' \
+            '        "order_type": "REGULAR",\n' \
+            '        "delivery_address": "C/LISBOA,4, MADRID, SPAIN",\n' \
+            '        "phone_number": "654314159",\n' \
+            '        "zip_code": "28005",\n' \
+            '        "time_stamp": 1678233600.0\n' \
+            '    },\n' \
+            '    {\n' \
+            '        "order_id": "b862730281f9a9701d5fdbdbdb11d0f4",\n' \
+            '        "product_id": "1234567890128",\n' \
+            '        "order_type": "PREMIUM",\n' \
+            '        "delivery_address": "Calle de las tinieblas 1",\n' \
+            '        "phone_number": "123456789",\n' \
+            '        "zip_code": "12345",\n' \
+            '        "time_stamp": 1679903693.84756\n' \
+            '    }]'
+
+        current = os.path.dirname(__file__)
+        current = current[:-19]
+        current = os.path.join(current, "src", "main", "python", "stores")
+        # st_path = "/main/JsonFiles/aux_jsons"
+
+        # current = current[:-32]
+        self.order_request_json_store = os.path.join(current, "order_request.json")
+        self.order_shipping_json_store = os.path.join(current, "order_shipping.json")
+        with open(self.order_request_json_store, "w", encoding="UTF-8") as outfile:
+            outfile.write("[]")
+        with open(self.order_request_json_store, "w", encoding="UTF-8") as outfile:
+            outfile.write(data)
+
+    def tearDown(self) -> None:
+        """
+        Tear down
+        """
+        os.remove(self.order_request_json_store)
+        os.remove(self.order_shipping_json_store)
+        with open(self.order_request_json_store, "w", encoding="UTF-8") as outfile:
+            outfile.write("[]")
+        with open(self.order_shipping_json_store, "w", encoding="UTF-8") as outfile:
+            outfile.write("[]")
+
+
     @freeze_time("2023-03-08")
     def test_14_deleted(self):
         """
         Testcase test 14 deleted
         """
+
         current_path = os.path.dirname(__file__)
 
         json_path = "aux_jsons"
