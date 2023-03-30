@@ -39,6 +39,10 @@ class OrderManager:
         except FileNotFoundError as exception:
             raise OrderManagementException("Error creating the stores") from exception
 
+    #######################################
+    ### Function 1 - Order registration ###
+    #######################################
+
     @staticmethod
     def validate_ean13(ean13: str):
         """
@@ -208,6 +212,10 @@ class OrderManager:
 
         return my_order_object.order_id
 
+    #################################
+    ### Function 2 - Send Product ###
+    #################################
+
     def total_validation(self, saved: dict):
         """
         Validation of the parameters of the order (used for Function2)
@@ -356,6 +364,10 @@ class OrderManager:
         except FileNotFoundError as fnf:
             raise OrderManagementException("Order file has not been found") from fnf
 
+    #############################
+    ### Function 3 - delivery ###
+    #############################
+
     def validate_tracking_code(self, sha256: str) -> None:
         """
         Validates the sha-256 tracking code
@@ -402,7 +414,7 @@ class OrderManager:
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
-                 == str(datetime.fromtimestamp(timestamp).date())):
+                == str(datetime.fromtimestamp(timestamp).date())):
             my_product = {
                 "tracking_code": tracking_code,
                 "timestamp": timestamp
@@ -416,7 +428,7 @@ class OrderManager:
             return True
         raise OrderManagementException("The product has not been delivered yet")
 
-    def hash_checker(self, tracking_code: str,object_shipping: dict) -> None:
+    def hash_checker(self, tracking_code: str, object_shipping: dict) -> None:
         """
         Checks the hash of the order_shipping
         """
