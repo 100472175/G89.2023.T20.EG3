@@ -67,12 +67,23 @@ class hashchecker(unittest.TestCase):
         self.my_order.send_product(self.file_path)
         self.my_order_shipping = self.my_order.tracking_code_searcher("56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
 
-
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        self.__order_request_json_store = os.path.join(current_path, store_path,
+                                                       "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path,
+                                                       "order_shipping.json")
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
 
     @freeze_time("2023-03-08")
     def test_hash_checker_path1(self): # iterate twice
         """
-        Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
+        Valid tracking code Path A-C-E-F-E-F-G-H-J-L-M-N-O
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
                                      "654314159", "28005")
@@ -85,7 +96,7 @@ class hashchecker(unittest.TestCase):
         self.assertTrue(my_track_code)
     def test_hash_checker_path2(self): # order_request not found
         """
-        Invalid Path A-B-C-D
+        Invalid Path A-B
         """
         self.my_order.order_request_json_store = "aux_jsons/order_request.json"
         with self.assertRaises(OrderManagementException) as hey:
@@ -95,7 +106,7 @@ class hashchecker(unittest.TestCase):
 
     def test_hash_checker_path3(self): # Error loading data
         """
-        Invalid Path A-B-C-E-F
+        Invalid Path A-C-D
         """
         current_path = os.path.dirname(__file__)
         self.my_order.order_request_json_store = os.path.join(current_path, "aux_jsons", "test_hash_checker_path3.json")
@@ -106,7 +117,7 @@ class hashchecker(unittest.TestCase):
 
     def test_hash_checker_path4(self):  # no data in order_request
         """
-        Invalid Path A-B-C-E-G-J-K
+        Invalid Path A-C-E-H-I
         """
         self.my_order.order_request_json_store = "aux_jsons/test_tracking_code_searcher_path4.json"
 
@@ -118,7 +129,7 @@ class hashchecker(unittest.TestCase):
 
     def test_hash_checker_path5(self):  # loop once
         """
-        Invalid Path A-B-C-E-F-G-H-I-J-K
+        Valid Path A-C-E-F-G-H-J-K-M-N-O
         """
         my_order_shipping = self.my_order.tracking_code_searcher(
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
@@ -128,7 +139,7 @@ class hashchecker(unittest.TestCase):
 
     def test_hash_checker_path6(self):  # Not in loop (ni idea de como hacer que el tracking code este bien pero no lo encuentre en el order_request
         """
-        Invalid path A-B-C-E-G-H-G-H-I-J-L # ESTE CREO Q TENDREMOS Q MODIFICAR LOS DATOS MANUEALMENTE
+        Invalid path A-C-E-F-G-H-I # ESTE CREO Q TENDREMOS Q MODIFICAR LOS DATOS MANUEALMENTE
                                             PERO ESPERAME ANTES DE HACERLO POR TU CUENTA
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
@@ -147,7 +158,7 @@ class hashchecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path7(self):  # Iterate twice but  Days = 7
         """
-        Valid path A-B-C-E-G-H-G-H-I-J-L
+        Valid path A-C-E-F-E-F-G-H-J-K-M-N-O
         """
         self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
                                      "698765119", "28005")
@@ -163,7 +174,7 @@ class hashchecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path8(self):  # Data has been modified
         """
-        Valid path A-B-C-E-G-H-G-H-I-J-L
+        Valid path A-C-E-F-E-F-G-H-J-L-M-N-P
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
                                      "654314159", "28005")
@@ -265,7 +276,6 @@ class TrackingCodeSearcher(unittest.TestCase):
         """
         Invalid Path A-B-C-E-F-G-H-I-J-K
         """
-        # self.my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path5.json"
         current_path = os.path.dirname(__file__)
         self.my_order.order_shipping_json_store = os.path.join(current_path, "aux_jsons", "test_tracking_code_searcher_path3.json")
         with self.assertRaises(OrderManagementException) as hey:
