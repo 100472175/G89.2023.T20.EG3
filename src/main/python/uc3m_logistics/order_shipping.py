@@ -23,7 +23,6 @@ class OrderShipping():
         self.__delivery_day = self.__issued_at + (delivery_days * 24 * 60 * 60)
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""
-        # print(self.__alg + self.__type + self.__order_id + str(self.__issued_at) + str(self.__delivery_day))
         return "{alg:" + self.__alg +",typ:" + self.__type +",order_id:" + \
                self.__order_id + ",issuedate:" + str(self.__issued_at) + \
                ",deliveryday:" + str(self.__delivery_day) + "}"
