@@ -408,16 +408,13 @@ class OrderManager:
                 "timestamp": timestamp
             }
             # Guardar el json
-            try:
-                with open(self.order_delivery_json_store, "w+", encoding="UTF-8") as file:
-                    data = json.load(file)
-                    data.append(my_product)
-                    file.seek(0)
-                    json.dump(data, file, indent=4)
-                return True
-            except FileNotFoundError as fnf:
-                raise OrderManagementException("File not found") from fnf
-
+            with open(self.order_delivery_json_store, "w+", encoding="UTF-8") as file:
+                data = json.load(file)
+                data.append(my_product)
+                file.seek(0)
+                print(data)
+                json.dump(data, file, indent=4)
+            return True
         raise OrderManagementException("The product has not been delivered yet")
 
     def hash_checker(self, tracking_code: str,object_shipping: dict) -> None:

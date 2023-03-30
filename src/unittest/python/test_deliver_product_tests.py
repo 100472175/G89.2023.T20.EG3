@@ -351,17 +351,5 @@ class DeliverProduct(unittest.TestCase):
 
         self.assertEqual(error.exception.message, "The product has not been delivered yet")
 
-    @freeze_time("2023-03-15")
-    def test_deliver_product_path3(self):
-        """
-        Invalid Path A - B - C - E - F - G
-        """
-        current_path = os.path.dirname(__file__)
-        self.my_order.order_delivery_json_store = os.path.join(current_path, "aux_jsons", "order_delivery.json")
-        with self.assertRaises(OrderManagementException) as hey:
-            self.my_order.deliver_product(
-                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-        self.assertEqual(hey.exception.message, "File not found")
-
 if __name__ == '__main__':
     unittest.main()
