@@ -67,21 +67,10 @@ class hashchecker(unittest.TestCase):
         self.my_order.send_product(self.file_path)
         self.my_order_shipping = self.my_order.tracking_code_searcher("56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
 
-    def tearDown(self) -> None:
-        """Reset the json store"""
-        store_path = "../../main/python/stores"
-        current_path = os.path.dirname(__file__)
-        self.__order_request_json_store = os.path.join(current_path, store_path,
-                                                       "order_request.json")
-        self.__order_shipping_json_store = os.path.join(current_path, store_path,
-                                                        "order_shipping.json")
-        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
-            file.write("[]")
-        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
-            file.write("[]")
+
 
     @freeze_time("2023-03-08")
-    def test_hash_checker_path1(self):
+    def test_hash_checker_path1(self): # iterate twice
         """
         Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
         """
@@ -94,17 +83,17 @@ class hashchecker(unittest.TestCase):
         my_track_code = self.my_order.hash_checker(
             "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b",my_order_shipping)
         self.assertTrue(my_track_code)
-    def test_hash_checker_path2(self):
+    def test_hash_checker_path2(self): # order_request not found
         """
         Invalid Path A-B-C-D
         """
-        self.my_order.order_request_json_store = "aux_jsons/order_shipping.json"
+        self.my_order.order_request_json_store = "aux_jsons/order_request.json"
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.hash_checker(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",self.my_order_shipping)
         self.assertEqual(hey.exception.message, "File not found")
 
-    def test_hash_checker_path3(self):
+    def test_hash_checker_path3(self): # Error loading data
         """
         Invalid Path A-B-C-E-F
         """
@@ -115,44 +104,79 @@ class hashchecker(unittest.TestCase):
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",self.my_order_shipping)
         self.assertEqual(hey.exception.message, "JSON has not the expected structure")
 
-    def test_hash_checker_path4(self):
+    def test_hash_checker_path4(self):  # no data in order_request
         """
         Invalid Path A-B-C-E-G-J-K
         """
-        my_order = OrderManager()
-        my_order.order_shipping_json_store = "aux_jsons/test_hash_checker_path4.json"
+        self.my_order.order_request_json_store = "aux_jsons/test_tracking_code_searcher_path4.json"
 
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.hash_checker(
-                "fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe", self.my_order_shipping)
         self.assertEqual(hey.exception.message,
-                         "Tracking code not found in the database of requests")
+                         "Order id not found in the database of requests")
 
-    def test_hash_checker_path5(self):
+    def test_hash_checker_path5(self):  # loop once
         """
         Invalid Path A-B-C-E-F-G-H-I-J-K
         """
-        # self.my_order.order_shipping_json_store = "aux_jsons/test_hash_checker_path5.json"
+        my_order_shipping = self.my_order.tracking_code_searcher(
+            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        my_track_code = self.my_order.hash_checker(
+            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe", my_order_shipping)
+        self.assertTrue(my_track_code)
+
+    def test_hash_checker_path6(self):  # Not in loop (ni idea de como hacer que el tracking code este bien pero no lo encuentre en el order_request
+        """
+        Invalid path A-B-C-E-G-H-G-H-I-J-L # ESTE CREO Q TENDREMOS Q MODIFICAR LOS DATOS MANUEALMENTE
+                                            PERO ESPERAME ANTES DE HACERLO POR TU CUENTA
+        """
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
         current_path = os.path.dirname(__file__)
-        self.my_order.order_shipping_json_store = os.path.join(current_path, "aux_jsons", "test_hash_checker_path3.json")
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path1.json")
+        self.my_order.send_product(self.file_path)
+        my_order_shipping = self.my_order.tracking_code_searcher(
+            "fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
         with self.assertRaises(OrderManagementException) as hey:
-            self.my_order.hash_checker(
-                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-        self.assertEqual(hey.exception.message, "JSON has not the expected structure")
-
-
-    def test_hash_checker_path6(self):
-        """
-        Invalid path A-B-C-E-G-H-G-H-I-J-L
-        """
-        with self.assertRaises(OrderManagementException) as hey:
-            self.my_order.hash_checker(
-                "56df104b603f5fac5190b2225a5548cdf5fff4d7775f277c28295b1e11aa0bfe")
+            self.my_order.hash_checker("fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",
+                                       my_order_shipping)
         self.assertEqual(hey.exception.message,
-                         "Tracking code not found in the database of requests")
+                         "Order id not found in the database of requests")
 
+    @freeze_time("2023-03-08")
+    def test_hash_checker_path7(self):  # Iterate twice but  Days = 7
+        """
+        Valid path A-B-C-E-G-H-G-H-I-J-L
+        """
+        self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                     "698765119", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path5.json")
+        self.my_order.send_product(self.file_path)
+        my_order_shipping = self.my_order.tracking_code_searcher(
+            "76866c4e46c8e46cfc5707988823c835f79e5709fc0082aa48119920a824b4b8")
+        my_track_code = self.my_order.hash_checker(
+            "76866c4e46c8e46cfc5707988823c835f79e5709fc0082aa48119920a824b4b8", my_order_shipping)
+        self.assertTrue(my_track_code)
 
-
+    @freeze_time("2023-03-08")
+    def test_hash_checker_path8(self):  # Data has been modified
+        """
+        Valid path A-B-C-E-G-H-G-H-I-J-L
+        """
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path8.json")
+        self.my_order.send_product(self.file_path)
+        my_order_shipping = self.my_order.tracking_code_searcher(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.hash_checker("fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",
+                                       my_order_shipping)
+        self.assertEqual(hey.exception.message,
+                         "The data has been modified")
 
 class TrackingCodeSearcher(unittest.TestCase):
     """
@@ -309,7 +333,7 @@ class DeliverProduct(unittest.TestCase):
         with self.assertRaises(OrderManagementException) as error:
             my_order.deliver_product(tracking_code)
 
-        self.assertEqual(error.exception.message, "The data has been modified")
+        self.assertEqual(error.exception.message, "The product has not been delivered yet")
 
 
 
