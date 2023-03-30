@@ -7,11 +7,8 @@ import math
 import os
 import json
 import re
-from freezegun import freeze_time
-# from order_request import OrderRequest
-# from order_management_exception import OrderManagementException
-# from order_shipping import OrderShipping
 from datetime import datetime
+from freezegun import freeze_time
 from .order_request import OrderRequest
 from .order_management_exception import OrderManagementException
 from .order_shipping import OrderShipping
@@ -427,13 +424,13 @@ class OrderManager:
         """
         Checks the hash of the order_shipping
         """
-        object = None
+        object_object = None
         try:
             with open(self.order_request_json_store, "r", encoding="UTF-8") as database:
                 data = json.load(database)
                 for i in data:
                     if i["order_id"] == object_shipping["order_id"]:
-                        object = i
+                        object_object = i
                         break
         except FileNotFoundError as fnf:
             raise OrderManagementException("File not found") from fnf
@@ -441,22 +438,23 @@ class OrderManager:
             raise OrderManagementException("JSON has not the expected structure") from k_e
         except json.decoder.JSONDecodeError as jsonin:
             raise OrderManagementException("JSON has not the expected structure") from jsonin
-        if not object:
+        if not object_object:
             raise OrderManagementException("Order id not found in the database of requests")
 
-        if object["order_type"] == "REGULAR":
+        if object_object["order_type"] == "REGULAR":
             days = 7
         else:
             days = 1
-        a = object_shipping["delivery_day"] - (days * 24 * 60 * 60)
-        b = str(datetime.fromtimestamp(a))[:-9]
-        freezer = freeze_time(b)
+        initial = object_shipping["delivery_day"] - (days * 24 * 60 * 60)
+        middle = str(datetime.fromtimestamp(initial))[:-9]
+        freezer = freeze_time(middle)
         freezer.start()
-        prev_object_shipping = OrderShipping(object_shipping["product_id"], object["order_id"],
-                                             object_shipping["delivery_email"], object["order_type"])
+        prev_object_shipping = OrderShipping(object_shipping["product_id"],
+                                             object_object["order_id"],
+                                             object_shipping["delivery_email"],
+                                             object_object["order_type"])
         freezer.stop()
         # prev_object_shipping = prev_object_shipping.tracking_code
         if prev_object_shipping.tracking_code == tracking_code:
             return True
-        else:
-            raise OrderManagementException("The data has been modified")
+        raise OrderManagementException("The data has been modified")
