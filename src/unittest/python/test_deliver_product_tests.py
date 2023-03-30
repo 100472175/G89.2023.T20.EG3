@@ -462,7 +462,7 @@ class DeliverProduct(unittest.TestCase):
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
-        Valid Path A-B-C-E
+        Valid Path A-B-C-E-F
         """
 
         self.assertTrue(self.my_order.deliver_product(

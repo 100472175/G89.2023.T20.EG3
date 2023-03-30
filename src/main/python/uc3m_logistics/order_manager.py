@@ -43,9 +43,9 @@ class OrderManager:
     def validate_ean13(ean13: str):
         """
                 This function validates the EAN13 code.
-                :param eAn13:
+
         """
-        # Check if its the correct type
+        # Check if it is the correct type
         if not isinstance(ean13, str):
             raise OrderManagementException("Product Id not valid, id must be a string")
         # Check ean13 shorter than expected
