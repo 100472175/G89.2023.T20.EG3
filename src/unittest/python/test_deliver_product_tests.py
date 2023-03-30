@@ -38,7 +38,7 @@ class ValidateTrackingCode(unittest.TestCase):
     # VALIDATE TRACKING CODE #
     def test_validate_tracking_code_path1(self):
         """
-        Valid tracking code Path A-B
+        Valid tracking code Path A-B-D
         """
         self.my_order.validate_tracking_code(
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
@@ -46,7 +46,7 @@ class ValidateTrackingCode(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_validate_tracking_code_path2(self):
         """
-        Invalid tracking code Path A-B-C
+        Invalid tracking code Path A-B-C-D
         """
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.validate_tracking_code(
@@ -86,7 +86,7 @@ class HashChecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path1(self):
         """
-        Valid tracking code Path A-C-E-F-E-F-G-H-J-L-M-N-O
+        Valid tracking code Path A-C-E-F-E-F-G-H-J-L-M-N-O-Q
         Iterate twice
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
@@ -101,7 +101,7 @@ class HashChecker(unittest.TestCase):
 
     def test_hash_checker_path2(self):
         """
-        Invalid Path A-B
+        Invalid Path A-B-Q
         order_request not found
         """
         self.my_order.order_request_json_store = "aux_jsons/order_request.json"
@@ -113,7 +113,7 @@ class HashChecker(unittest.TestCase):
 
     def test_hash_checker_path3(self):
         """
-        Invalid Path A-C-D
+        Invalid Path A-C-D-Q
         Error loading data
         """
         current_path = os.path.dirname(__file__)
@@ -127,7 +127,7 @@ class HashChecker(unittest.TestCase):
 
     def test_hash_checker_path4(self):
         """
-        Invalid Path A-C-E-H-I
+        Invalid Path A-C-E-H-I-Q
         no data in order_request
         """
         current_path = os.path.dirname(__file__)
@@ -143,7 +143,7 @@ class HashChecker(unittest.TestCase):
 
     def test_hash_checker_path5(self):
         """
-        Valid Path A-C-E-F-G-H-J-K-M-N-O
+        Valid Path A-C-E-F-G-H-J-K-M-N-O-Q
         loop once
         """
         my_order_shipping = self.my_order.tracking_code_searcher(
@@ -154,7 +154,7 @@ class HashChecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path6(self):
         """
-        Invalid path A-C-E-F-G-H-I
+        Invalid path A-C-E-F-G-H-I-Q
         """
         # Adding the second order
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
@@ -186,7 +186,7 @@ class HashChecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path7(self):
         """
-        Valid path A-C-E-F-E-F-G-H-J-K-M-N-O
+        Valid path A-C-E-F-E-F-G-H-J-K-M-N-O-Q
         Iterate twice but  Days = 7
         """
         self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
@@ -203,7 +203,7 @@ class HashChecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path8(self):
         """
-        Valid path A-C-E-F-E-F-G-H-J-L-M-N-P
+        Invalid path A-C-E-F-E-F-G-H-J-L-M-N-P-Q
         Data has been modified
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
@@ -223,7 +223,8 @@ class HashChecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path9(self):  # Max - 1 -> Max = 10
         """
-        Valid path A-C-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-G-H-J-L-M-N-P
+        Valid path A-C-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-G-H-J-L-M-N-P-Q
+        Loop 9 Times
         """
         # 7 equal orders + the one in setup + the one we want
         for _ in range(7):
@@ -244,7 +245,8 @@ class HashChecker(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_hash_checker_path10(self):  # Max -> Max = 10
         """
-        Valid path A-C-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-G-H-J-L-M-N-P
+        Valid path A-C-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-G-H-J-L-M-N-P-Q
+        Loop 10 Times
         """
         # 7 equal orders + the one in setup + the one we want
         for _ in range(8):
@@ -293,7 +295,8 @@ class TrackingCodeSearcher(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_tracking_code_searcher_path1(self):
         """
-        Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
+        Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K-M
+
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
                                      "654314159", "28005")
@@ -315,7 +318,7 @@ class TrackingCodeSearcher(unittest.TestCase):
 
     def test_tracking_code_searcher_path2(self):
         """
-        Invalid Path A-B-C-D
+        Invalid Path A-B-C-D-M
         """
         self.my_order.order_shipping_json_store = "aux_jsons/order_shipping.json"
         with self.assertRaises(OrderManagementException) as hey:
@@ -325,7 +328,7 @@ class TrackingCodeSearcher(unittest.TestCase):
 
     def test_tracking_code_searcher_path3(self):
         """
-        Invalid Path A-B-C-E-F
+        Invalid Path A-B-C-E-F-M
         """
         current_path = os.path.dirname(__file__)
         self.my_order.order_shipping_json_store = os.path.join(current_path, "aux_jsons",
@@ -338,7 +341,7 @@ class TrackingCodeSearcher(unittest.TestCase):
 
     def test_tracking_code_searcher_path4(self):
         """
-        Invalid Path A-B-C-E-G-J-K
+        Invalid Path A-B-C-E-G-J-K-M
         """
         my_order = OrderManager()
         my_order.order_shipping_json_store = "aux_jsons/test_tracking_code_searcher_path4.json"
@@ -351,20 +354,24 @@ class TrackingCodeSearcher(unittest.TestCase):
 
     def test_tracking_code_searcher_path5(self):
         """
-        Invalid Path A-B-C-E-F-G-H-I-J-K
+        Valid Path A-B-C-E-F-G-H-I-J-K-M
+        iterate once
         """
-        current_path = os.path.dirname(__file__)
-        self.my_order.order_shipping_json_store = os.path.join(current_path, "aux_jsons",
-                                                               "test_tracking_code_searcher_path3."
-                                                               "json")
-        with self.assertRaises(OrderManagementException) as hey:
-            self.my_order.tracking_code_searcher(
-                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
-        self.assertEqual(hey.exception.message, "JSON has not the expected structure")
+        my_track_code = self.my_order.tracking_code_searcher(
+            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(my_track_code, {
+                "product_id": "8421691423220",
+                "order_id": "e01521684a7f9535e9fa098a2b86565f",
+                "delivery_email": "100472175@alumnos.uc3m.es",
+                "issued_at": 1678233600.0,
+                "delivery_day": 1678838400.0,
+                "tracking_code": "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
+        })
 
     def test_tracking_code_searcher_path6(self):
         """
-        Invalid path A-B-C-E-G-H-G-H-I-J-L
+        Invalid path A-B-C-E-G-H-G-H-I-J-L-M
+        not found in database
         """
         with self.assertRaises(OrderManagementException) as hey:
             self.my_order.tracking_code_searcher(
@@ -376,7 +383,8 @@ class TrackingCodeSearcher(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_tracking_code_searcher_path7(self): # Max - 1 -> Max = 10
         """
-        Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K
+        Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K-M
+        loop 9 times
         """
         for _ in range(7):
             self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
@@ -402,7 +410,8 @@ class TrackingCodeSearcher(unittest.TestCase):
     @freeze_time("2023-03-08")
     def test_tracking_code_searcher_path8(self): # Max -> Max = 10
         """
-        Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K
+        Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K-M
+        loop 10 times
         """
         for _ in range(8):
             self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
@@ -462,7 +471,8 @@ class DeliverProduct(unittest.TestCase):
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
-        Valid Path A-B-C-E-F
+        Valid Path A-B-C-E-F-G
+        Data loaded in order_delivery.json
         """
 
         self.assertTrue(self.my_order.deliver_product(
@@ -470,7 +480,8 @@ class DeliverProduct(unittest.TestCase):
 
     def test_deliver_product_path2(self):
         """
-        Invalid Path A-B-C-D
+        Invalid Path A-B-C-D-G
+        Product not delivered yet
         """
         my_order = OrderManager()
         tracking_code = "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
