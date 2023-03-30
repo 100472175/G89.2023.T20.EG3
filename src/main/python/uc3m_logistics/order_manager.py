@@ -46,8 +46,7 @@ class OrderManager:
     @staticmethod
     def validate_ean13(ean13: str):
         """
-                This function validates the EAN13 code.
-
+        This function validates the EAN13 code.
         """
         # Check if it is the correct type
         if not isinstance(ean13, str):
@@ -300,7 +299,8 @@ class OrderManager:
 
         return tracking_code
 
-    def process_data(self, data: dict, ords: list, saved: None):
+    @staticmethod
+    def process_data(data: dict, ords: list, saved: None):
         """
         Process the data from the file
         """
@@ -312,7 +312,6 @@ class OrderManager:
                 break
         if not ords[2]:
             raise OrderManagementException("Data in JSON has no valid values")
-        list_checker = [0, 0]
         for i in data:
             for list_checker in i.items():
                 if list_checker[0] == "order_id" and list_checker[1] == ords[2]:
@@ -320,7 +319,8 @@ class OrderManager:
                     break
         return data, ords, saved
 
-    def checker_checker(self, saved: dict, ords: list):
+    @staticmethod
+    def checker_checker(saved: dict, ords: list):
         """
         Checks weather the information from the order_request file has been modified
         """
@@ -335,7 +335,8 @@ class OrderManager:
         if checker != ords[0]:
             raise OrderManagementException("The data has been modified")
 
-    def find_email(self, data_og_json: dict or list) -> str:
+    @staticmethod
+    def find_email(data_og_json: dict or list) -> str:
         """
         Finds the email in the string that is the JSON
         """
@@ -368,7 +369,8 @@ class OrderManager:
     ### Function 3 - delivery ###
     #############################
 
-    def validate_tracking_code(self, sha256: str) -> None:
+    @staticmethod
+    def validate_tracking_code(sha256: str) -> None:
         """
         Validates the sha-256 tracking code
         """
@@ -400,35 +402,7 @@ class OrderManager:
             raise OrderManagementException("Tracking code not found in the database of requests")
         return order_shipping
 
-    def deliver_product(self, tracking_code: str) -> bool:
-        """
-        The date_signature is a string with the value described in AM-FR-03-I1
-        Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
-        On errors, returns a VaccineManagementException representing AM-RF -03-O3
-        """
-        # The date_signature is a string with the value described in AM-FR-03-I1
-        # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
-        # On errors, returns a VaccineManagementException representing AM-RF -03-O3
-        order_shipping = self.tracking_code_searcher(tracking_code)
-        self.hash_checker(tracking_code, order_shipping)
-        now = datetime.utcnow()
-        timestamp = datetime.timestamp(now)
-        if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
-                == str(datetime.fromtimestamp(timestamp).date())):
-            my_product = {
-                "tracking_code": tracking_code,
-                "timestamp": timestamp
-            }
-            # Guardar el json
-            with open(self.order_delivery_json_store, "a+", encoding="UTF-8") as file:
-                file.seek(0)
-                data = json.load(file)
-                data.append(my_product)
-                json.dump(data, file, indent=4)
-            return True
-        raise OrderManagementException("The product has not been delivered yet")
-
-    def hash_checker(self, tracking_code: str, object_shipping: dict) -> None:
+    def hash_checker(self, tracking_code: str, object_shipping: dict) -> bool:
         """
         Checks the hash of the order_shipping
         """
@@ -466,3 +440,31 @@ class OrderManager:
         if prev_object_shipping.tracking_code == tracking_code:
             return True
         raise OrderManagementException("The data has been modified")
+
+    def deliver_product(self, tracking_code: str) -> bool:
+        """
+        The date_signature is a string with the value described in AM-FR-03-I1
+        Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
+        On errors, returns a VaccineManagementException representing AM-RF -03-O3
+        """
+        # The date_signature is a string with the value described in AM-FR-03-I1
+        # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
+        # On errors, returns a VaccineManagementException representing AM-RF -03-O3
+        order_shipping = self.tracking_code_searcher(tracking_code)
+        self.hash_checker(tracking_code, order_shipping)
+        now = datetime.utcnow()
+        timestamp = datetime.timestamp(now)
+        if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
+                == str(datetime.fromtimestamp(timestamp).date())):
+            my_product = {
+                "tracking_code": tracking_code,
+                "timestamp": timestamp
+            }
+            # Guardar el json
+            with open(self.order_delivery_json_store, "a+", encoding="UTF-8") as file:
+                file.seek(0)
+                data = json.load(file)
+                data.append(my_product)
+                json.dump(data, file, indent=4)
+            return True
+        raise OrderManagementException("The product has not been delivered yet")
