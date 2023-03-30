@@ -206,6 +206,48 @@ class hashchecker(unittest.TestCase):
         self.assertEqual(hey.exception.message,
                          "The data has been modified")
 
+    @freeze_time("2023-03-08")
+    def test_hash_checker_path9(self):  # Max - 1 -> Max = 10
+        """
+        Valid path A-C-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-G-H-J-L-M-N-P
+        """
+        # 7 equal orders + the one in setup + the one we want
+        for i in range(7):
+            self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                         "654314159", "28005")
+            self.my_order.send_product(self.file_path)
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path8.json")
+        self.my_order.send_product(self.file_path)
+        my_order_shipping = self.my_order.tracking_code_searcher(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        my_track_code = self.my_order.hash_checker(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b", my_order_shipping)
+        self.assertTrue(my_track_code)
+
+    @freeze_time("2023-03-08")
+    def test_hash_checker_path10(self):  # Max -> Max = 10
+        """
+        Valid path A-C-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-E-F-G-H-J-L-M-N-P
+        """
+        # 7 equal orders + the one in setup + the one we want
+        for i in range(8):
+            self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                         "654314159", "28005")
+            self.my_order.send_product(self.file_path)
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path8.json")
+        self.my_order.send_product(self.file_path)
+        my_order_shipping = self.my_order.tracking_code_searcher(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        my_track_code = self.my_order.hash_checker(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b", my_order_shipping)
+        self.assertTrue(my_track_code)
+
 class TrackingCodeSearcher(unittest.TestCase):
     """
     Class for testing all possible paths of function tracking_code_searcher
@@ -311,7 +353,54 @@ class TrackingCodeSearcher(unittest.TestCase):
         self.assertEqual(hey.exception.message,
                          "Tracking code not found in the database of requests")
 
-
+    @freeze_time("2023-03-08")
+    def test_tracking_code_searcher_path7(self): # Max - 1 -> Max = 10
+        """
+        Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K
+        """
+        for i in range(7):
+            self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                         "654314159", "28005")
+            self.my_order.send_product(self.file_path)
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_tracking_code_searcher_path1.json")
+        self.my_order.send_product(self.file_path)
+        my_track_code = self.my_order.tracking_code_searcher(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        self.assertEqual(my_track_code, {"product_id": "8421691423220",
+                                         "order_id": "85472b176bfa29087aeb991f80385f6c",
+                                         "delivery_email": "example@alumnos.uc3m.es",
+                                         "issued_at": 1678233600.0,
+                                         "delivery_day": 1678320000.0,
+                                         "tracking_code":
+                                             "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b"
+                                         })
+    @freeze_time("2023-03-08")
+    def test_tracking_code_searcher_path8(self): # Max -> Max = 10
+        """
+        Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K
+        """
+        for i in range(8):
+            self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                         "654314159", "28005")
+            self.my_order.send_product(self.file_path)
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_tracking_code_searcher_path1.json")
+        self.my_order.send_product(self.file_path)
+        my_track_code = self.my_order.tracking_code_searcher(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        self.assertEqual(my_track_code, {"product_id": "8421691423220",
+                                         "order_id": "85472b176bfa29087aeb991f80385f6c",
+                                         "delivery_email": "example@alumnos.uc3m.es",
+                                         "issued_at": 1678233600.0,
+                                         "delivery_day": 1678320000.0,
+                                         "tracking_code":
+                                             "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b"
+                                         })
 
 
 class DeliverProduct(unittest.TestCase):

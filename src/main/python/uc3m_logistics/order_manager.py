@@ -408,10 +408,10 @@ class OrderManager:
                 "timestamp": timestamp
             }
             # Guardar el json
-            with open(self.order_delivery_json_store, "w+", encoding="UTF-8") as file:
+            with open(self.order_delivery_json_store, "a+", encoding="UTF-8") as file:
+                file.seek(0)
                 data = json.load(file)
                 data.append(my_product)
-                file.seek(0)
                 json.dump(data, file, indent=4)
             return True
         raise OrderManagementException("The product has not been delivered yet")
