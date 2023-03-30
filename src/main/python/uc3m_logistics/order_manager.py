@@ -24,13 +24,13 @@ class OrderManager:
         st_path = "../stores"
         current = os.path.dirname(__file__)
 
-        self.__order_request_json_store = os.path.join(current, st_path, "order_request.json")
+        self.order_request_json_store = os.path.join(current, st_path, "order_request.json")
         self.order_shipping_json_store = os.path.join(current, st_path, "order_shipping.json")
         self.__order_delivery_json_store = os.path.join(current, st_path, "order_delivery.json")
         # Create file if it doesn't exist and initialize it with an empty list
         try:
-            if not os.path.exists(self.__order_request_json_store):
-                with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            if not os.path.exists(self.order_request_json_store):
+                with open(self.order_request_json_store, "w", encoding="utf-8") as file:
                     file.write("[]")
             if not os.path.exists(self.order_shipping_json_store):
                 with open(self.order_shipping_json_store, "w", encoding="utf-8") as file:
@@ -201,7 +201,7 @@ class OrderManager:
         my_order_object = OrderRequest(product_id, order_type, address, phone_number, zip_code)
         # if everything is ok, it will save into the file
         try:
-            with open(self.__order_request_json_store, "r+", encoding="utf-8") as file:
+            with open(self.order_request_json_store, "r+", encoding="utf-8") as file:
                 data = json.load(file)
                 data.append(my_order_object.to_json())
                 file.seek(0)
@@ -259,7 +259,7 @@ class OrderManager:
         saved = None
         # Check the data has not been modified
         try:
-            with open(self.__order_request_json_store, "r+", encoding="utf-8") as file:
+            with open(self.order_request_json_store, "r+", encoding="utf-8") as file:
                 data = json.load(file)
                 # data2 = str(data)
                 # pattern = r"[0-9a-f]{32}"
@@ -389,7 +389,6 @@ class OrderManager:
             raise OrderManagementException("JSON has not the expected structure") from jsonin
         if not order_shipping:
             raise OrderManagementException("Tracking code not found in the database of requests")
-        self.hash_checker(tracking_code)
         return order_shipping
 
     def deliver_product(self, tracking_code: str) -> bool:
@@ -402,7 +401,7 @@ class OrderManager:
         # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
         # On errors, returns a VaccineManagementException representing AM-RF -03-O3
         order_shipping = self.tracking_code_searcher(tracking_code)
-
+        self.hash_checker(tracking_code, order_shipping)
         now = datetime.utcnow()
         timestamp = datetime.timestamp(now)
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
@@ -411,34 +410,32 @@ class OrderManager:
             return True
         raise OrderManagementException("The product has not been delivered yet")
 
-    def hash_checker(self, tracking_code: str) -> None:
+    def hash_checker(self, tracking_code: str,object_shipping: dict) -> None:
         """
         Checks the hash of the order_shipping
         """
-        object_shipping = None
-        with open(self.order_shipping_json_store, "r", encoding="UTF-8") as database:
-            data = json.load(database)
-            for i in data:
-                if i["tracking_code"] == tracking_code:
-                    object_shipping = i
-                    break
-            if not object_shipping:
-                raise OrderManagementException("Tracking code not found in the database of requests")
         object = None
-        with open(self.__order_request_json_store, "r", encoding="UTF-8") as database:
-            data = json.load(database)
-            for i in data:
-                if i["order_id"] == object_shipping["order_id"]:
-                    object = i
-                    break
-            if not object:
-                raise OrderManagementException("Order id not found in the database of requests")
+        try:
+            with open(self.order_request_json_store, "r", encoding="UTF-8") as database:
+                data = json.load(database)
+                for i in data:
+                    if i["order_id"] == object_shipping["order_id"]:
+                        object = i
+                        break
+        except FileNotFoundError as fnf:
+            raise OrderManagementException("File not found") from fnf
+        except KeyError as k_e:
+            raise OrderManagementException("JSON has not the expected structure") from k_e
+        except json.decoder.JSONDecodeError as jsonin:
+            raise OrderManagementException("JSON has not the expected structure") from jsonin
+        if not object:
+            raise OrderManagementException("Order id not found in the database of requests")
 
         if object["order_type"] == "REGULAR":
             days = 7
         else:
             days = 1
-        a = object_shipping["delivery_day"]-(days*24*60*60)
+        a = object_shipping["delivery_day"] - (days * 24 * 60 * 60)
         b = str(datetime.fromtimestamp(a))[:-9]
         freezer = freeze_time(b)
         freezer.start()

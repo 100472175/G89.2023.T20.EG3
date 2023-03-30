@@ -51,6 +51,109 @@ class ValidateTrackingCode(unittest.TestCase):
                 "56df104b603f55548cdf5fff4bfe")
         self.assertEqual(hey.exception.message, "Internal processing error")
 
+class hashchecker(unittest.TestCase):
+    """
+    Class for testing all possible paths of function hash_checker
+    """
+
+    @freeze_time("2023-03-08")
+    def setUp(self) -> None:
+        self.my_order = OrderManager()
+        self.my_order.register_order("8421691423220", "REGULAR", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
+        self.my_order.send_product(self.file_path)
+        self.my_order_shipping = self.my_order.tracking_code_searcher("56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        self.__order_request_json_store = os.path.join(current_path, store_path,
+                                                       "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path,
+                                                        "order_shipping.json")
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+
+    @freeze_time("2023-03-08")
+    def test_hash_checker_path1(self):
+        """
+        Valid tracking code Path A-B-C-E-G-H-G-H-I-J-K
+        """
+        self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
+                                     "654314159", "28005")
+        current_path = os.path.dirname(__file__)
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path1.json")
+        self.my_order.send_product(self.file_path)
+        my_order_shipping = self.my_order.tracking_code_searcher("45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b")
+        my_track_code = self.my_order.hash_checker(
+            "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b",my_order_shipping)
+        self.assertTrue(my_track_code)
+    def test_hash_checker_path2(self):
+        """
+        Invalid Path A-B-C-D
+        """
+        self.my_order.order_request_json_store = "aux_jsons/order_shipping.json"
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.hash_checker(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",self.my_order_shipping)
+        self.assertEqual(hey.exception.message, "File not found")
+
+    def test_hash_checker_path3(self):
+        """
+        Invalid Path A-B-C-E-F
+        """
+        current_path = os.path.dirname(__file__)
+        self.my_order.order_request_json_store = os.path.join(current_path, "aux_jsons", "test_hash_checker_path3.json")
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.hash_checker(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",self.my_order_shipping)
+        self.assertEqual(hey.exception.message, "JSON has not the expected structure")
+
+    def test_hash_checker_path4(self):
+        """
+        Invalid Path A-B-C-E-G-J-K
+        """
+        my_order = OrderManager()
+        my_order.order_shipping_json_store = "aux_jsons/test_hash_checker_path4.json"
+
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.hash_checker(
+                "fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message,
+                         "Tracking code not found in the database of requests")
+
+    def test_hash_checker_path5(self):
+        """
+        Invalid Path A-B-C-E-F-G-H-I-J-K
+        """
+        # self.my_order.order_shipping_json_store = "aux_jsons/test_hash_checker_path5.json"
+        current_path = os.path.dirname(__file__)
+        self.my_order.order_shipping_json_store = os.path.join(current_path, "aux_jsons", "test_hash_checker_path3.json")
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.hash_checker(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message, "JSON has not the expected structure")
+
+
+    def test_hash_checker_path6(self):
+        """
+        Invalid path A-B-C-E-G-H-G-H-I-J-L
+        """
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.hash_checker(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d7775f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message,
+                         "Tracking code not found in the database of requests")
+
+
+
+
 class TrackingCodeSearcher(unittest.TestCase):
     """
     Class for testing all possible paths of function tracking_code_searcher
@@ -65,6 +168,18 @@ class TrackingCodeSearcher(unittest.TestCase):
         current_path = os.path.dirname(__file__)
         self.file_path = os.path.join(current_path, "aux_jsons", "test_deliver_product_path1.json")
         self.my_order.send_product(self.file_path)
+    def tearDown(self) -> None:
+        """Reset the json store"""
+        store_path = "../../main/python/stores"
+        current_path = os.path.dirname(__file__)
+        self.__order_request_json_store = os.path.join(current_path, store_path,
+                                                       "order_request.json")
+        self.__order_shipping_json_store = os.path.join(current_path, store_path,
+                                                        "order_shipping.json")
+        with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
 
     @freeze_time("2023-03-08")
     def test_tracking_code_searcher_path1(self):
@@ -179,7 +294,7 @@ class DeliverProduct(unittest.TestCase):
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
-        Valid Path A-B-D
+        Valid Path A-B-C-D
         """
         self.assertTrue(self.my_order.deliver_product(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"))
@@ -187,7 +302,7 @@ class DeliverProduct(unittest.TestCase):
 
     def test_deliver_product_path2(self):
         """
-        Valid Path A-B-C
+        Valid Path A-B-C-E
         """
         my_order = OrderManager()
         tracking_code = "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
