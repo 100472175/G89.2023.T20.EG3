@@ -412,7 +412,6 @@ class OrderManager:
                 data = json.load(file)
                 data.append(my_product)
                 file.seek(0)
-                print(data)
                 json.dump(data, file, indent=4)
             return True
         raise OrderManagementException("The product has not been delivered yet")

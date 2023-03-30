@@ -3,6 +3,9 @@ Tests of Delivery Product,Validate tracking code and tracking code searcher
 """
 import os
 import unittest
+import re
+import json
+
 from uc3m_logistics import OrderManager,OrderManagementException
 from freezegun import freeze_time
 
@@ -75,13 +78,9 @@ class hashchecker(unittest.TestCase):
                                                        "order_request.json")
         self.__order_shipping_json_store = os.path.join(current_path, store_path,
                                                        "order_shipping.json")
-        self.__order_delivery_json_store = os.path.join(current_path, store_path,
-                                                        "order_delivery.json")
         with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
         with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
-            file.write("[]")
-        with open(self.__order_delivery_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
 
     @freeze_time("2023-03-08")
@@ -141,22 +140,34 @@ class hashchecker(unittest.TestCase):
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe", my_order_shipping)
         self.assertTrue(my_track_code)
 
-    def test_hash_checker_path6(self):  # Not in loop (ni idea de como hacer que el tracking code este bien pero no lo encuentre en el order_request
+    @freeze_time("2023-03-08")
+    def test_hash_checker_path6(self):
         """
-        Invalid path A-C-E-F-G-H-I # ESTE CREO Q TENDREMOS Q MODIFICAR LOS DATOS MANUALMENTE
-                                            PERO ESPERAME ANTES DE HACERLO POR TU CUENTA
-                                            Vale, lo hacemos esta tarde ;)
-                                            He arreglado el otro ;)
+        Invalid path A-C-E-F-G-H-I
         """
+        # Adding the second order
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
                                      "654314159", "28005")
+
         current_path = os.path.dirname(__file__)
-        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path1.json")
+        self.file_path = os.path.join(current_path, "aux_jsons", "test_hash_checker_path6.json")
         self.my_order.send_product(self.file_path)
+        data = None
+        # Changing the order id of all the entries in the order_request.json
+        with open(self.my_order.order_request_json_store, "r") as file:
+            data = json.load(file)
+            for i in data:
+                i["order_id"] = "fabadafabadafabadafabadafabada69"
+        with open(self.my_order.order_request_json_store, "w") as file2:
+            json.dump(data, file2, indent=4)
+
+        # Searching for the tracking code
         my_order_shipping = self.my_order.tracking_code_searcher(
-            "fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+            "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        # Found the tracking code, the hash is not valid
         with self.assertRaises(OrderManagementException) as hey:
-            self.my_order.hash_checker("fabada4b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe",
+            self.my_order.hash_checker("56df104b603f5fac5190b2225a5548cdf5ff"
+                                       "f4d62c5f277c28295b1e11aa0bfe",
                                        my_order_shipping)
         self.assertEqual(hey.exception.message,
                          "Order id not found in the database of requests")
@@ -325,16 +336,21 @@ class DeliverProduct(unittest.TestCase):
         self.__order_request_json_store = os.path.join(current_path, store_path,
                                                        "order_request.json")
         self.__order_shipping_json_store = os.path.join(current_path, store_path,
-                                                        "order_shipping.json")
+                                                       "order_shipping.json")
+        self.__order_delivery_json_store = os.path.join(current_path, store_path,
+                                                        "order_delivery.json")
         with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
         with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
+        with open(self.__order_delivery_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+
 
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
-        Valid Path A-B-C-E-F-H-I
+        Valid Path A-B-C-E
         """
         self.assertTrue(self.my_order.deliver_product(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"))
