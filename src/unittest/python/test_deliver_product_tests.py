@@ -75,9 +75,13 @@ class hashchecker(unittest.TestCase):
                                                        "order_request.json")
         self.__order_shipping_json_store = os.path.join(current_path, store_path,
                                                        "order_shipping.json")
+        self.__order_delivery_json_store = os.path.join(current_path, store_path,
+                                                        "order_delivery.json")
         with open(self.__order_request_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
         with open(self.__order_shipping_json_store, "w", encoding="utf-8") as file:
+            file.write("[]")
+        with open(self.__order_delivery_json_store, "w", encoding="utf-8") as file:
             file.write("[]")
 
     @freeze_time("2023-03-08")
@@ -139,7 +143,7 @@ class hashchecker(unittest.TestCase):
 
     def test_hash_checker_path6(self):  # Not in loop (ni idea de como hacer que el tracking code este bien pero no lo encuentre en el order_request
         """
-        Invalid path A-C-E-F-G-H-I # ESTE CREO Q TENDREMOS Q MODIFICAR LOS DATOS MANUEALMENTE
+        Invalid path A-C-E-F-G-H-I # ESTE CREO Q TENDREMOS Q MODIFICAR LOS DATOS MANUALMENTE
                                             PERO ESPERAME ANTES DE HACERLO POR TU CUENTA
         """
         self.my_order.register_order("8421691423220", "PREMIUM", "C/LISBOA,4, MADRID, SPAIN",
@@ -328,7 +332,7 @@ class DeliverProduct(unittest.TestCase):
     @freeze_time("2023-03-15")
     def test_deliver_product_path1(self):
         """
-        Valid Path A-B-C-D
+        Valid Path A-B-C-E-F-H-I
         """
         self.assertTrue(self.my_order.deliver_product(
                 "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"))
@@ -336,7 +340,7 @@ class DeliverProduct(unittest.TestCase):
 
     def test_deliver_product_path2(self):
         """
-        Valid Path A-B-C-E
+        Invalid Path A-B-C-D
         """
         my_order = OrderManager()
         tracking_code = "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
@@ -345,8 +349,17 @@ class DeliverProduct(unittest.TestCase):
 
         self.assertEqual(error.exception.message, "The product has not been delivered yet")
 
-
-
+    @freeze_time("2023-03-15")
+    def test_deliver_product_path3(self):
+        """
+        Invalid Path A - B - C - E - F - G
+        """
+        current_path = os.path.dirname(__file__)
+        self.my_order.order_delivery_json_store = os.path.join(current_path, "aux_jsons", "order_delivery.json")
+        with self.assertRaises(OrderManagementException) as hey:
+            self.my_order.deliver_product(
+                "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
+        self.assertEqual(hey.exception.message, "File not found")
 
 if __name__ == '__main__':
     unittest.main()

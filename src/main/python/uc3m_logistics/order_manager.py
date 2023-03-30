@@ -26,7 +26,7 @@ class OrderManager:
 
         self.order_request_json_store = os.path.join(current, st_path, "order_request.json")
         self.order_shipping_json_store = os.path.join(current, st_path, "order_shipping.json")
-        self.__order_delivery_json_store = os.path.join(current, st_path, "order_delivery.json")
+        self.order_delivery_json_store = os.path.join(current, st_path, "order_delivery.json")
         # Create file if it doesn't exist and initialize it with an empty list
         try:
             if not os.path.exists(self.order_request_json_store):
@@ -35,8 +35,8 @@ class OrderManager:
             if not os.path.exists(self.order_shipping_json_store):
                 with open(self.order_shipping_json_store, "w", encoding="utf-8") as file:
                     file.write("[]")
-            if not os.path.exists(self.__order_delivery_json_store):
-                with open(self.__order_delivery_json_store, "w", encoding="utf-8") as file:
+            if not os.path.exists(self.order_delivery_json_store):
+                with open(self.order_delivery_json_store, "w", encoding="utf-8") as file:
                     file.write("[]")
 
         except FileNotFoundError as exception:
@@ -406,8 +406,21 @@ class OrderManager:
         timestamp = datetime.timestamp(now)
         if (str(datetime.fromtimestamp(order_shipping['delivery_day']))[:-9]
                  == str(datetime.fromtimestamp(timestamp).date())):
+            my_product = {
+                "tracking_code": tracking_code,
+                "timestamp": timestamp
+            }
             # Guardar el json
-            return True
+            try:
+                with open(self.order_delivery_json_store, "w+", encoding="UTF-8") as file:
+                    data = json.load(file)
+                    data.append(my_product)
+                    file.seek(0)
+                    json.dump(data, file, indent=4)
+                return True
+            except FileNotFoundError as fnf:
+                raise OrderManagementException("File not found") from fnf
+
         raise OrderManagementException("The product has not been delivered yet")
 
     def hash_checker(self, tracking_code: str,object_shipping: dict) -> None:
