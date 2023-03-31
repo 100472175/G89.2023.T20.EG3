@@ -1104,6 +1104,19 @@ class MyTestCase(unittest.TestCase):
             OrderManager().send_product(current_path)
         self.assertEqual(exception.exception.message, "Data in JSON has no valid values")
 
+    @freeze_time("2023-03-08")
+    def test_36_modified(self):
+        """
+        Testcase test 38 modified
+        """
+        current_path = os.path.dirname(__file__)
+        json_path = "aux_jsons"
+        current_path = os.path.join(current_path, json_path, "test_36_modified.json")
+
+        with self.assertRaises(OrderManagementException) as exception:
+            OrderManager().send_product(current_path)
+        self.assertEqual(exception.exception.message, "Input file has not Json format")
+
 
 if __name__ == '__main__':
     unittest.main()
