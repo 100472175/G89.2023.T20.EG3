@@ -38,7 +38,6 @@ class OrderRequest:
     def order_type(self, value):
         self.__order_type = value
 
-
     @property
     def phone_number(self):
         """Property representing the clients's phone number"""

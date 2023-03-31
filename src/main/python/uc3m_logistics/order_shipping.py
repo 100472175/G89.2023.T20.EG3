@@ -18,8 +18,8 @@ class OrderShipping():
         else:
             delivery_days = 1
 
-        #timestamp is represneted in seconds.microseconds
-        #__delivery_day must be expressed in senconds to be added to the timestap
+        # timestamp is represneted in seconds.microseconds
+        # delivery_day must be expressed in senconds to be added to the timestap
         self.__delivery_day = self.__issued_at + (delivery_days * 24 * 60 * 60)
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""
