@@ -264,6 +264,7 @@ class HashChecker(unittest.TestCase):
             "45c825c1ebbb0fdae6c62a00b7e19fc5c1d7b4c256ddb1793394e1cccf117a8b", my_order_shipping)
         self.assertTrue(my_track_code)
 
+
 class TrackingCodeSearcher(unittest.TestCase):
     """
     Class for testing all possible paths of function tracking_code_searcher
@@ -360,12 +361,12 @@ class TrackingCodeSearcher(unittest.TestCase):
         my_track_code = self.my_order.tracking_code_searcher(
             "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe")
         self.assertEqual(my_track_code, {
-                "product_id": "8421691423220",
-                "order_id": "e01521684a7f9535e9fa098a2b86565f",
-                "delivery_email": "100472175@alumnos.uc3m.es",
-                "issued_at": 1678233600.0,
-                "delivery_day": 1678838400.0,
-                "tracking_code": "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
+            "product_id": "8421691423220",
+            "order_id": "e01521684a7f9535e9fa098a2b86565f",
+            "delivery_email": "100472175@alumnos.uc3m.es",
+            "issued_at": 1678233600.0,
+            "delivery_day": 1678838400.0,
+            "tracking_code": "56df104b603f5fac5190b2225a5548cdf5fff4d62c5f277c28295b1e11aa0bfe"
         })
 
     def test_tracking_code_searcher_path6(self):
@@ -379,9 +380,8 @@ class TrackingCodeSearcher(unittest.TestCase):
         self.assertEqual(hey.exception.message,
                          "Tracking code not found in the database of requests")
 
-
     @freeze_time("2023-03-08")
-    def test_tracking_code_searcher_path7(self): # Max - 1 -> Max = 10
+    def test_tracking_code_searcher_path7(self):  # Max - 1 -> Max = 10
         """
         Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K-M
         loop 9 times
@@ -407,8 +407,9 @@ class TrackingCodeSearcher(unittest.TestCase):
                                              "45c825c1ebbb0fdae6c62a00b7e19fc"
                                              "5c1d7b4c256ddb1793394e1cccf117a8b"
                                          })
+
     @freeze_time("2023-03-08")
-    def test_tracking_code_searcher_path8(self): # Max -> Max = 10
+    def test_tracking_code_searcher_path8(self):  # Max -> Max = 10
         """
         Valid tracking code Path A-B-C-E-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-G-H-I-J-K-M
         loop 10 times

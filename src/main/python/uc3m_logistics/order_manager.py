@@ -161,12 +161,12 @@ class OrderManager:
         if not isinstance(zip_code, str):
             message = "Zip code not valid, must be numeric in the range {01000-52999}"
             raise OrderManagementException(message)
-        # Check it's contents are numbers
+        # Check if its contents are numbers
         if zip_code.isdigit():
             # Exact length
-            # (different digits are unnecessary but we wanted to give more detailed errors)
+            # (different digits are unnecessary, but we wanted to give more detailed errors)
             if len(zip_code) == 5:
-                # In Spain doesnt exists less than 1000
+                # In Spain, a zip code does not exist if its value is less than 1000
                 if int(zip_code) < 1000:
                     message = "Zip code not valid, must be greater or equal than 01000"
                     raise OrderManagementException(message)
@@ -199,7 +199,7 @@ class OrderManager:
 
         # This only returns the hash, does not do anything else
         my_order_object = OrderRequest(product_id, order_type, address, phone_number, zip_code)
-        # if everything is ok, it will save into the file
+        # If everything is ok, it will save into the file
         try:
             with open(self.order_request_json_store, "r+", encoding="utf-8") as file:
                 data = json.load(file)
@@ -248,8 +248,8 @@ class OrderManager:
                     ords[0] = element.group(0)
         except FileNotFoundError as fnf:
             raise OrderManagementException("Input File not Found") from fnf
-        except json.decoder.JSONDecodeError as jsonin:
-            raise OrderManagementException("Input file has not Json format") from jsonin
+        except json.decoder.JSONDecodeError as json_in:
+            raise OrderManagementException("Input file has not Json format") from json_in
 
         # Regular expression of our product objects
         pattern = r'{\'OrderID\':\s?\'[a-f0-9]{32}\',\s?\'ContactEmail\':\s?' \
@@ -271,8 +271,8 @@ class OrderManager:
 
         except FileNotFoundError as fnf:
             raise OrderManagementException("Order_Request not Found") from fnf
-        except json.decoder.JSONDecodeError as jsonin:
-            raise OrderManagementException("JSON has not the expected stucture") from jsonin
+        except json.decoder.JSONDecodeError as json_in:
+            raise OrderManagementException("JSON has not the expected stucture") from json_in
 
         # In case data we want is not in order_request
         if not saved:
@@ -323,6 +323,7 @@ class OrderManager:
     def checker_checker(saved: dict, ords: list):
         """
         Checks weather the information from the order_request file has been modified
+        by creating a dictionary which we then hash it to an md5 code
         """
         checker = f'OrderRequest:{{"_OrderRequest__product_id": ' \
                   f'"{saved["product_id"]}", "_OrderRequest__delivery_address":' \
@@ -385,7 +386,9 @@ class OrderManager:
         """
         order_shipping = None
         try:
+            # Validate the tracking code, if it is an sha-256 code
             self.validate_tracking_code(tracking_code)
+            # Read the database and collect the entry for the item with the same tracking code
             with open(self.order_shipping_json_store, "r", encoding="UTF-8") as database:
                 data = json.load(database)
                 for i in data:
@@ -396,8 +399,8 @@ class OrderManager:
             raise OrderManagementException("File not found") from fnf
         except KeyError as k_e:
             raise OrderManagementException("JSON has not the expected structure") from k_e
-        except json.decoder.JSONDecodeError as jsonin:
-            raise OrderManagementException("JSON has not the expected structure") from jsonin
+        except json.decoder.JSONDecodeError as json_in:
+            raise OrderManagementException("JSON has not the expected structure") from json_in
         if not order_shipping:
             raise OrderManagementException("Tracking code not found in the database of requests")
         return order_shipping
@@ -418,8 +421,8 @@ class OrderManager:
             raise OrderManagementException("File not found") from fnf
         except KeyError as k_e:
             raise OrderManagementException("JSON has not the expected structure") from k_e
-        except json.decoder.JSONDecodeError as jsonin:
-            raise OrderManagementException("JSON has not the expected structure") from jsonin
+        except json.decoder.JSONDecodeError as json_in:
+            raise OrderManagementException("JSON has not the expected structure") from json_in
         if not object_object:
             raise OrderManagementException("Order id not found in the database of requests")
 
