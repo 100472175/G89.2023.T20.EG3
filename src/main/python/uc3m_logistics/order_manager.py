@@ -341,6 +341,7 @@ class OrderManager:
         """
         Finds the email in the string that is the JSON
         """
+        # Find the e-mail by regular expression
         email = None
         pattern = r'[A-z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}\''
         match = re.finditer(pattern, str(data_og_json))
@@ -373,7 +374,7 @@ class OrderManager:
     @staticmethod
     def validate_tracking_code(sha256: str) -> None:
         """
-        Validates the sha-256 tracking code
+        Validates the sha-256 tracking code using a regular expresion
         """
         pattern = r'[a-f0-9]{64}'
         match = re.fullmatch(pattern, sha256)
@@ -392,6 +393,7 @@ class OrderManager:
             with open(self.order_shipping_json_store, "r", encoding="UTF-8") as database:
                 data = json.load(database)
                 for i in data:
+                    # Check if our tracking code is in that file and save it
                     if i["tracking_code"] == tracking_code:
                         order_shipping = i
                         break
@@ -409,39 +411,51 @@ class OrderManager:
         """
         Checks the hash of the order_shipping
         """
+        # Initialize in case we don't find the tracking code
         object_object = None
         try:
+            # Try to open the order_request json file
             with open(self.order_request_json_store, "r", encoding="UTF-8") as database:
                 data = json.load(database)
                 for i in data:
+                    # Check if our order id is in that file and save it
                     if i["order_id"] == object_shipping["order_id"]:
                         object_object = i
                         break
+        # Usual errors when manipulating files
         except FileNotFoundError as fnf:
             raise OrderManagementException("File not found") from fnf
         except KeyError as k_e:
             raise OrderManagementException("JSON has not the expected structure") from k_e
         except json.decoder.JSONDecodeError as json_in:
             raise OrderManagementException("JSON has not the expected structure") from json_in
+        # In case the order id is not found
         if not object_object:
             raise OrderManagementException("Order id not found in the database of requests")
 
+        # The object of order_request was needed to pick the order_type
+        # With it we calulate the nº of days
         if object_object["order_type"] == "REGULAR":
             days = 7
         else:
             days = 1
+        # And get when it was issued
         initial = object_shipping["delivery_day"] - (days * 24 * 60 * 60)
+        # Get the date from the timestamp
         middle = str(datetime.fromtimestamp(initial))[:-9]
+        # And freeze the time there so we can re-create the object in the same conditions
         freezer = freeze_time(middle)
         freezer.start()
         prev_object_shipping = OrderShipping(object_shipping["product_id"],
                                              object_object["order_id"],
                                              object_shipping["delivery_email"],
                                              object_object["order_type"])
+        # Re-set the time to normal
         freezer.stop()
-        # prev_object_shipping = prev_object_shipping.tracking_code
+        # And compare if the newly generated tracking code match the one before
         if prev_object_shipping.tracking_code == tracking_code:
             return True
+        # If that's not the case, the data has been modified
         raise OrderManagementException("The data has been modified")
 
     def deliver_product(self, tracking_code: str) -> bool:
@@ -452,7 +466,7 @@ class OrderManager:
         """
         # The date_signature is a string with the value described in AM-FR-03-I1
         # Returns a boolean value defined in AM-FR-03-O1 and a file defined in AM-FR-03-O2
-        # On errors, returns a VaccineManagementException representing AM-RF -03-O3
+        # On errors, returns a VaccineManagementException (OrderManagerException) representing AM-RF -03-O3
         order_shipping = self.tracking_code_searcher(tracking_code)
         self.hash_checker(tracking_code, order_shipping)
         now = datetime.utcnow()
@@ -463,7 +477,7 @@ class OrderManager:
                 "tracking_code": tracking_code,
                 "timestamp": timestamp
             }
-            # Guardar el json
+            # Save in order_delivery json file
             with open(self.order_delivery_json_store, "a+", encoding="UTF-8") as file:
                 file.seek(0)
                 data = json.load(file)
